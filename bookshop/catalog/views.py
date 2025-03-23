@@ -50,3 +50,20 @@ class AddToCartView(APIView):
         cart_item.save()
 
         return Response(CartSerializer(cart_item).data, status=status.HTTP_201_CREATED)
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .models import Book
+from .serializers import BookSerializer
+from django.shortcuts import get_object_or_404
+
+class BookListView(ListAPIView):
+    queryset = Book.objects.all()
+    serializer = BookSerializer(books, many=True)
+
+class BookDetailView(RetrieveAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    lookup_field = 'id'
+
