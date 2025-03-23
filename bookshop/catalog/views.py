@@ -1,6 +1,6 @@
 from django_filters import OrderingFilter
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView, CreateAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework import status
 from .models import *
@@ -27,7 +27,7 @@ class AddToCartView(CreateAPIView):
 
 class BookListView(ListAPIView):
     queryset = Book.objects.all()
-    serializer = BookSerializer(books, many=True)
+    serializer = BookSerializer
 
 class BookDetailView(RetrieveAPIView):
     queryset = Book.objects.all()
