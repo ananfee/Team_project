@@ -29,8 +29,20 @@ class BookListView(ListAPIView):
     queryset = Book.objects.all()
     serializer = BookSerializer
 
-class BookDetailView(RetrieveAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-    lookup_field = 'id'
+class BookSearchView(APIView):
+    def get(self, request):
+        query = request.query_params.get('q', '')
+
+        if not query:
+            return Response({"error": "Поисковый запрос не указан"}, status=status.HTTP_400_BAD_REQUEST)
+
+        books = Book.objects.filter(
+            Q(title__icontains=query) |
+            Q(authors__author_last_name__icontains=query) |
+            Q(authors__author_first_name__icontains=query) |
+            Q(category__category_name__icontains=query)
+        ).distinct()
+
+        serializer = BookSerializer(books, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
