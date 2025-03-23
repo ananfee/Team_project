@@ -7,4 +7,4 @@ urlpatterns = [
     path('cart/', AddToCartView.as_view(), name='add-to-cart'),
     path('books/', BookListView.as_view(), name='book-list'),
     path('books/<int:id>/', BookDetailView.as_view(), name='book-detail'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

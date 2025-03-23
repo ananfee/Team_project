@@ -5,10 +5,17 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = '__all__'
 
+class AuthorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Author
+        fields = ['id_author', 'author_last_name', 'author_first_name', 'author_patronymic']
+
 class BookSerializer(serializers.ModelSerializer):
+    authors = AuthorSerializer(many=True, read_only=True)
+
     class Meta:
         model = Book
-        fields = '__all__'
+        fields = ['id_book', 'title', 'price', 'discounted_price', 'authors', 'cover_image']
 
 class CartSerializer(serializers.ModelSerializer):
     class Meta:
