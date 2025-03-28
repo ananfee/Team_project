@@ -1,10 +1,11 @@
 from django.urls import path
 from .views import *
 
-urlpatterns = [
+urlpatterns = ([
     path('categories/', CategoryListView.as_view(), name='category-list'),
     path('books/sorted/', SortedBooksView.as_view(), name='sorted-books'),
     path('cart/', AddToCartView.as_view(), name='add-to-cart'),
     path('books/', BookListView.as_view(), name='book-list'),
     path('books/<int:id>/', BookDetailView.as_view(), name='book-detail'),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+])
+#+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT))

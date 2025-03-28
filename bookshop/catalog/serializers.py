@@ -15,9 +15,9 @@ class BookSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Book
-        fields = ['id_book', 'title', 'price', 'discounted_price', 'authors', 'cover_image']
+        fields = ['id', 'title', 'price', 'discounted_price', 'authors', 'cover_image']
 
 class CartSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Book_in_cart
+        model = BookInCart
         fields = '__all__'
