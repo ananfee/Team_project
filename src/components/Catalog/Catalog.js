@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import CatalogBook from "../CatalogBook/CatalogBook.js";
 import styles from "./Catalog.module.css";
 
-function Catalog({data}) // передачу дописать!!!!
+function Catalog({data})
 {
    const [currentPage, setCurrentPage] = useState(1);
   const booksPerPage = 18;
@@ -32,7 +32,7 @@ function Catalog({data}) // передачу дописать!!!!
    <div>
     <div className={styles.CatalogContainer}>
       {currentBooks.map(item => (
-        <div key={item.id_book}>
+        <div key={item.id}>
             <CatalogBook product={item} />
         </div>
       ))}

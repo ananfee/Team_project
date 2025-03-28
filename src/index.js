@@ -30,7 +30,7 @@ function App(){
       setCategories(data2);
     }
     catch (err) {
-      setError("Ошибка загрузки книг");
+      setError("Ошибка загрузки данных");
     }
     finally
     {
@@ -42,7 +42,7 @@ function App(){
   {
     setLoading(true);
     try{
-      let url = `catalog/books/sorted/?id_category=${parameter}`; // дописать!!!!
+      let url = `catalog/books/sorted/?category=${parameter}`; // дописать!!!!
       if (parameter == "asc" || parameter == "desc")
       {
         url = `catalog/books/sorted/?ordering=${parameter === "asc" ? "price" : "-price"}` // дописать!!!!
@@ -52,7 +52,7 @@ function App(){
       setBooks(data);
     } 
     catch (err) {
-      setError("Ошибка загрузки книг");
+      setError("Ошибка загрузки данных");
     }
     finally
     {
@@ -76,7 +76,7 @@ function App(){
       setBooks(data);
     } 
     catch (err) {
-      setError("Ошибка загрузки книг");
+      setError("Ошибка загрузки данных");
     }
     finally
     {
@@ -101,10 +101,7 @@ function App(){
     return <p>"Загрузка ..."</p>
   }
 
-  if (error)
-  {
-    return <p>{error}</p>
-  }
+
 
   return(
     <div style={{height: '100%'}}>
@@ -114,9 +111,10 @@ function App(){
         <DropDownSort onSortChange={handleChange} />
         <DropDownCategories allCategories={categories} onCategoriesChange={handleChange} />
       </div>
-      {books.length > 0 ? 
+      {error ? (<p style={{fontSize: 20, color: 'lightgray'}}>{error}</p>):  (
+      books.length > 0 ? 
         (<Catalog data={books} />) : 
-        (<p style={{fontSize: 20, color: 'lightgray'}}>Похоже, у нас такого нет</p>)}
+        (<p style={{fontSize: 20, color: 'lightgray'}}>Похоже, у нас такого нет</p>))}
     </div>
   );
 };
