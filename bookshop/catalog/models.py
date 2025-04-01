@@ -1,7 +1,6 @@
 from django.db import models
 from unicodedata import category
 
-
 class Role(models.Model):
     role_name = models.CharField(max_length=25, unique=True)
 
@@ -21,7 +20,6 @@ class Client(models.Model):
 
 class Employee(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-
 class Category(models.Model):
     category_name = models.CharField(max_length=25, unique=True)
 
