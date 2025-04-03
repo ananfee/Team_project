@@ -1,8 +1,8 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, permissions
-from .models import HistoryOfNotes, Client
-from .serializers import HistoryOfNotesSerializer
+from catalog.models import HistoryOfNotes, Client
+from catalog.serializers import HistoryOfNotesSerializer
 
 class NotificationsView(APIView):
     permission_classes = [permissions.IsAuthenticated]

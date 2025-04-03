@@ -5,6 +5,7 @@ from rest_framework import status
 from catalog.models import *
 from catalog.serializers import *
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
 
 class CategoryListView(ListAPIView):
     queryset = Category.objects.all()
@@ -78,7 +79,7 @@ class AddToCartView(CreateAPIView):
 
 class BookListView(ListAPIView):
     queryset = Book.objects.all()
-    serializer = BookSerializer
+    serializer_class = BookSerializer
 
 class BookDetailView(RetrieveAPIView):
     queryset = Book.objects.all()
@@ -94,8 +95,8 @@ class BookSearchView(APIView):
 
         books = Book.objects.filter(
             Q(title__icontains=query) |
-            Q(authors__author_last_name__icontains=query) |
-            Q(authors__author_first_name__icontains=query) |
+            Q(authorsofbook__author__author_last_name__icontains=query) |
+            Q(authorsofbook__author__author_first_name__icontains=query) |
             Q(category__category_name__icontains=query)
         ).distinct()
 

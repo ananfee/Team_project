@@ -1,6 +1,7 @@
 from django.urls import path
 from .handlers.catalog_page import *
 from .handlers.authorization import *
+from .handlers.notifications import *
 
 urlpatterns = ([
     path('categories/', CategoryListView.as_view(), name='category-list'),
