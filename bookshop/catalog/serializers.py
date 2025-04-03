@@ -69,3 +69,8 @@ class LoginSerializer(serializers.Serializer):
             'email': user.email,
             'role': user.role.name
         }
+
+class HistoryOfNotesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HistoryOfNotes
+        fields = ['text_note']
