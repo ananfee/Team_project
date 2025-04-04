@@ -2,7 +2,7 @@ import React from "react";
 import Footer from "./components/footer/footer";
 import Body from './components/body/body'; 
 
-function App() {
+function Main_page() {
   return (
      <>
     <div style={{display:'flex', justifyContent: 'center'}}>
@@ -13,4 +13,4 @@ function App() {
   );
 }
 
-export default App;
+export default Main_page;
