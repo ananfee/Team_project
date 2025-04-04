@@ -1,0 +1,87 @@
+.InfoContainer{
+   background-color: blueviolet;
+   height: 566px;
+   gap: 40px;
+   display: flex;
+}
+
+.BookInfo{
+   width: 460px;
+   background-color: blanchedalmond;
+}
+
+
+.descriptionConteiner{
+   background-color: cadetblue;
+   margin-bottom: 27px;
+}
+
+.descriptionName{
+   font-size: 28px;
+   font-weight: 500;
+   font-family: "Inter", sans-serif;
+   margin-bottom: 15px;
+}
+
+.description{
+   font-size: 16px;
+   font-family: "Inter", sans-serif;
+   font-weight: 400;
+   line-height: 22px;
+}
+
+.mainInfo{
+   display: flex;
+   background-color: chocolate;
+   height: 100px; 
+   gap: 67px;
+}
+
+.attributeName{
+   background-color: cornflowerblue;
+}
+
+.attributeName p {
+   height: 22px;
+   font-size: 16px;
+   font-family: "Inter", sans-serif;
+   font-weight: 600;
+   color: #777777;
+   margin-bottom: 4px;
+}
+
+.attributeName p:last-child {
+   margin-bottom: 0;
+}
+
+.attributeValue{
+   background-color: crimson;
+}
+
+.attributeValue p {
+   height: 22px;
+   font-size: 16px;
+   font-family: "Inter", sans-serif;
+   font-weight: 600;
+   color: #777777;
+   margin-bottom: 4px;
+   color: #5D3C64;
+}
+
+.attributeValue p:last-child {
+   margin-bottom: 0;
+}
+
+.BookPriceStatusContainer{
+   height: 168px;
+   width: 260px;
+   border: 1px solid #9B9898;
+   background-color: white;
+}
+
+.BookPriceContainer{
+   margin: 20px;
+   margin-bottom: 0;
+   background-color: darksalmon;
+   height: 86px;
+}
