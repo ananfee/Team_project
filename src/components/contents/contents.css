@@ -1,0 +1,47 @@
+
+.contents{
+    width: 1160px;
+    height: 353px;    
+    justify-content: space-between;
+    display: flex;
+}
+
+.text {
+    width: 740px;
+    height: 353px;
+}
+
+.text p{
+    color: #000;
+    font-family: "Inter", sans-serif;
+    margin-bottom: 32px;
+    margin-top: 0px;
+}
+
+.imageBooks img{
+    width: 325px;
+    height: 277px;
+}
+
+.imageBooks p{
+    width: 325px;
+    height: 277px;
+}
+
+.body-slogan_div{
+    display: flex;
+    flex-direction: row;
+}
+
+.buttonCatalog{
+    width: 227px;
+    height: 41px;
+    border-radius: 8px;
+    border: none;
+    border-radius: 8px;
+    background-color: rgb(93, 60, 100);
+    color: white;
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+    cursor: pointer;
+ }
