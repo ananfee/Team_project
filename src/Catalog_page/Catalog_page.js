@@ -4,7 +4,7 @@ import Search from './components/Search/Search.js';
 import DropDownSort from './components/DropDownSort/DropDownSort.js';
 import DropDownCategories from './components/DropDownCategories/DropDownCategories.js';
 import Catalog from './components/Catalog/Catalog.js';
-
+import Footer from "../components/footer/footer";
 
 
 
@@ -116,21 +116,27 @@ const [books, setBooks] = useState([]);
     return <p>"Загрузка ..."</p>
   }
 
-  return(
-   <div style={{height: '100%'}}>
-            <Header />
-            <div style={{display:'flex', alignItems: 'center', marginBottom: 42}}>
-              <Search onSearchChange={handleSearchChange}/>
-              <DropDownSort onSortChange={handleChange} />
-              <DropDownCategories allCategories={categories} onCategoriesChange={handleChange} />
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', alignItems: 'center' }}>
+        <Header />
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1 }}>
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: 42 }}>
+                <Search onSearchChange={handleSearchChange} />
+                <DropDownSort onSortChange={handleChange} />
+                <DropDownCategories allCategories={categories} onCategoriesChange={handleChange} />
             </div>
-            {error ? (<p style={{fontSize: 20, color: 'lightgray'}}>{error}</p>):  (
-            books.length > 0 ? 
-              (<Catalog data={books} />) : 
-              (<p style={{fontSize: 20, color: 'lightgray'}}>Похоже, у нас такого нет</p>))}
+            {error ? (
+                <p style={{ fontSize: 20, color: 'lightgray' }}>{error}</p>
+            ) : (
+                books.length > 0 ? 
+                    (<Catalog data={books} />) : 
+                    (<p style={{ fontSize: 20, color: 'lightgray' }}>Похоже, у нас такого нет</p>)
+            )}
             <button onClick={goToNewPage}>Перейти на новую страницу</button>
-          </div>
-  );
+        </div>
+        <Footer />
+    </div>
+);
 
 }
 

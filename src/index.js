@@ -10,8 +10,9 @@ function App(){
   return(
     <Router>
       <Routes>
-        <Route path="/" element={<Catalog_page />} />
+        <Route path="/" element={<Main_page />} />
         <Route path="/new" element={<Details_page />} />
+        <Route path="/cp" element={<Catalog_page />} />
       </Routes>
     </Router>
   );
