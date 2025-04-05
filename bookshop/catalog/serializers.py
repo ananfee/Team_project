@@ -1,5 +1,13 @@
 from rest_framework import serializers
 from .models import *
+from django.contrib.auth.hashers import check_password
+from django.contrib.auth.password_validation import validate_password
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from django.contrib.auth import get_user_model
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.token_blacklist.models import OutstandingToken
+from django.utils import timezone
+
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
@@ -22,53 +30,62 @@ class CartSerializer(serializers.ModelSerializer):
         model = BookInCart
         fields = '__all__'
 
-from django.contrib.auth.hashers import make_password, check_password
-from rest_framework_simplejwt.tokens import RefreshToken
 
-
-class UserSerializer(serializers.ModelSerializer):
-
-    password = serializers.CharField(write_only=True)
+class UserRegistrationSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    password2 = serializers.CharField(write_only=True, required=True)
+    role = serializers.PrimaryKeyRelatedField(queryset=Role.objects.all(), required=False)
 
     class Meta:
         model = User
-        fields = ['id', 'user_last_name', 'user_first_name', 'user_patronymic', 'email', 'phone_number', 'role', 'password']
+        fields = ("email", "username", "phone_number", "password", "password2", "role")
+
+    def validate(self, attrs):
+        if attrs["password"] != attrs["password2"]:
+            raise serializers.ValidationError({"password": "Пароли не совпадают"})
+        return attrs
 
     def create(self, validated_data):
-        password = validated_data.pop('password')
-        hashed_password = make_password(password)
-        validated_data['password'] = hashed_password
-        user = User.objects.create(**validated_data)
-
-        if user.role.role_name == 'Client':
-            Client.objects.create(user=user)
-        elif user.role.role_name == 'Employee':
-            Employee.objects.create(user=user)
-
-        return user
+        validated_data.pop("password2")
+        return User.objects.create_user(**validated_data)
 
 
-class LoginSerializer(serializers.Serializer):
-    email = serializers.EmailField()
-    password = serializers.CharField(write_only=True)
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    User = get_user_model()
+    username_field = 'email'  # Указываем, что используем email
 
-    def validate(self, data):
-        try:
-            user = User.objects.get(email=data['email'])
-        except User.DoesNotExist:
-            raise serializers.ValidationError("Пользователь с таким email не найден")
-
-        if not check_password(data['password'], user.password):
-            raise serializers.ValidationError("Неверный пароль")
-
-        refresh = RefreshToken.for_user(user)
-        return {
-            'refresh': str(refresh),
-            'access': str(refresh.access_token),
-            'user_id': user.id,
-            'email': user.email,
-            'role': user.role.name
+    def validate(self, attrs):
+        credentials = {
+            'email': attrs.get('email'),
+            'password': attrs.get('password')
         }
+        user = User.objects.filter(email=credentials['email']).first()
+
+        if user and user.check_password(credentials['password']):
+
+            # Создаём refresh-токен (он автоматически регистрируется в OutstandingToken)
+            refresh = RefreshToken.for_user(user)
+            access = refresh.access_token
+
+            # Проверяем, нет ли дубликата access-токена, и добавляем его
+            if not OutstandingToken.objects.filter(jti=access['jti']).exists():
+                OutstandingToken.objects.create(
+                    user=user,
+                    token=str(access),
+                    jti=access['jti'],
+                    expires_at=timezone.make_aware(timezone.datetime.fromtimestamp(access['exp'])),
+                    created_at=timezone.now()
+                )
+
+            # Формируем ответ
+            data = {
+                'refresh': str(refresh),
+                'access': str(access),
+                'email': user.email
+            }
+            return data
+        else:
+            raise serializers.ValidationError('Неверный email или пароль')
 
 class HistoryOfNotesSerializer(serializers.ModelSerializer):
     class Meta:

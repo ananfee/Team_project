@@ -1,19 +1,21 @@
 from django.db import models
 from unicodedata import category
+from django.contrib.auth.models import AbstractUser
 
 class Role(models.Model):
     role_name = models.CharField(max_length=25, unique=True)
 
-class User(models.Model):
-    password = models.CharField(max_length=25)
-    password_hash = models.TextField()
-    salt = models.TextField()
-    user_last_name = models.CharField(max_length=25)
-    user_first_name = models.CharField(max_length=25)
-    user_patronymic = models.CharField(max_length=25, blank=True, null=True)
-    email = models.EmailField(max_length=100, unique=True)
-    phone_number = models.CharField(max_length=20, unique=True)
-    role = models.ForeignKey(Role, on_delete=models.CASCADE)
+
+class User(AbstractUser):
+    phone_number = models.CharField(max_length=15, unique=True, null=True, blank=True)
+    email = models.EmailField(unique=True)
+    role = models.ForeignKey(Role, on_delete=models.CASCADE, null=True, blank=True)
+
+    USERNAME_FIELD = "email"  # Авторизация по email
+    REQUIRED_FIELDS = ["username"]  # Поля, которые нужно заполнить при создании суперпользователя
+
+    def __str__(self):
+        return self.email
 
 class Client(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)

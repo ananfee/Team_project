@@ -46,20 +46,28 @@ INSTALLED_APPS = [
 ]
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),  # Время жизни access-токена
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),     # Время жизни refresh-токена
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
-    'ALGORITHM': 'HS256',
-    'SIGNING_KEY': SECRET_KEY,
     'AUTH_HEADER_TYPES': ('Bearer',),
-}
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
+    'CHECK_REVOKE_TOKEN': True,
+    'TOKEN_TYPE_CLAIM': 'token_type',  # Указывает тип токена в payload
+    'JTI_CLAIM': 'jti',
 }
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'catalog.authentication.CustomJWTAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+}
+AUTHENTICATION_BACKENDS = [
+    'catalog.authentication.EmailBackend',
+    'django.contrib.auth.backends.ModelBackend',  # Оставляем для админки
+]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -124,7 +132,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+AUTH_USER_MODEL = "catalog.User"
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
