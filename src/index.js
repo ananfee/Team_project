@@ -11,6 +11,7 @@ function App(){
     <Router>
       <Routes>
         <Route path="/" element={<Main_page />} />
+        {/* <Route path="/" element={<NotificationModal />} /> */}
         <Route path="/new" element={<Details_page />} />
         <Route path="/cp" element={<Catalog_page />} />
       </Routes>
