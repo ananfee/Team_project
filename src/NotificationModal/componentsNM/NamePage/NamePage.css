@@ -1,0 +1,21 @@
+.frameNP{
+    justify-content: space-between;
+    width: 1262px;
+    height: 84px;
+    display: flex;
+}
+
+.namePage{
+    color: #000;
+    font-family: "Inter", sans-serif;
+    margin-bottom: 13.41px;
+    margin-top: 13.41px;
+    font-size: 48px;
+    font-weight: bold;
+}
+
+.closePage{
+    background-color: white;
+    border: none;
+    cursor: pointer;
+}

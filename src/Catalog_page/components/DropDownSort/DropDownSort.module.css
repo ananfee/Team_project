@@ -1,0 +1,75 @@
+.DropDownSortContainer {
+   position: relative;
+   display: block;
+   width: 300px;
+}
+.DropDownSortButton {
+   position: relative;
+   width: 299px;
+   height: 46px;
+   border: 0;
+   border-radius: 22px;
+   background-color: #5D3C64;
+   color: white;
+   cursor: pointer;
+   outline: 0;
+   font-size: 16px;
+   font-family: "Inter", sans-serif;
+   text-align: left;
+   padding-left: 16px;
+}
+
+.DropDownSortButton::before {
+   content: '';
+   background-image: url('arrow-down.svg');
+   background-repeat: no-repeat;
+   position: absolute;
+   top: 50%;
+   right: 16px;
+   transform: translateY(-50%) rotate(0deg);
+   width: 18px; 
+   height: 18px;
+   transition: transform 0.35s ease;
+ }
+
+.DropDownSortButton.Open::before {
+   transform: translateY(-50%) rotate(180deg);
+}
+
+.DropDown{
+   position: absolute; 
+   z-index: 100;
+   margin-top: 6px;
+   border: 1px solid #5D3C64;
+   border-radius: 22px;
+   width: 299px;
+   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
+   background-color: white;
+}
+
+ul {
+   list-style: none;
+   padding: 0;
+   margin: 0;
+   border-radius: 22px;
+}
+li {
+   border-radius: 21px;
+   height: 46px;
+   font-size: 16px;
+   font-family: "Inter", sans-serif;
+   text-align: left;
+   margin: none;
+   padding-left: 16px;
+   line-height: 46px;
+}
+  
+li:hover {
+   background-color: white;
+   cursor: pointer;
+   background-color: #9F76A7;
+}
+
+.Selected {
+   background-color: #9F76A7;
+}
