@@ -27,9 +27,25 @@ function BookInfo({Book})
                </div>
          </div>
          <div className={styles.BookPriceStatusContainer}>
-            <div className={styles.BookPriceContainer}>
-
+            <div className={styles.BookPriceBasketContainer}>
+               <div className={styles.BookPriceContainer}>
+                  {Book.discounted_price != "" ?
+                     (<div style={{display:'flex', alignItems: 'center'}}>
+                     <p style={{color: "#777777", 
+                        textDecoration: 'line-through', textDecorationColor: 'red',
+                        marginRight: 8}}>{Book.price} ₽</p>
+                     <p style={{fontWeight: 500}}>{Book.discounted_price} ₽</p>
+                     </div>
+                     ) :
+                     (<p style={{fontWeight: 500}}>{Book.price} ₽</p>)
+                  }
+               </div>
+               <button className={Book.copies === "0" ? styles.basketButtonDisabled : styles.basketButton} 
+                  disabled={Book.copies === "0" ? true : false}>В корзину</button>
             </div>
+            <p className={styles.Stock} style={{ color: Book.copies === "0" ? 'red' : '#0F870A' }}>
+               {Book.copies === "0" ? 'Нет в наличии' : 'В наличии'}
+            </p>
          </div>
       </div>
    );

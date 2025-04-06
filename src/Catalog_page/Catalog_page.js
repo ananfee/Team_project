@@ -5,18 +5,12 @@ import DropDownSort from './components/DropDownSort/DropDownSort.js';
 import DropDownCategories from './components/DropDownCategories/DropDownCategories.js';
 import Catalog from './components/Catalog/Catalog.js';
 import Footer from "../components/footer/footer";
-
-
-
-
 import { useNavigate } from 'react-router-dom';
 
 function Catalog_page()
 {
-   const navigate = useNavigate();
-
-
-const [books, setBooks] = useState([]);
+  const navigate = useNavigate();
+  const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [categories, setCategories] = useState([]);
@@ -32,8 +26,8 @@ const [books, setBooks] = useState([]);
     setLoading(true);
     try {
       const [response1, response2] = await Promise.all([
-        fetch("catalog/books"), //дописать!! (все книги)
-        fetch("catalog/categories/") // дописать !! (список категорий)
+        fetch("http://127.0.0.1:8000/catalog/books"), //дописать!! (все книги)
+        fetch("http://127.0.0.1:8000/catalog/categories/") // дописать !! (список категорий)
       ]);
 
       const [data1, data2] = await Promise.all([
@@ -57,10 +51,10 @@ const [books, setBooks] = useState([]);
   {
     setLoading(true);
     try{
-      let url = `catalog/books/sorted/?category=${parameter}`; // дописать!!!!
+      let url = `http://127.0.0.1:8000/catalog/books/sorted/?id_category=${parameter}`; 
       if (parameter == "asc" || parameter == "desc")
       {
-        url = `catalog/books/sorted/?ordering=${parameter === "asc" ? "price" : "-price"}` // дописать!!!!
+        url = `http://127.0.0.1:8000/catalog/books/sorted/?ordering=${parameter === "asc" ? "price" : "-price"}` 
       }
       const response = await fetch(url);
       const data = await response.json();
@@ -79,7 +73,7 @@ const [books, setBooks] = useState([]);
   {
     setLoading(true);
     try{
-      let url = "catalog/books/search";
+      let url = "http://127.0.0.1:8000/catalog/books/search";
       const response = await fetch(url, {
         method: 'POST',
         headers: {
