@@ -23,10 +23,10 @@ function Main_page() {
         minHeight: '100vh',
         margin: 0
       }}>
-            <Header onOpenModal={openModal} /> {/* Передаем функцию открытия в Header */}
-            {isModalOpen && (
-                <NotificationModal onClose={closeModal} />
-            )}
+    <Header onOpenModal={openModal} />
+    {isModalOpen && (
+        <NotificationModal onClose={closeModal} />
+      )}
     <Body/>
     <Footer/>
     </div>
