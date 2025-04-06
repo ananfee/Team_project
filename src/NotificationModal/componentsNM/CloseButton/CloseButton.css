@@ -1,0 +1,16 @@
+.closeButton{
+    width: 1262px;
+    height: 76px;
+    background-color: #5D3C64;
+    place-items: center;
+    border-radius: 16px;
+    margin-top: 34px;
+    cursor: pointer;
+}
+
+.closeButton p{
+    color: #FFFFFF;
+    font-family: "Inter", sans-serif;
+    font-size: 30px;
+    font-weight: normal;
+}
