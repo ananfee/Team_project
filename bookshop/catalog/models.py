@@ -22,12 +22,18 @@ class Client(models.Model):
 
 class Employee(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+
 class Category(models.Model):
     category_name = models.CharField(max_length=25, unique=True)
 
 class Discount(models.Model):
     discount_name = models.CharField(max_length=100)
     discount_percentage = models.IntegerField()
+
+class Author(models.Model):
+    author_last_name = models.CharField(max_length=25)
+    author_first_name = models.CharField(max_length=25)
+    author_patronymic = models.CharField(max_length=25, blank=True, null=True)
 
 class Book(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
@@ -38,14 +44,12 @@ class Book(models.Model):
     number_of_copies = models.IntegerField()
     discount = models.ForeignKey(Discount, on_delete=models.SET_NULL, null=True, blank=True)
     discounted_price = models.FloatField(null=True, blank=True)
-    description = models.CharField(max_length=300, blank=True, null=True)
-    ISBN = models.CharField(max_length=13, unique=True)
+    description = models.CharField(max_length=800, blank=True, null=True)
+    ISBN = models.CharField(max_length=17, unique=True)
     cover_image = models.ImageField(upload_to='book_covers/', blank=True, null=True)
+    authors = models.ManyToManyField(Author, related_name='books')
 
-class Author(models.Model):
-    author_last_name = models.CharField(max_length=25)
-    author_first_name = models.CharField(max_length=25)
-    author_patronymic = models.CharField(max_length=25, blank=True, null=True)
+
 
 class AuthorsOfBook(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)

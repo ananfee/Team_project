@@ -11,12 +11,12 @@ from django.utils import timezone
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = '__all__'
+        fields = ['id', 'category_name']
 
 class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Author
-        fields = ['id_author', 'author_last_name', 'author_first_name', 'author_patronymic']
+        fields = ['author_last_name', 'author_first_name', 'author_patronymic']
 
 class BookSerializer(serializers.ModelSerializer):
     authors = AuthorSerializer(many=True, read_only=True)
@@ -24,6 +24,20 @@ class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
         fields = ['id', 'title', 'price', 'discounted_price', 'authors', 'cover_image']
+
+class DetailBookSerializer(serializers.ModelSerializer):
+    authors = AuthorSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Book
+        fields = ['id', 'title', 'price', 'discounted_price', 'authors', 'cover_image', 'ISBN', 'description', 'publishing', 'publishing_year', 'number_of_copies']
+
+class ShortBookSerializer(serializers.ModelSerializer):
+    authors = AuthorSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Book
+        fields = ['id', 'title', 'authors', 'price', 'cover_image']
 
 class CartSerializer(serializers.ModelSerializer):
     class Meta:
@@ -90,4 +104,4 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 class HistoryOfNotesSerializer(serializers.ModelSerializer):
     class Meta:
         model = HistoryOfNotes
-        fields = ['text_note']
+        fields = ['id', 'text_note']
