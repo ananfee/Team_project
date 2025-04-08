@@ -8,7 +8,13 @@ const data =
       id: 1,
       cover_image: "Book7.svg",
       title: "Если все кошки исчезднут",
-      authors: "Гэнки Кавамура",
+      authors: [
+            {
+                "author_last_name": "Роулинг",
+                "author_first_name": "Джоан Кэтлин",
+                "author_patronymic": null
+            }
+        ],
       price: "339",
       discounted_price: "300",
       ISBN: "978-5-04-181395-6",
@@ -23,7 +29,13 @@ const dataRelatedBooks = [
       cover_image: "Book1.svg",
       price: '321',
       title: 'Wayward son',
-      authors: 'Rainbow Powell',
+      authors: [
+         {
+             "author_last_name": "Роулинг",
+             "author_first_name": "Джоан Кэтлин",
+             "author_patronymic": null
+         }
+     ],
       discounted_price: '300',
    },
    {
@@ -31,39 +43,69 @@ const dataRelatedBooks = [
       cover_image: "Book2.svg",
       price: '456',
       title: 'Cinder',
-      authors: 'Marisa Meyer',
-      discounted_price: ''
+      authors: [
+         {
+             "author_last_name": "Роулинг",
+             "author_first_name": "Джоан Кэтлин",
+             "author_patronymic": null
+         }
+     ],
+      discounted_price: null
    },
    {
       id_book: 3,
       cover_image: "Book3.svg",
       price: '257',
       title: 'Supernova',
-      authors: 'Marisa Meyer',
-      discounted_price: ''
+      authors: [
+         {
+             "author_last_name": "Роулинг",
+             "author_first_name": "Джоан Кэтлин",
+             "author_patronymic": null
+         }
+     ],
+      discounted_price: null
    },
    {
       id_book: 4,
       cover_image: "Book4.svg",
       price: '127',
       title: 'The sunbearer trials',
-      authors: 'Aiden Thomas',
-      discounted_price: ''
+      authors: [
+         {
+             "author_last_name": "Роулинг",
+             "author_first_name": "Джоан Кэтлин",
+             "author_patronymic": null
+         }
+     ],
+      discounted_price: null
    },
    {
       id_book: 5,
       cover_image: "Book5.svg",
       price: '478',
       title: 'Legend born',
-      authors: 'Tracy Deonn',
-      discounted_price: ''
+      authors: [
+         {
+             "author_last_name": "Роулинг",
+             "author_first_name": "Джоан Кэтлин",
+             "author_patronymic": null
+         }
+     ],
+      discounted_price: null
    },
    {
       id_book: 6,
       cover_image: "Book6.svg",
       price: '562',
       title: 'Deadly',
-      authors: 'Naomi Novik',
+      authors: [
+         {
+             "author_last_name": "Роулинг",
+             "author_first_name": "Джоан Кэтлин",
+             "author_patronymic": null
+         }
+     ],
       discounted_price: '500'
    },
    {
@@ -71,32 +113,56 @@ const dataRelatedBooks = [
       cover_image: "Book1.svg",
       price: '321',
       title: 'Wayward son',
-      authors: 'Rainbow Powell',
-      discounted_price: ''
+      authors: [
+         {
+             "author_last_name": "Роулинг",
+             "author_first_name": "Джоан Кэтлин",
+             "author_patronymic": null
+         }
+     ],
+      discounted_price: null
    },
    {
       id_book: 8,
       cover_image: "Book2.svg",
       price: '456',
       title: 'Cinder',
-      authors: 'Marisa Meyer',
-      discounted_price: ''
+      authors: [
+         {
+             "author_last_name": "Роулинг",
+             "author_first_name": "Джоан Кэтлин",
+             "author_patronymic": null
+         }
+     ],
+      discounted_price: null
    },
    {
       id_book: 9,
       cover_image: "Book3.svg",
       price: '257',
       title: 'Supernova',
-      authors: 'Marisa Meyer',
-      discounted_price: ''
+      authors: [
+         {
+             "author_last_name": "Роулинг",
+             "author_first_name": "Джоан Кэтлин",
+             "author_patronymic": null
+         }
+     ],
+      discounted_price: null
    },
    {
       id_book: 10,
       cover_image: "Book4.svg",
       price: '127',
       title: 'The sunbearer trials',
-      authors: 'Aiden Thomas',
-      discounted_price: ''
+      authors: [
+         {
+             "author_last_name": "Роулинг",
+             "author_first_name": "Джоан Кэтлин",
+             "author_patronymic": null
+         }
+     ],
+      discounted_price: null
    }
 ]
 

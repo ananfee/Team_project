@@ -1,33 +1,32 @@
-import React, {useState} from "react";
-import styles from "../Search/Search.module.css";
+import React, { useState } from 'react';
+import styles from '../Search/Search.module.css';
 
-function Search({onSearchChange})
-{
-   const [searchText, setSearchText] = useState('');
+function Search({ onSearchChange }) {
+  const [localSearchText, setLocalSearchText] = useState(''); // Локальное состояние для текста
 
-   const handleInputChange = (event) => {
-      setSearchText(event.target.value);
-   };
+  const handleInputChange = (event) => {
+    setLocalSearchText(event.target.value); // Обновляем локальное состояние
+  };
 
-   const handleKeyPress = (event) => {
-      if (event.key === 'Enter') {
-        handleSearch(searchText);
-      }
-   };
-  
-   const handleSearch = (query) => {
-      onSearchChange(query);
-   };
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      onSearchChange(localSearchText); // Отправляем текст на сервер только при нажатии Enter
+    }
+  };
 
-   return(
-      <div className={styles.searchContainer}>
-         <input type="text" maxlength="40" className={styles.searchInput} 
-               placeholder="Поиск..." 
-               value={searchText}
-               onChange={handleInputChange}
-               onKeyDown={handleKeyPress}/>
-      </div>
-   );
-};
+  return (
+    <div className={styles.searchContainer}>
+      <input
+        type="text"
+        maxLength="40"
+        className={styles.searchInput}
+        placeholder="Поиск..."
+        value={localSearchText} 
+        onChange={handleInputChange}
+        onKeyDown={handleKeyPress}
+      />
+    </div>
+  );
+}
 
 export default Search;

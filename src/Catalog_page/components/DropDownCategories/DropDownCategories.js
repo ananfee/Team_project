@@ -1,9 +1,8 @@
 import React, {useState, useRef, useEffect} from "react";
 import styles from "./DropDownCategories.module.css";
 
-function DropDownCategories({allCategories, onCategoriesChange}) {
+function DropDownCategories({allCategories, onCategoriesChange, SelCat}) {
    const [isOpen, setIsOpen] = useState(false);
-   const [selectedCategories, setSelectedCategories] = useState(null);
    const container = useRef();
 
    useEffect(() => {
@@ -20,7 +19,6 @@ function DropDownCategories({allCategories, onCategoriesChange}) {
    };
 
    const handleOptionClick = (id) => {
-      setSelectedCategories(id);
       onCategoriesChange(id);
    };
 
@@ -34,7 +32,7 @@ function DropDownCategories({allCategories, onCategoriesChange}) {
                <ul>
                   {allCategories.map(item => (
                      <li key={item.id} 
-                         className={selectedCategories === item.id ? styles.Selected : ""} 
+                         className={SelCat === item.id ? styles.Selected : ""} 
                          onClick={() => handleOptionClick(item.id)}>
                            {item.category_name}
                      </li>
