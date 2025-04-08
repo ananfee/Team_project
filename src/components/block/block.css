@@ -1,0 +1,38 @@
+.block{
+    width: 360px;
+    height: 134px;
+    border-radius: 16px;
+    box-shadow: 0px 10px 35px 0px #0000001F;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+ }
+
+ .frame1{
+    width: 293px;
+    height: 86px;
+    gap: 10px;    
+    display: flex;
+    flex-wrap: wrap;
+ }
+
+ .frame1 img{
+    width: 24px;
+    height: 24px;
+ }
+
+ .frame2{
+    width: 259px;
+    height: 86px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+ }
+
+ .frame2 p{
+    font-family: "Inter", sans-serif;
+    margin-top: 0px;
+    line-height: 19px;
+    margin-left: 20px;
+    margin-bottom: 0px;
+ }

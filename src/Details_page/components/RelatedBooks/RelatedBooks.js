@@ -1,0 +1,54 @@
+import { useState } from "react";
+import styles from "./RelatedBooks.module.css";
+import CatalogBook from "../../../Catalog_page/components/CatalogBook/CatalogBook";
+
+function RelatedBooks({ RelatedBooks }) {
+  const itemsPerPage = 6; 
+  const [startIndex, setStartIndex] = useState(0); 
+
+  const handleNext = () => {
+    if (startIndex + itemsPerPage < RelatedBooks.length) {
+      setStartIndex(startIndex + 1); 
+    }
+  };
+
+  const handlePrev = () => {
+    if (startIndex > 0) {
+      setStartIndex(startIndex - 1); 
+    }
+  };
+
+  const visibleBooks = RelatedBooks.slice(startIndex, startIndex + itemsPerPage);
+
+  return (
+    <div className={styles.RelatedBooksContainer}>
+      <p style={{ fontFamily: "Inter, sans-serif", fontWeight: 500, fontSize: 28 }}>
+        Похожие книги
+      </p>
+      <button 
+          onClick={handlePrev} 
+          className={styles.PrevButton} 
+          disabled={startIndex === 0}
+        >
+        </button>
+        <button 
+          onClick={handleNext} 
+          className={styles.NextButton} 
+          disabled={startIndex + itemsPerPage >= RelatedBooks.length}
+        >
+         </button>
+      <div className={styles.SliderWrapper}>
+        <div className={styles.ListRelatedBooks}
+            >
+          {visibleBooks.map((item, index) => (
+            <div key={index}>
+              <CatalogBook product={item} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default RelatedBooks;
