@@ -85,8 +85,11 @@ class BookListView(ListAPIView):
     permission_classes = [AllowAny]
     def get(self, request):
         books = Book.objects.prefetch_related('authors').all()
-        serializer = BookSerializer(books, many=True)
+        serializer = BookSerializer(books, many=True, context=self.get_serializer_context())
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def get_serializer_context(self):
+        return {'request': self.request}
 
 
 class BookSearchView(APIView):
