@@ -19,7 +19,11 @@ function CatalogBook({product})
                   (<p style={{fontWeight: 'bold', marginBottom: 2}}>{product.price} ₽</p>)
                }
                <p style={{marginBottom: 2}}>{product.title}</p>
-               <p style={{fontSize: 12, color: '#777777'}}>{product.authors}</p>
+               {product.authors.map((author, index) => (
+                  <p key={index} style={{ fontSize: 12, color: "#777777" }}>
+                     {author.author_last_name} {author.author_first_name} {author.author_patronymic}
+                  </p>
+               ))}
             </div>
             <button className={styles.BasketButton}>В корзину</button>
          </div>

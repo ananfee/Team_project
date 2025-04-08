@@ -32,7 +32,7 @@ function Catalog({data})
    <div>
     <div className={styles.CatalogContainer}>
       {currentBooks.map(item => (
-        <div key={item.id_book}>
+        <div key={item.id}>
             <CatalogBook product={item} />
         </div>
       ))}
