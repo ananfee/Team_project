@@ -33,9 +33,9 @@ function DropDownCategories({allCategories, onCategoriesChange}) {
             <div className={styles.DropDown}>
                <ul>
                   {allCategories.map(item => (
-                     <li key={item.id_category} 
-                         className={selectedCategories === item.id_category ? styles.Selected : ""} 
-                         onClick={() => handleOptionClick(item.id_category)}>
+                     <li key={item.id} 
+                         className={selectedCategories === item.id ? styles.Selected : ""} 
+                         onClick={() => handleOptionClick(item.id)}>
                            {item.category_name}
                      </li>
                   ))}
