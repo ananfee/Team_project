@@ -1,0 +1,7 @@
+.frameLN{
+    width: 1262px;
+    height: 606px;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
