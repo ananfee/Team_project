@@ -15,7 +15,8 @@ function Catalog_page()
   const [error, setError] = useState(null);
   const [categories, setCategories] = useState([]);
   const [filters, setFilters] = useState({ category: null, ordering: null });
-
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedOrdering, setselectedOrdering] = useState(null);
 
   const goToNewPage = () => {
    navigate('/new');
@@ -74,7 +75,6 @@ function Catalog_page()
 
   async function editBooksSearch(query)
   {
-    setLoading(true);
     try{
       let url = `http://127.0.0.1:8000/catalog/books/search/?q=${query}`;
       const response = await fetch(url);
@@ -83,10 +83,6 @@ function Catalog_page()
     } 
     catch (err) {
       setError("Ошибка загрузки данных");
-    }
-    finally
-    {
-      setLoading(false);
     }
   };
   
@@ -99,6 +95,7 @@ function Catalog_page()
   };
 
   const handleSortChange = (sortOrder) => {
+    setselectedOrdering(sortOrder);
     setFilters((prev) => ({
       ...prev,
       ordering: sortOrder,
@@ -106,6 +103,7 @@ function Catalog_page()
   };
   
   const handleCategoryChange = (categoryId) => {
+    setSelectedCategory(categoryId);
     setFilters((prev) => ({
       ...prev,
       category: categoryId,
@@ -127,8 +125,8 @@ function Catalog_page()
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1 }}>
             <div style={{ display: 'flex', alignItems: 'center', marginBottom: 42 }}>
                 <Search onSearchChange={handleSearchChange} />
-                <DropDownSort onSortChange={handleSortChange} />
-                <DropDownCategories allCategories={categories} onCategoriesChange={handleCategoryChange} />
+                <DropDownSort onSortChange={handleSortChange} SelOr={selectedOrdering} />
+                <DropDownCategories allCategories={categories} onCategoriesChange={handleCategoryChange} SelCat={selectedCategory}/>
             </div>
             {error ? (
                 <p style={{ fontSize: 20, color: 'lightgray' }}>{error}</p>
@@ -141,7 +139,7 @@ function Catalog_page()
         </div>
         <Footer />
     </div>
-);
+  );
 
 }
 
