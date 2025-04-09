@@ -1,0 +1,63 @@
+.faq-item {
+    margin-bottom: 8px;
+}
+
+.faq-question {
+    height: 68px;
+    display: flex;
+    justify-content: space-between; /* Размещаем вопрос и стрелку по краям */
+    align-items: center; /* Выравниваем по вертикали */
+    cursor: pointer; /* Делаем курсор pointer при наведении */
+    border-radius: 8px; /* Скругление углов */
+    background: var(--Color, #F6F6F6);
+}
+
+/* Убираем нижние радиусы, когда активен вопрос */
+.faq-question.active {
+    border-bottom-left-radius: 0; /* Убираем нижний левый радиус */
+    border-bottom-right-radius: 0; /* Убираем нижний правый радиус */
+}
+
+.faq-question span {
+    margin: 0px;
+    font-size: 24px; /* Размер текста ответа */
+    line-height: 20px; /* Межстрочный интервал для лучшей читаемости */
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+    margin: 24px;
+}
+
+.arrow {
+    width: 11.88px; /* Ширина стрелки */
+    height: 5.32px; /* Высота стрелки */
+    vertical-align: middle; /* Выравнивание по вертикали */
+    transition: transform 0.3s ease; /* Для анимации поворота */
+    margin: 24px;
+}
+
+.arrow.open {
+    transform: rotate(180deg); /* Поворот стрелки */
+}
+
+.faq-answer {
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    background: var(--Color, #F6F6F6);
+    border-bottom-left-radius: 8px; /* Скругление снизу слева */
+    border-bottom-right-radius: 8px; /* Скругление снизу справа */
+}
+
+.faq-answer.open {
+    border-bottom-left-radius: 0; /* Убираем нижний радиус */
+    border-bottom-right-radius: 0; /* Убираем нижний радиус */
+}
+
+.faq-answer p {
+    font-size: 14px; /* Размер текста ответа */
+    line-height: 20px; /* Межстрочный интервал для лучшей читаемости */
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
+    margin-left: 24px;
+    margin-top: 0px;
+    margin-right: 48px;
+}
