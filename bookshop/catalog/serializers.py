@@ -104,4 +104,4 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 class HistoryOfNotesSerializer(serializers.ModelSerializer):
     class Meta:
         model = HistoryOfNotes
-        fields = ['id', 'text_note']
+        fields = ['id', 'text_note', 'date_note']

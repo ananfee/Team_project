@@ -1,6 +1,7 @@
 from django.db import models
 from unicodedata import category
 from django.contrib.auth.models import AbstractUser
+from django.utils import timezone
 
 class Role(models.Model):
     role_name = models.CharField(max_length=25, unique=True)
@@ -86,3 +87,5 @@ class BookInCart(models.Model):
 class HistoryOfNotes(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     text_note = models.CharField(max_length=100)
+    date_note = models.DateTimeField(auto_now_add=True)
+    order = models.ForeignKey(OrderHistory, on_delete=models.CASCADE, related_name='notes')
