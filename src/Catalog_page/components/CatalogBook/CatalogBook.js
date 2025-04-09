@@ -8,7 +8,7 @@ function CatalogBook({product})
          <img src={product.cover_image}/>
          <div className={styles.InfoContainer}>
             <div className={styles.Info}>
-               {product.discounted_price != "" ?
+               {product.discounted_price != null ?
                   (<div style={{display:'flex', alignItems: 'center'}}>
                   <p style={{marginBottom: 2, color: "#777777", 
                      textDecoration: 'line-through', textDecorationColor: 'red',

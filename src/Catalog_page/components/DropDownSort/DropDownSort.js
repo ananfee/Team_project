@@ -1,9 +1,8 @@
 import React, {useState, useRef, useEffect} from "react";
 import styles from "./DropDownSort.module.css";
 
-function DropDownSort({onSortChange}) {
+function DropDownSort({onSortChange, SelOr}) {
    const [isOpen, setIsOpen] = useState(false);
-   const [selectedSort, setSelectedSort] = useState(null);
    const container = useRef();
 
    useEffect(() => {
@@ -20,7 +19,6 @@ function DropDownSort({onSortChange}) {
    };
 
    const handleOptionClick = (sortOrder) => {
-      setSelectedSort(sortOrder);
       onSortChange(sortOrder);
    };
 
@@ -32,10 +30,10 @@ function DropDownSort({onSortChange}) {
          {isOpen && (
             <div className={styles.DropDown}>
                <ul>
-                  <li className={selectedSort === 'asc' ? styles.Selected : ""} onClick={() => handleOptionClick('asc')}>
+                  <li className={SelOr === 'price' ? styles.Selected : ""} onClick={() => handleOptionClick('price')}>
                      По возрастанию
                   </li>
-                  <li className={selectedSort === 'desc' ? styles.Selected : ""} onClick={() => handleOptionClick('desc')}>
+                  <li className={SelOr === '-price' ? styles.Selected : ""} onClick={() => handleOptionClick('-price')}>
                      По убыванию
                   </li>
                </ul>
