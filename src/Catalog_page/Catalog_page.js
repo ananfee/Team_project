@@ -92,6 +92,8 @@ function Catalog_page()
 
   const handleSearchChange = (query) => {
     editBooksSearch(query);
+    setselectedOrdering(null);
+    setSelectedCategory(null);
   };
 
   const handleSortChange = (sortOrder) => {
