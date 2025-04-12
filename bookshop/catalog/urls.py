@@ -1,6 +1,4 @@
 from django.urls import path
-from django.conf import settings
-from django.conf.urls.static import static
 from rest_framework_simplejwt.views import TokenRefreshView
 from .handlers.catalog_page import *
 from .handlers.authorization import *
@@ -21,6 +19,3 @@ urlpatterns = ([
     path('logout/', LogoutView.as_view(), name='logout'),
     path('notifications/', NotificationsView.as_view(), name='notifications'),
 ])
-
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
