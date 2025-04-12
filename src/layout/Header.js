@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom"; // Импортируем Link
 import styles from "../layout/Header.module.css";
-import NotificationButton from "../layout/NotificationButton.js";
+import NotificationButton from "./NotificationButton/NotificationButton.js";
+import OrdersButton from "./OrdersButton/OrdersButton.jsx";
 
 function Header({onOpenModal}) {
    return (
@@ -20,9 +21,7 @@ function Header({onOpenModal}) {
          </div>
          <div className={styles.containerButtonHeader}>
          <NotificationButton onClick={onOpenModal} />
-            <button className={styles.deliveryButton}>
-               <img src="group.svg" alt="доставка" />
-            </button>
+         <OrdersButton /> {/* Используем новый компонент */}
             <button className={styles.deliveryButton}>
                <img src="shopping-cart.svg" alt="корзина" />
             </button>
