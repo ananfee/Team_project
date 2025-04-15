@@ -19,7 +19,11 @@ function BookInfo({Book})
                      <p>Год издания</p>
                   </div>
                   <div className={styles.attributeValue}>
-                     <p>{Book.authors}</p>
+                     {Book.authors.map((author, index) => (
+                        <p key={index}>
+                           {author.author_last_name} {author.author_first_name} {author.author_patronymic}
+                        </p>
+                     ))}
                      <p>{Book.title}</p>
                      <p>{Book.ISBN}</p>
                      <p>{Book.year}</p>
@@ -29,7 +33,7 @@ function BookInfo({Book})
          <div className={styles.BookPriceStatusContainer}>
             <div className={styles.BookPriceBasketContainer}>
                <div className={styles.BookPriceContainer}>
-                  {Book.discounted_price != "" ?
+                  {Book.discounted_price != null ?
                      (<div style={{display:'flex', alignItems: 'center'}}>
                      <p style={{color: "#777777", 
                         textDecoration: 'line-through', textDecorationColor: 'red',

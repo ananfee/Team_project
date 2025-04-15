@@ -26,6 +26,9 @@ function Catalog_page()
     setIsModalOpen(false);
   };
 
+  const [filters, setFilters] = useState({ category: null, ordering: null });
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedOrdering, setselectedOrdering] = useState(null);
 
   const goToNewPage = () => {
    navigate('/new');
@@ -36,7 +39,7 @@ function Catalog_page()
     setLoading(true);
     try {
       const [response1, response2] = await Promise.all([
-        fetch("http://127.0.0.1:8000/catalog/books"), //дописать!! (все книги)
+        fetch("http://127.0.0.1:8000/catalog/books/"), //дописать!! (все книги)
         fetch("http://127.0.0.1:8000/catalog/categories/") // дописать !! (список категорий)
       ]);
 
@@ -57,15 +60,35 @@ function Catalog_page()
     }
   };
 
-  async function editBooks(parameter)
-  {
+  async function editBooks(filterOptions) {
     setLoading(true);
-    try{
-      let url = `http://127.0.0.1:8000/catalog/books/sorted/?id_category=${parameter}`; 
-      if (parameter == "asc" || parameter == "desc")
-      {
-        url = `http://127.0.0.1:8000/catalog/books/sorted/?ordering=${parameter === "asc" ? "price" : "-price"}` 
+    try {
+      let url = "http://127.0.0.1:8000/catalog/books/sorted/";
+      const params = new URLSearchParams();
+  
+      if (filterOptions.category) {
+        params.append("category", filterOptions.category);
       }
+  
+      if (filterOptions.ordering) {
+        params.append("ordering", filterOptions.ordering);
+      }
+  
+      url += `?${params.toString()}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      setBooks(data);
+    } catch (err) {
+      setError("Ошибка загрузки данных");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function editBooksSearch(query)
+  {
+    try{
+      let url = `http://127.0.0.1:8000/catalog/books/search/?q=${query}`;
       const response = await fetch(url);
       const data = await response.json();
       setBooks(data);
@@ -73,47 +96,37 @@ function Catalog_page()
     catch (err) {
       setError("Ошибка загрузки данных");
     }
-    finally
-    {
-      setLoading(false);
-    }
-  };
-
-  async function editBooksSearch(query)
-  {
-    setLoading(true);
-    try{
-      let url = "http://127.0.0.1:8000/catalog/books/search";
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ query }),
-      });
-      const data = await response.json();
-      setBooks(data);
-    } 
-    catch (err) {
-      setError("Ошибка загрузки данных");
-    }
-    finally
-    {
-      setLoading(false);
-    }
   };
   
   useEffect (() => {
     loadData();
   }, []);
 
-  const handleChange = (parameter) => {
-    editBooks(parameter);
-  };
-
   const handleSearchChange = (query) => {
     editBooksSearch(query);
+    setselectedOrdering(null);
+    setSelectedCategory(null);
   };
+
+  const handleSortChange = (sortOrder) => {
+    setselectedOrdering(sortOrder);
+    setFilters((prev) => ({
+      ...prev,
+      ordering: sortOrder,
+    }));
+  };
+  
+  const handleCategoryChange = (categoryId) => {
+    setSelectedCategory(categoryId);
+    setFilters((prev) => ({
+      ...prev,
+      category: categoryId,
+    }));
+  };
+
+  useEffect(() => {
+    editBooks(filters);
+  }, [filters]);
 
   if (loading)
   {
@@ -129,8 +142,8 @@ function Catalog_page()
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1 }}>
             <div style={{ display: 'flex', alignItems: 'center', marginBottom: 42 }}>
                 <Search onSearchChange={handleSearchChange} />
-                <DropDownSort onSortChange={handleChange} />
-                <DropDownCategories allCategories={categories} onCategoriesChange={handleChange} />
+                <DropDownSort onSortChange={handleSortChange} SelOr={selectedOrdering} />
+                <DropDownCategories allCategories={categories} onCategoriesChange={handleCategoryChange} SelCat={selectedCategory}/>
             </div>
             {error ? (
                 <p style={{ fontSize: 20, color: 'lightgray' }}>{error}</p>
@@ -143,7 +156,7 @@ function Catalog_page()
         </div>
         <Footer />
     </div>
-);
+  );
 
 }
 
