@@ -14,8 +14,8 @@ function Header({onOpenModal}) {
             </div>
             <div>
                <nav className={styles.navigation}>
-                  <Link to="/" className={styles.mainNav}>Главная</Link> {/* Замена на Link */}
-                  <Link to="/cp" className={styles.catalogNav}>Каталог</Link> {/* Используем Link для каталога */}
+                  <Link to="/" className={styles.mainNav}>Главная</Link>
+                  <Link to="/cp" className={styles.catalogNav}>Каталог</Link>
                </nav>
             </div>
          </div>

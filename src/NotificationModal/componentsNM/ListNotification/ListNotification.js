@@ -14,6 +14,8 @@ const ListNotification = () => {
     { orderNumber: '0003', date: '26.03.25', time: '13:30', description: 'Заказ отправлен со склада.' },
     { orderNumber: '0002', date: '25.03.25', time: '12:00', description: 'Ваш заказ принят в обработку. Мы сообщим вам о следующих этапах доставки.' },
     { orderNumber: '0003', date: '26.03.25', time: '13:30', description: 'Заказ отправлен со склада.' },
+    { orderNumber: '0008', date: '26.03.25', time: '13:30', description: 'Заказ отправлен со склада.' },
+
   ];
     const frameLNRef = useRef(null);
 
