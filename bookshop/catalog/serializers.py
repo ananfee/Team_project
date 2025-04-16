@@ -7,6 +7,8 @@ from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.token_blacklist.models import OutstandingToken
 from django.utils import timezone
+from rest_framework.reverse import reverse
+from django.conf import settings
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -20,10 +22,19 @@ class AuthorSerializer(serializers.ModelSerializer):
 
 class BookSerializer(serializers.ModelSerializer):
     authors = AuthorSerializer(many=True, read_only=True)
+    cover_image = serializers.SerializerMethodField()
 
     class Meta:
         model = Book
         fields = ['id', 'title', 'price', 'discounted_price', 'authors', 'cover_image']
+
+    def get_cover_image(self, obj):
+        request = self.context.get('request')
+        if obj.cover_image:
+            return request.build_absolute_uri(obj.cover_image.url)
+        elif obj.cover_image:
+            return obj.cover_image.url
+        return None
 
 class DetailBookSerializer(serializers.ModelSerializer):
     authors = AuthorSerializer(many=True, read_only=True)
@@ -102,6 +113,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
             raise serializers.ValidationError('Неверный email или пароль')
 
 class HistoryOfNotesSerializer(serializers.ModelSerializer):
+    order_id = serializers.IntegerField(source='order.id', read_only=True)
     class Meta:
         model = HistoryOfNotes
-        fields = ['id', 'text_note']
+        fields = ['id', 'text_note', 'date_note', 'order_id']
