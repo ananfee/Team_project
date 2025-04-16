@@ -5,7 +5,7 @@ from catalog.models import HistoryOfNotes, Client
 from catalog.serializers import HistoryOfNotesSerializer
 
 class NotificationsView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    #permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
         try:

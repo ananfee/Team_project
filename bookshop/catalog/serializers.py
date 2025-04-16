@@ -102,6 +102,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
             raise serializers.ValidationError('Неверный email или пароль')
 
 class HistoryOfNotesSerializer(serializers.ModelSerializer):
+    order_id = serializers.IntegerField(source='order.id', read_only=True)
     class Meta:
         model = HistoryOfNotes
-        fields = ['id', 'text_note', 'date_note']
+        fields = ['id', 'text_note', 'date_note', 'order_id']
