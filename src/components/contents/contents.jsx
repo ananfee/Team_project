@@ -24,7 +24,7 @@ const Contents = () => {
                 </p>
                 <button onClick={goToCatalogPage} className="buttonCatalog">Перейти к каталогу книг</button>
             </div>
-            <div className="imageBooks">
+            <div className="imageBook">
                 <img src={books} alt="" />
             </div>
         </div>

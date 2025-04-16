@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import BookInfo from './components/BookInfo/BookInfo';
 import Header from '../layout/Header';
 import RelatedBooks from './components/RelatedBooks/RelatedBooks';
+import NotificationModal from '../NotificationModal/NotificationModal'; 
 
 const data = 
    {
@@ -169,10 +170,22 @@ const dataRelatedBooks = [
 
 function Details_page()
 {
+   const [isModalOpen, setIsModalOpen] = useState(false);
+  
+   const openModal = () => {
+      setIsModalOpen(true);
+   };
+  
+   const closeModal = () => {
+      setIsModalOpen(false);
+   };
+
    return (
       <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', alignItems: 'center' }}>
-         <Header />
-         <BookInfo Book={data}/>
+      <Header onOpenModal={openModal} />
+         {isModalOpen && (
+        <NotificationModal onClose={closeModal} />
+         )}         <BookInfo Book={data}/>
          <RelatedBooks RelatedBooks={dataRelatedBooks}/>
       </div>
    );

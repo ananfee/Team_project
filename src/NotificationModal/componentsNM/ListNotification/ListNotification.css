@@ -1,7 +1,17 @@
-.frameLN{
+.frameLN {
     width: 1262px;
     height: 606px;
     display: flex;
     flex-direction: column;
+    overflow: hidden; /* Скрываем полосу прокрутки */
+}
+
+.scrollable-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
     gap: 9px;
+    /* Небольшое улучшение: добавляем padding, чтобы контент не прилипал к краю */
+    padding: 10px; /* Или другое значение по вашему усмотрению */
+
 }

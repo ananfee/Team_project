@@ -21,9 +21,9 @@ const NotificationModal = ({ onClose }) => {
     return (
         <div className="modal-overlay">
             <div className="modal-content" style={{ placeItems: 'center' }}>
-                <NamePage onClose={handleClose} /> {/* Передаем функцию закрытия в NamePage */}
+                <NamePage onClose={handleClose} />
                 <ListNotification />
-                <CloseButton onClick={handleClose} /> {/* Используем функцию закрытия */}
+                <CloseButton onClick={handleClose} />
             </div>
         </div>
     );

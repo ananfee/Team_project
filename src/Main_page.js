@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Footer from "./components/footer/footer";
 import Body from './components/body/body'; 
 import Header from './layout/Header'; 
 import NotificationModal from './NotificationModal/NotificationModal'; 
 
 function Main_page() {
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
@@ -13,6 +15,9 @@ function Main_page() {
 
   const closeModal = () => {
       setIsModalOpen(false);
+  };
+  const goToHistoryPage = () => {
+    navigate('/history');
   };
   return (
       <div style={{
@@ -23,10 +28,10 @@ function Main_page() {
         minHeight: '100vh',
         margin: 0
       }}>
-            <Header onOpenModal={openModal} /> {/* Передаем функцию открытия в Header */}
-            {isModalOpen && (
-                <NotificationModal onClose={closeModal} />
-            )}
+    <Header onOpenModal={openModal} />
+    {isModalOpen && (
+        <NotificationModal onClose={closeModal} />
+      )}
     <Body/>
     <Footer/>
     </div>

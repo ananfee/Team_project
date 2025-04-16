@@ -6,6 +6,8 @@ import DropDownCategories from './components/DropDownCategories/DropDownCategori
 import Catalog from './components/Catalog/Catalog.js';
 import Footer from "../components/footer/footer";
 import { useNavigate } from 'react-router-dom';
+import NotificationModal from '../NotificationModal/NotificationModal'; 
+
 
 function Catalog_page()
 {
@@ -14,6 +16,16 @@ function Catalog_page()
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [categories, setCategories] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+  
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   const [filters, setFilters] = useState({ category: null, ordering: null });
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedOrdering, setselectedOrdering] = useState(null);
@@ -123,7 +135,10 @@ function Catalog_page()
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', alignItems: 'center' }}>
-        <Header />
+      <Header onOpenModal={openModal} />
+         {isModalOpen && (
+        <NotificationModal onClose={closeModal} />
+         )}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1 }}>
             <div style={{ display: 'flex', alignItems: 'center', marginBottom: 42 }}>
                 <Search onSearchChange={handleSearchChange} />
