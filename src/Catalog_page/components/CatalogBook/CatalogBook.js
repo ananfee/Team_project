@@ -5,7 +5,12 @@ function CatalogBook({product})
 {
    return(
       <div className={styles.CatalogBook}>
-         <img src={product.cover_image}/>
+         <img src={product.cover_image}
+         style={{
+            width: '160px',
+            height: '250px',
+            display: 'block'
+         }}/>
          <div className={styles.InfoContainer}>
             <div className={styles.Info}>
                {product.discounted_price != null ?

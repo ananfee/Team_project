@@ -5,13 +5,11 @@ import DropDownSort from './components/DropDownSort/DropDownSort.js';
 import DropDownCategories from './components/DropDownCategories/DropDownCategories.js';
 import Catalog from './components/Catalog/Catalog.js';
 import Footer from "../components/footer/footer";
-import { useNavigate } from 'react-router-dom';
 import NotificationModal from '../NotificationModal/NotificationModal'; 
 
 
 function Catalog_page()
 {
-  const navigate = useNavigate();
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -29,10 +27,6 @@ function Catalog_page()
   const [filters, setFilters] = useState({ category: null, ordering: null });
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedOrdering, setselectedOrdering] = useState(null);
-
-  const goToNewPage = () => {
-   navigate('/new');
- };
 
   async function loadData()
   {
@@ -152,7 +146,6 @@ function Catalog_page()
                     (<Catalog data={books} />) : 
                     (<p style={{ fontSize: 20, color: 'lightgray' }}>Похоже, у нас такого нет</p>)
             )}
-            <button onClick={goToNewPage}>Перейти на новую страницу</button>
         </div>
         <Footer />
     </div>

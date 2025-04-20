@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import CatalogBook from "../CatalogBook/CatalogBook.js";
 import styles from "./Catalog.module.css";
+import { useNavigate } from 'react-router-dom';
 
 function Catalog({data})
 {
-   const [currentPage, setCurrentPage] = useState(1);
+  const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
   const booksPerPage = 18;
 
   const indexOfLastBook = currentPage * booksPerPage;
@@ -32,7 +34,9 @@ function Catalog({data})
    <div>
     <div className={styles.CatalogContainer}>
       {currentBooks.map(item => (
-        <div key={item.id}>
+        <div key={item.id}
+        onDoubleClick={() => navigate(`/new/${item.id}`)}
+        style={{cursor: 'pointer'}}>
             <CatalogBook product={item} />
         </div>
       ))}

@@ -13,7 +13,7 @@ function App(){
       <Routes>
         <Route path="/" element={<Main_page />} />
         {/* <Route path="/" element={<NotificationModal />} /> */}
-        <Route path="/new" element={<Details_page />} />
+        <Route path="/new/:id" element={<Details_page />} />
         <Route path="/cp" element={<Catalog_page />} />
         <Route path="/history" element={<HistoryPage />} />
       </Routes>
