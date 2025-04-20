@@ -12,14 +12,41 @@
  }
  
  .modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: white;
+  border-radius: 32px;
+  width: 500px;
+  height: 700px;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.backBtn{
+  position: absolute;
+   top: 48px;
+   left: 40px;
+   width: 32px;
+   height: 32px;
+   border: none;
+   cursor: pointer;
    display: flex;
-   background: white;
-   border-radius: 32px;
-   width: 500px;
-   height: 700px;
-   position: relative;
+   align-items: center;
    justify-content: center;
- }
+   background-color: white;
+}
+
+.backBtn::before {
+  content: '';
+  background-image: url('back.svg');
+  background-size: contain; 
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 32px; 
+  height: 32px;
+  position: absolute;
+}
  
  .closeBtn {
    position: absolute;
@@ -49,9 +76,186 @@
  }
 
 .pEntrance{
-   margin-top: 95px;
-   font-size: 32px;
-   font-family: "Inter", sans-serif;
-   font-weight: 500;
+  margin-top: 95px;
+  font-size: 32px;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
 }
+
+.InputContainer{
+  width: 310px;
+  max-height: 322px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin-top: 34px;
+  box-sizing: border-box;
+  padding-right: 30px;
+}
+
+.InputContainerInner {
+  width: 300px;
+  padding-right: 10px; 
+  box-sizing: border-box;
+}
+
+.InputContainer::-webkit-scrollbar {
+  width: 10px;
+}
+
+.InputContainer::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 8px;
+  border: 2px solid white; 
+}
+
+.InputContainer::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 4px 0;
+  border-radius: 8px;
+}
+
+.InputContainer p{
+  font-family: "Inter", sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  margin-bottom: 10px;
+  height: 23px;
+}
+
+.InputContainer input{
+  width: 300px;
+  height: 40px;
+  margin-bottom: 10px;
+  border-radius: 24px;
+  border: none;
+  background-color: #efeeee;
+  padding-inline: 0;
+  padding-block: 0;
+  outline: none;
+  font-size: 18px;           
+  color: #222;                
+  font-family: "Inter", sans-serif; 
+  padding-left: 16px;
+  padding-right: 16px;
+  box-sizing: border-box;
+  font-weight: 300;
+}
+
+.InputContainer input:last-child {
+  margin-bottom: 0;
+}
+
+.ButtonLogin{
+  width: 300px;
+  height: 42px;
+  border-radius: 24px;
+  background-color: #5D3C64;
+  color: white;
+  margin-top: 20px;
+  border: none;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.pRegistration{
+  width: 230px;
+  height: 17px;
+  margin-top: 21px;
+  display: flex;
+}
+
+.pRegistration p{
+  font-family: "Inter", sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  width: 104px;
+}
+
+.pRegistration a{
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  color: #5D3C64;
+  cursor: pointer;
+}
+
+.DropDownSortContainer {
+  position: relative;
+  display: block;
+  width: 300px;
+  margin-bottom: 10px;
+}
+
+.DropDownSortButton {
+  position: relative;
+  width: 300px;
+  height: 40px;
+  border: 0;
+  border-radius: 24px;
+  background-color: #efeeee;
+  color: #9b9b9b;
+  cursor: pointer;
+  outline: 0;
+  font-size: 18px;
+  font-weight: 300;
+  font-family: "Inter", sans-serif;
+  text-align: left;
+  padding-left: 16px;
+}
+
+.DropDownSortButton::before {
+  content: '';
+  background-image: url('down.svg');
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%) rotate(0deg);
+  width: 18px; 
+  height: 18px;
+  transition: transform 0.35s ease;
+}
+
+.DropDownSortButton.Open::before {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.DropDown{
+  margin-top: 6px;
+  border: 1px solid #5D3C64;
+  border-radius: 24px;
+  width: 298px;
+  background-color: white;
+}
+
+.DropDown ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-radius: 24px;
+}
+.DropDown li {
+  border-radius: 22px;
+  height: 44px;
+  font-size: 18px;
+  font-family: "Inter", sans-serif;
+  text-align: left;
+  margin: none;
+  padding-left: 16px;
+  line-height: 44px;
+  font-weight: 300;
+}
+ 
+.DropDown li:hover {
+  background-color: white;
+  cursor: pointer;
+  background-color: #9F76A7;
+}
+
+.Selected {
+  background-color: #9F76A7;
+}
+
  
