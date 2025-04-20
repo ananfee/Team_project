@@ -18,4 +18,5 @@ urlpatterns = ([
     path('protected/', ProtectedView.as_view(), name='protected'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('notifications/', NotificationsView.as_view(), name='notifications'),
+    path('order-history/', OrderHistoryView.as_view(), name='order-history'),
 ])
