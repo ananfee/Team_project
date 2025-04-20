@@ -1,0 +1,57 @@
+.overlay {
+   position: fixed;
+   left: 0;
+   top: 0;
+   width: 100vw;
+   height: 100vh;
+   background: rgba(0,0,0,0.4);
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   z-index: 1000;
+ }
+ 
+ .modal {
+   display: flex;
+   background: white;
+   border-radius: 32px;
+   width: 500px;
+   height: 700px;
+   position: relative;
+   justify-content: center;
+ }
+ 
+ .closeBtn {
+   position: absolute;
+   top: 30px;
+   right: 30px;
+   width: 60px;
+   height: 60px;
+   border: none;
+   cursor: pointer;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   background-color: white;
+   transform: rotate(45deg);
+ }
+
+ .closeBtn::before {
+   content: '';
+   background-image: url('close.svg');
+   background-size: contain; 
+   background-repeat: no-repeat;
+   background-position: center;
+   transform: rotate(45deg);
+   width: 70px; 
+   height: 70px;
+   position: absolute;
+ }
+
+.pEntrance{
+   margin-top: 95px;
+   font-size: 32px;
+   font-family: "Inter", sans-serif;
+   font-weight: 500;
+}
+ 
