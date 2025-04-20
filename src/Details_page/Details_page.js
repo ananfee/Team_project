@@ -176,8 +176,10 @@ function Details_page()
    const [book, setBook] = useState(null);
    const [relatedBooks, setRelatedBooks] = useState([]);
    const [error, setError] = useState(null);
+   const [loading, setLoading] = useState(true);
 
    async function loadData() {
+      setLoading(true);
       try {
         let url = `http://127.0.0.1:8000/catalog/books/${id}/`;
         const response = await fetch(url);
@@ -188,11 +190,20 @@ function Details_page()
       catch (err) {
         setError("Ошибка загрузки данных");
       }
+      finally
+      {
+      setLoading(false);
+      }
     }
 
    useEffect (() => {
       loadData();
     }, []);
+
+   if (loading)
+   {
+      return <p style={{fontSize: 30, color: 'gray'}}>"Загрузка ..."</p>
+   }
 
    const openModal = () => {
       setIsModalOpen(true);
