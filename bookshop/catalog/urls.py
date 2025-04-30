@@ -4,6 +4,8 @@ from .handlers.catalog_page import *
 from .handlers.authorization import *
 from .handlers.book_detail import *
 from .handlers.notifications import *
+from .handlers.order_history import *
+from .handlers.catalog_management import *
 
 urlpatterns = ([
     path('categories/', CategoryListView.as_view(), name='category-list'),
@@ -19,4 +21,9 @@ urlpatterns = ([
     path('logout/', LogoutView.as_view(), name='logout'),
     path('notifications/', NotificationsView.as_view(), name='notifications'),
     path('order-history/', OrderHistoryView.as_view(), name='order-history'),
+    path('books/create/', BooksView.as_view(), name='book-create'),
+    path('books/update/<int:book_id>/', BooksView.as_view(), name='book-update'),
+    path('books/delete/<int:book_id>/', BooksView.as_view(), name='book-delete'),
+    path('discounts/', DiscountListView.as_view(), name='discount-list'),
+    path('authors/', AuthorListView.as_view(), name='author-list'),
 ])

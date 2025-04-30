@@ -132,3 +132,31 @@ class OrderHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderHistory
         fields = ['id', 'sale_date', 'sale_price', 'status_name', 'books']
+
+class BookCreateUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Book
+        fields = '__all__'
+
+    def create(self, validated_data):
+        author_ids = self.initial_data.get('author', '').split(';') # получаем id авторов из validated_data
+        authors = Author.objects.filter(pk__in=[int(id) for id in author_ids if id.isdigit()])
+        book = super().create(validated_data)
+        book.authors.set(authors)
+        return book
+    def update(self, instance, validated_data):
+        author_ids = self.initial_data.get('author', '').split(';') # получаем id авторов из validated_data
+        authors = Author.objects.filter(pk__in=[int(id) for id in author_ids if id.isdigit()])
+        book = super().update(instance, validated_data)
+        book.authors.set(authors)
+        return book
+
+class DiscountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Discount
+        fields = ['id', 'discount_name', 'discount_percentage']
+
+class AuthorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Author
+        fields = ['id', 'author_last_name', 'author_first_name', 'author_patronymic']
