@@ -114,8 +114,8 @@ const ListNotification = () => {
                 const processedNotifications = data.map(notification => {
                     const dateNote = new Date(notification.date_note);
                     const date = dateNote.toLocaleDateString(); // Получаем дату в локальном формате
-                    const time = dateNote.toLocaleTimeString(); // Получаем время в локальном формате
-
+                    const time = dateNote.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    
                     return {
                         ...notification, // Копируем остальные свойства
                         date,       // Добавляем новое свойство date

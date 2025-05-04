@@ -20,11 +20,6 @@ const Order = ({ orderNumber, date, time, description }) => {
             <p>Оформлен</p>
           </div>
         </div>
-        <div className='payAdress'>
-            <p>Оплата при получении · Самовывоз</p>
-            <p>Вершинина, 46, - 3 этаж, офис 304</p>
-        </div>
-        
         <div className='product'>
             <p>Товары</p>
             <div className='listProducts'>

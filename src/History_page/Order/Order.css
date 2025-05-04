@@ -1,12 +1,13 @@
 .order {
     background-color: #F7F7F7;
     width: 960px;
-    height: 361px; /* Фиксированная высота */
+    height: 361px;
     display: flex;
     flex-direction: column;
     border-radius: 24px;
     align-items: center;
-    flex-shrink: 0; /* Предотвращает сжатие */
+    flex-shrink: 0;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 .frameOrders{
@@ -19,15 +20,19 @@
 
 .OrderText{
     display: flex;
+    gap: 16px;
+    align-items: center;
+    justify-content: center;
 }
 
 .OrderText p{
     color: #5D3C64;
     font-family: "Inter", sans-serif;
     font-size: 24px;
+    font-weight: 500;
 }
 
-.imageBox img{
+.imageBox {
     width: 24px;
     height: 24px;
 }
@@ -55,22 +60,17 @@
     gap: 7px;
 }
 
-.payAdress p{
-    color: #000;
-    font-family: "Inter", sans-serif;
-    font-size: 14px;
-}
-
 .product{
     height: 130px;
     width: 796px;
-    margin-top: 33px;
+    margin-top: 91px;
 }
 
 .product p{
     color: #000;
     font-family: "Inter", sans-serif;
     font-size: 16px;
+    font-weight: 500;
 }
 
 .listProducts{
@@ -88,6 +88,7 @@
     font-family: "Inter", sans-serif;
     font-size: 24px;
     margin-bottom: 0px;
+    font-weight: 500;
 }
 
 .imageBooks{
