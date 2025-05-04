@@ -78,10 +78,18 @@
    height: 35px;
    border-radius: 8px;
    border: none;
-   border-radius: 22px;
    background-color: rgb(93, 60, 100);
    color: white;
    font-family: "Inter", sans-serif;
    font-size: 16px;
    cursor: pointer;
+}
+
+.Role{
+   height: 35px;
+   border-radius: 8px;
+   border: 2px solid #5D3C64; 
+   background-color: white;
+   font-family: "Inter", sans-serif;
+   font-size: 16px;
 }
