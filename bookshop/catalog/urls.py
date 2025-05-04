@@ -5,6 +5,9 @@ from .handlers.authorization import *
 from .handlers.book_detail import *
 from .handlers.notifications import *
 from .handlers.cart import *
+from .handlers.order_history import *
+from .handlers.сatalog_management import *
+
 
 urlpatterns = ([
     path('categories/', CategoryListView.as_view(), name='category-list'),
@@ -24,4 +27,10 @@ urlpatterns = ([
     path('cart/remove/', RemoveCartItemView.as_view(), name='remove-cart-item'),
     path('cart/clear/', ClearCartView.as_view(), name='clear-cart'),
     path('cart/checkout/', CheckoutView.as_view(), name='checkout'),
+    path('order-history/', OrderHistoryView.as_view(), name='order-history'),
+    path('books/create/', BooksView.as_view(), name='book-create'),
+    path('books/update/<int:book_id>/', BooksView.as_view(), name='book-update'),
+    path('books/delete/<int:book_id>/', BooksView.as_view(), name='book-delete'),
+    path('discounts/', DiscountListView.as_view(), name='discount-list'),
+    path('authors/', AuthorListView.as_view(), name='author-list'),
 ])

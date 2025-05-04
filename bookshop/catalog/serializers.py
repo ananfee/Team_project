@@ -23,6 +23,7 @@ class AuthorSerializer(serializers.ModelSerializer):
 class BookSerializer(serializers.ModelSerializer):
     authors = AuthorSerializer(many=True, read_only=True)
     cover_image = serializers.SerializerMethodField()
+
     class Meta:
         model = Book
         fields = ['id', 'title', 'price', 'discounted_price', 'authors', 'cover_image']
@@ -148,3 +149,47 @@ class UpdateCartItemSerializer(serializers.Serializer):
 
 class RemoveCartItemSerializer(serializers.Serializer):
     book_id = serializers.IntegerField()
+
+class BookInOrderSerializer(serializers.ModelSerializer):
+    book_id = serializers.IntegerField(source='book.id', read_only=True)
+    cover_image = serializers.SerializerMethodField()
+    title = serializers.CharField(source='book.title', read_only=True)
+    class Meta:
+        model = BookInOrder
+        fields = ['book_id', 'title', 'count_of_book', 'cover_image']
+
+class OrderHistorySerializer(serializers.ModelSerializer):
+    books = BookInOrderSerializer(many=True, read_only=True, source='bookinorder_set', context={'request': None})
+    status_name = serializers.CharField(source='status.status_name', read_only=True)
+    class Meta:
+        model = OrderHistory
+        fields = ['id', 'sale_date', 'sale_price', 'status_name', 'books']
+
+class BookCreateUpdateSerializer(serializers.ModelSerializer):
+    authors = serializers.PrimaryKeyRelatedField(many=True, queryset=Author.objects.all(), required=False)
+    class Meta:
+        model = Book
+        fields = '__all__'
+
+    def create(self, validated_data):
+        author_ids = self.initial_data.get('author', [])
+        authors = Author.objects.filter(pk__in=author_ids)
+        book = super().create(validated_data)
+        book.authors.set(authors)
+        return book
+    def update(self, instance, validated_data):
+        author_ids = self.initial_data.get('author', [])
+        authors = Author.objects.filter(pk__in=author_ids)
+        book = super().update(instance, validated_data)
+        book.authors.set(authors)
+        return book
+
+class DiscountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Discount
+        fields = ['id', 'discount_name', 'discount_percentage']
+
+class AuthorSerializerForList(serializers.ModelSerializer):
+    class Meta:
+        model = Author
+        fields = ['id', 'author_last_name', 'author_first_name', 'author_patronymic']

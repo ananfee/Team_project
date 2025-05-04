@@ -36,6 +36,13 @@ class Author(models.Model):
     author_first_name = models.CharField(max_length=25)
     author_patronymic = models.CharField(max_length=25, blank=True, null=True)
 
+class AuthorsOfBook(models.Model):
+    book = models.ForeignKey('Book', on_delete=models.CASCADE)
+    author = models.ForeignKey('Author', on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('book', 'author')
+
 class Book(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     title = models.CharField(max_length=40)
@@ -48,16 +55,7 @@ class Book(models.Model):
     description = models.CharField(max_length=800, blank=True, null=True)
     ISBN = models.CharField(max_length=17, unique=True)
     cover_image = models.ImageField(upload_to='book_covers/', blank=True, null=True)
-    authors = models.ManyToManyField(Author, related_name='books')
-
-
-
-class AuthorsOfBook(models.Model):
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)
-
-    class Meta:
-        unique_together = ('book', 'author')
+    authors = models.ManyToManyField(Author, through=AuthorsOfBook, related_name='books')
 
 class OrderStatus(models.Model):
     name_status = models.CharField(max_length=30, unique=True)
