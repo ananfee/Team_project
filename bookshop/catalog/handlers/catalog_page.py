@@ -102,5 +102,5 @@ class BookSearchView(APIView):
             Q(category__category_name__icontains=query)
         ).distinct()
 
-        serializer = BookSerializer(books, many=True)
+        serializer = BookSerializer(books, many=True, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)

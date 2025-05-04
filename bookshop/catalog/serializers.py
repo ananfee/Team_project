@@ -23,7 +23,6 @@ class AuthorSerializer(serializers.ModelSerializer):
 class BookSerializer(serializers.ModelSerializer):
     authors = AuthorSerializer(many=True, read_only=True)
     cover_image = serializers.SerializerMethodField()
-
     class Meta:
         model = Book
         fields = ['id', 'title', 'price', 'discounted_price', 'authors', 'cover_image']
@@ -38,10 +37,18 @@ class BookSerializer(serializers.ModelSerializer):
 
 class DetailBookSerializer(serializers.ModelSerializer):
     authors = AuthorSerializer(many=True, read_only=True)
-
+    cover_image = serializers.SerializerMethodField()
     class Meta:
         model = Book
         fields = ['id', 'title', 'price', 'discounted_price', 'authors', 'cover_image', 'ISBN', 'description', 'publishing', 'publishing_year', 'number_of_copies']
+
+    def get_cover_image(self, obj):
+        request = self.context.get('request')
+        if obj.cover_image:
+            return request.build_absolute_uri(obj.cover_image.url)
+        elif obj.cover_image:
+            return obj.cover_image.url
+        return None
 
 class ShortBookSerializer(serializers.ModelSerializer):
     authors = AuthorSerializer(many=True, read_only=True)
@@ -59,7 +66,11 @@ class CartSerializer(serializers.ModelSerializer):
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=True)
-    role = serializers.PrimaryKeyRelatedField(queryset=Role.objects.all(), required=False)
+    role = serializers.SlugRelatedField(
+        queryset=Role.objects.all(),
+        slug_field='role_name',
+        required=False
+    )
 
     class Meta:
         model = User
@@ -106,7 +117,8 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
             data = {
                 'refresh': str(refresh),
                 'access': str(access),
-                'email': user.email
+                'email': user.email,
+                'role' : user.role.role_name
             }
             return data
         else:
@@ -117,3 +129,22 @@ class HistoryOfNotesSerializer(serializers.ModelSerializer):
     class Meta:
         model = HistoryOfNotes
         fields = ['id', 'text_note', 'date_note', 'order_id']
+
+class CartBookSerializer(serializers.ModelSerializer):
+    book = BookSerializer(read_only=True)
+    total_price = serializers.SerializerMethodField()
+
+    class Meta:
+        model = BookInCart
+        fields = ['book', 'count_of_book', 'total_price']
+
+    def get_total_price(self, obj):
+        price = obj.book.discounted_price or obj.book.price
+        return round(obj.count_of_book * price, 2)
+
+class UpdateCartItemSerializer(serializers.Serializer):
+    book_id = serializers.IntegerField()
+    count_of_book = serializers.IntegerField(min_value=1)
+
+class RemoveCartItemSerializer(serializers.Serializer):
+    book_id = serializers.IntegerField()
