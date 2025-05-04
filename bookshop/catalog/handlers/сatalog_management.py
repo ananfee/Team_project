@@ -22,7 +22,7 @@ class DiscountListView(ListAPIView):
 
 class AuthorListView(ListAPIView):
     queryset = Author.objects.all()
-    serializer_class = AuthorSerializer
+    serializer_class = AuthorSerializerForList
 
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
