@@ -258,4 +258,15 @@
   background-color: #9F76A7;
 }
 
+.Error{
+
+  color: #e13939;
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.Error:last-child{
+  margin-bottom: 0;
+}
  
