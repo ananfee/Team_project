@@ -13,7 +13,7 @@ function App(){
     <Router>
       <Routes>
         <Route path="/" element={<Main_page />} />
-        <Route path="/new" element={<Details_page />} />
+        <Route path="/new/:id" element={<Details_page />} />
         <Route path="/cp" element={<Catalog_page />} />
         <Route path="/history" element={<HistoryPage />} />
         <Route path="/basket" element={<BasketPage />} />

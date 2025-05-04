@@ -96,6 +96,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './ListNotification.css';
 import Notific from '../Notific/Notific';
+import FetchWithAuth from '../../../layout/LoginWindow/FetchWithAuth';
 
 const ListNotification = () => {
   const [notifications, setNotifications] = useState([]);
@@ -104,7 +105,7 @@ const ListNotification = () => {
     useEffect(() => {
         const fetchNotifications = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:8000/catalog/notifications/');
+                const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/notifications/');
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }

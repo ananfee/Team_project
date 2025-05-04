@@ -5,7 +5,7 @@ function BookInfo({Book})
 {
    return(
       <div className={styles.InfoContainer}>
-         <img style={{width: 360, height: 566}} src={Book.cover_image}/>
+         <img style={{width: 360, height: 564, display: 'block'}} src={Book.cover_image}/>
          <div className={styles.BookInfo}>
                <div className={styles.descriptionConteiner}>
                   <p className={styles.descriptionName}>Описание</p>
@@ -13,20 +13,22 @@ function BookInfo({Book})
                </div>
                <div className={styles.mainInfo}>
                   <div className={styles.attributeName}>
-                     <p>Авторы</p>
                      <p>Название книги</p>
                      <p>ISBN</p>
                      <p>Год издания</p>
+                     <p>Издательство</p>
+                     <p>Авторы</p>
                   </div>
                   <div className={styles.attributeValue}>
+                     <p>{Book.title}</p>
+                     <p>{Book.ISBN}</p>
+                     <p>{Book.publishing}</p>
+                     <p>{Book.publishing_year}</p>
                      {Book.authors.map((author, index) => (
                         <p key={index}>
                            {author.author_last_name} {author.author_first_name} {author.author_patronymic}
                         </p>
                      ))}
-                     <p>{Book.title}</p>
-                     <p>{Book.ISBN}</p>
-                     <p>{Book.year}</p>
                   </div>
                </div>
          </div>
@@ -44,11 +46,11 @@ function BookInfo({Book})
                      (<p style={{fontWeight: 500}}>{Book.price} ₽</p>)
                   }
                </div>
-               <button className={Book.copies === "0" ? styles.basketButtonDisabled : styles.basketButton} 
-                  disabled={Book.copies === "0" ? true : false}>В корзину</button>
+               <button className={Book.number_of_copies === "0" ? styles.basketButtonDisabled : styles.basketButton} 
+                  disabled={Book.number_of_copies === "0" ? true : false}>В корзину</button>
             </div>
-            <p className={styles.Stock} style={{ color: Book.copies === "0" ? 'red' : '#0F870A' }}>
-               {Book.copies === "0" ? 'Нет в наличии' : 'В наличии'}
+            <p className={styles.Stock} style={{ color: Book.number_of_copies === "0" ? 'red' : '#0F870A' }}>
+               {Book.number_of_copies === "0" ? 'Нет в наличии' : 'В наличии'}
             </p>
          </div>
       </div>

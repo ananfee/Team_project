@@ -5,13 +5,11 @@ import DropDownSort from './components/DropDownSort/DropDownSort.js';
 import DropDownCategories from './components/DropDownCategories/DropDownCategories.js';
 import Catalog from './components/Catalog/Catalog.js';
 import Footer from "../components/footer/footer";
-import { useNavigate } from 'react-router-dom';
 import NotificationModal from '../NotificationModal/NotificationModal'; 
 
 
 function Catalog_page()
 {
-  const navigate = useNavigate();
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -30,17 +28,13 @@ function Catalog_page()
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedOrdering, setselectedOrdering] = useState(null);
 
-  const goToNewPage = () => {
-   navigate('/new');
- };
-
   async function loadData()
   {
     setLoading(true);
     try {
       const [response1, response2] = await Promise.all([
-        fetch("http://127.0.0.1:8000/catalog/books/"), //дописать!! (все книги)
-        fetch("http://127.0.0.1:8000/catalog/categories/") // дописать !! (список категорий)
+        fetch("http://127.0.0.1:8000/catalog/books/"), 
+        fetch("http://127.0.0.1:8000/catalog/categories/") 
       ]);
 
       const [data1, data2] = await Promise.all([
@@ -152,7 +146,6 @@ function Catalog_page()
                     (<Catalog data={books} />) : 
                     (<p style={{ fontSize: 20, color: 'lightgray' }}>Похоже, у нас такого нет</p>)
             )}
-            <button onClick={goToNewPage}>Перейти на новую страницу</button>
         </div>
         <Footer />
     </div>
