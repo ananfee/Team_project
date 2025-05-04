@@ -5,7 +5,8 @@ from .handlers.authorization import *
 from .handlers.book_detail import *
 from .handlers.notifications import *
 from .handlers.order_history import *
-from .handlers.catalog_management import *
+from .handlers.сatalog_management import *
+
 
 urlpatterns = ([
     path('categories/', CategoryListView.as_view(), name='category-list'),

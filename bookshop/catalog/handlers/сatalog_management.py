@@ -1,10 +1,10 @@
 from rest_framework.views import APIView
+from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.db import transaction
 from catalog.models import *
 from catalog.serializers import *
-
 
 class DiscountListView(ListAPIView):
     queryset = Discount.objects.all()
@@ -40,7 +40,7 @@ class BooksView(APIView):
         try:
             serializer = BookCreateUpdateSerializer(data=request.data)
             if serializer.is_valid():
-                discount_id = request.data.get('discount_id')
+                discount_id = request.data.get('discount')
                 if discount_id:
                     try:
                         discount = Discount.objects.get(pk=discount_id)
@@ -51,7 +51,7 @@ class BooksView(APIView):
                         return Response({"error": "Цена не указана"}, status=status.HTTP_400_BAD_REQUEST)
 
                 book = serializer.save()
-                return Response({"book_id": book.id}, status=status.HTTP_201_CREATED)
+                return Response("Книга успешно добавлена", status=status.HTTP_201_CREATED)
 
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -65,7 +65,7 @@ class BooksView(APIView):
             serializer = BookCreateUpdateSerializer(book, data=request.data, partial=True)
 
             if serializer.is_valid():
-                discount_id = request.data.get('discount_id')
+                discount_id = request.data.get('discount')
                 if discount_id:
                     try:
                         discount = Discount.objects.get(pk=discount_id)
@@ -77,7 +77,7 @@ class BooksView(APIView):
                     serializer.validated_data['discounted_price'] = None
 
                 book = serializer.save()
-                return Response(serializer.data)
+                return Response("Изменения сохранены")
 
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -92,7 +92,7 @@ class BooksView(APIView):
             if book.number_of_copies > 0:
                  return Response({"error": "Нельзя удалить книгу, так как у нее есть экземпляры в наличии"}, status=status.HTTP_400_BAD_REQUEST)
             book.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response("Книга успешно удалена", status=status.HTTP_204_NO_CONTENT)
         except Book.DoesNotExist:
             return Response({"error": "Книга не найдена"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:

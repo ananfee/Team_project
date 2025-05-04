@@ -134,19 +134,20 @@ class OrderHistorySerializer(serializers.ModelSerializer):
         fields = ['id', 'sale_date', 'sale_price', 'status_name', 'books']
 
 class BookCreateUpdateSerializer(serializers.ModelSerializer):
+    authors = serializers.PrimaryKeyRelatedField(many=True, queryset=Author.objects.all(), required=False)
     class Meta:
         model = Book
         fields = '__all__'
 
     def create(self, validated_data):
-        author_ids = self.initial_data.get('author', '').split(';') # получаем id авторов из validated_data
-        authors = Author.objects.filter(pk__in=[int(id) for id in author_ids if id.isdigit()])
+        author_ids = self.initial_data.get('author', [])
+        authors = Author.objects.filter(pk__in=author_ids)
         book = super().create(validated_data)
         book.authors.set(authors)
         return book
     def update(self, instance, validated_data):
-        author_ids = self.initial_data.get('author', '').split(';') # получаем id авторов из validated_data
-        authors = Author.objects.filter(pk__in=[int(id) for id in author_ids if id.isdigit()])
+        author_ids = self.initial_data.get('author', [])
+        authors = Author.objects.filter(pk__in=author_ids)
         book = super().update(instance, validated_data)
         book.authors.set(authors)
         return book
