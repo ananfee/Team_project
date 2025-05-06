@@ -172,7 +172,7 @@ class BookInOrderSerializer(serializers.ModelSerializer):
 
 class OrderHistorySerializer(serializers.ModelSerializer):
     books = BookInOrderSerializer(many=True, read_only=True, source='bookinorder_set', context={'request': None})
-    status_name = serializers.CharField(source='status.status_name', read_only=True)
+    status_name = serializers.CharField(source='status.name_status', read_only=True)
     class Meta:
         model = OrderHistory
         fields = ['id', 'sale_date', 'sale_price', 'status_name', 'books']
