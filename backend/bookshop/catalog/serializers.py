@@ -165,6 +165,10 @@ class BookInOrderSerializer(serializers.ModelSerializer):
         model = BookInOrder
         fields = ['book_id', 'title', 'count_of_book', 'cover_image']
 
+    def get_cover_image(self, obj):
+        if obj.book.cover_image:
+            return obj.book.cover_image.url
+        return None
 
 class OrderHistorySerializer(serializers.ModelSerializer):
     books = BookInOrderSerializer(many=True, read_only=True, source='bookinorder_set', context={'request': None})
@@ -192,11 +196,6 @@ class BookCreateUpdateSerializer(serializers.ModelSerializer):
         book = super().update(instance, validated_data)
         book.authors.set(authors)
         return book
-
-class DiscountSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Discount
-        fields = ['id', 'discount_name', 'discount_percentage']
 
 class AuthorSerializerForList(serializers.ModelSerializer):
     class Meta:
