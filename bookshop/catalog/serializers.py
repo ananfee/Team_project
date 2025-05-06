@@ -36,12 +36,19 @@ class BookSerializer(serializers.ModelSerializer):
             return obj.cover_image.url
         return None
 
+class DiscountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Discount
+        fields = ['id', 'discount_name', 'discount_percentage']
+
 class DetailBookSerializer(serializers.ModelSerializer):
     authors = AuthorSerializer(many=True, read_only=True)
     cover_image = serializers.SerializerMethodField()
+    category_name = serializers.CharField(source='category.category_name', read_only=True)
+    discount = DiscountSerializer(read_only=True)
     class Meta:
         model = Book
-        fields = ['id', 'title', 'price', 'discounted_price', 'authors', 'cover_image', 'ISBN', 'description', 'publishing', 'publishing_year', 'number_of_copies']
+        fields = ['id', 'title', 'category_name', 'price', 'discount', 'discounted_price', 'authors', 'cover_image', 'ISBN', 'description', 'publishing', 'publishing_year', 'number_of_copies']
 
     def get_cover_image(self, obj):
         request = self.context.get('request')
@@ -158,6 +165,11 @@ class BookInOrderSerializer(serializers.ModelSerializer):
         model = BookInOrder
         fields = ['book_id', 'title', 'count_of_book', 'cover_image']
 
+    def get_cover_image(self, obj):
+        if obj.book.cover_image:
+            return obj.book.cover_image.url
+        return None
+
 class OrderHistorySerializer(serializers.ModelSerializer):
     books = BookInOrderSerializer(many=True, read_only=True, source='bookinorder_set', context={'request': None})
     status_name = serializers.CharField(source='status.status_name', read_only=True)
@@ -183,11 +195,6 @@ class BookCreateUpdateSerializer(serializers.ModelSerializer):
         book = super().update(instance, validated_data)
         book.authors.set(authors)
         return book
-
-class DiscountSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Discount
-        fields = ['id', 'discount_name', 'discount_percentage']
 
 class AuthorSerializerForList(serializers.ModelSerializer):
     class Meta:
