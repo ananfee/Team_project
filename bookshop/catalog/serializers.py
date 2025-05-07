@@ -41,6 +41,11 @@ class DiscountSerializer(serializers.ModelSerializer):
         model = Discount
         fields = ['id', 'discount_name', 'discount_percentage']
 
+class OrderStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderStatus
+        fields = ['id', 'name_status']
+
 class DetailBookSerializer(serializers.ModelSerializer):
     authors = AuthorSerializer(many=True, read_only=True)
     cover_image = serializers.SerializerMethodField()
@@ -200,3 +205,14 @@ class AuthorSerializerForList(serializers.ModelSerializer):
     class Meta:
         model = Author
         fields = ['id', 'author_last_name', 'author_first_name', 'author_patronymic']
+
+class OrderHistoryAdminSerializer(serializers.ModelSerializer):
+    books = BookInOrderSerializer(many=True, read_only=True, source='bookinorder_set')
+    status = serializers.PrimaryKeyRelatedField(queryset=OrderStatus.objects.all())
+    client_name = serializers.CharField(source='client.user.username', read_only=True)
+    client_phone = serializers.CharField(source='client.user.phone_number', read_only=True)
+
+    class Meta:
+        model = OrderHistory
+        fields = ['id', 'client_name', 'client_phone', 'sale_date', 'sale_price', 'status', 'books']
+
