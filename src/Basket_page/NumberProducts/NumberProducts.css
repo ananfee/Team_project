@@ -4,10 +4,9 @@
     display: flex;
     flex-direction: row;
     border: 1px solid #777777;
-    background-color: white;
+    background-color:#FFFFFF;
     border-radius: 8px;
     justify-content: space-between;
-
 }
 
 .rectangleAdd{
@@ -36,15 +35,14 @@
     font-size: 14px;
 }
 
-.rectangleMinus{
+.rectangleMinuss{
     width: 23.5px;
-    /* border-left: 1px solid #777777; */
     border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    background-color: #FFFFFF;
+    background-color:#FFFFFF;
     border: none;
     outline: none;
 }

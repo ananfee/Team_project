@@ -17,6 +17,8 @@ const BasketPage = () => {
     const closeModal = () => {
         setIsModalOpen(false);
     };
+    // const [products, setProducts] = useState([]); // Состояние для продуктов
+    // const totalItems = products.length;
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', alignItems: 'center' }}>
@@ -25,11 +27,13 @@ const BasketPage = () => {
             <div className='basket_container'>
                 <div className='basket_header'>
                     <div className='name_numberOfProducts'>
-                        <p style={{fontSize: 24, color: "#5D3C64"}}>КОРЗИНА</p>
-                        <p style={{fontSize: 14, color: "#777777"}}>2 ТОВАРА</p>
+                        <p style={{ fontSize: 24, color: "#5D3C64" }}>КОРЗИНА</p>
+                        <p style={{ fontSize: 14, color: "#777777" }}>4     товара
+                            {/* {totalItems} {totalItems === 1 ? 'товар' : totalItems >= 2 && totalItems <= 4 ? 'товара' : 'товаров'} */}
+                        </p>
                     </div>
                     <DeleteAllBasketButton />
-                </div>
+                    </div>
                 <div className='all_products'>
                     <p>Все товары</p>
                 </div>

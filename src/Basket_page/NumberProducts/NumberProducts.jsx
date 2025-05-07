@@ -22,7 +22,7 @@ const NumberProducts = () => {
             <div className='NumberProducts'>
                 <p>{count}</p>
             </div>
-            <button className='rectangleMinus' onClick={handleDecrement}>
+            <button className='rectangleMinuss' onClick={handleDecrement}>
                 <img src={mc} alt="Уменьшить" />
             </button>
         </div>

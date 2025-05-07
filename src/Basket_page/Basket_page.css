@@ -41,7 +41,7 @@
 }
 
 .ListProductsInBasketConteiner{
-    height: 700px;
+    height: 800px;
     overflow-y: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
