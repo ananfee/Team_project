@@ -134,7 +134,7 @@ function Catalog_page()
         <NotificationModal onClose={closeModal} />
          )}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1 }}>
-            <div style={{ display: 'flex', alignItems: 'center', marginBottom: 42 }}>
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: 42 ,marginTop: 42}}>
                 <Search onSearchChange={handleSearchChange} />
                 <DropDownSort onSortChange={handleSortChange} SelOr={selectedOrdering} />
                 <DropDownCategories allCategories={categories} onCategoriesChange={handleCategoryChange} SelCat={selectedCategory}/>

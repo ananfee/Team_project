@@ -4,6 +4,7 @@
     height: 353px;    
     justify-content: space-between;
     display: flex;
+    margin-top: 64px;
 }
 
 .text {

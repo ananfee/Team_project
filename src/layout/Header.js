@@ -3,8 +3,8 @@ import { Link } from "react-router-dom"; // Импортируем Link
 import styles from "../layout/Header.module.css";
 import NotificationButton from "./NotificationButton/NotificationButton.js";
 import OrdersButton from "./OrdersButton/OrdersButton.jsx";
+import BasketButton from "./BasketButton/BasketButton.jsx";
 import LoginWindow from "./LoginWindow/LoginWindow.js";
-
 
 function Header({onOpenModal}) {
    const [loginModalOpen, setLoginModalOpen] = useState(false);
@@ -65,9 +65,7 @@ function Header({onOpenModal}) {
                      <>
                         <NotificationButton onClick={onOpenModal} />
                         <OrdersButton />
-                        <button className={styles.deliveryButton}>
-                        <img src="shopping-cart.svg" alt="корзина" />
-                        </button>
+                        <BasketButton />
                         <button className={styles.Role}>Покупатель</button>
                      </>
                   )
@@ -75,9 +73,7 @@ function Header({onOpenModal}) {
                      <>
                         <NotificationButton onClick={onOpenModal} />
                         <OrdersButton />
-                        <button className={styles.deliveryButton}>
-                        <img src="shopping-cart.svg" alt="корзина" />
-                        </button>
+                        <BasketButton />
                      </>
                   )
                }
