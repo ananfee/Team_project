@@ -1,0 +1,92 @@
+.deleteProductWindow-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  /* flex-direction: row; /* это значение по умолчанию, можно убрать */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  /* margin-top: 29px; и margin-bottom: 29px; здесь не нужны, так как overlay занимает весь экран и центрирует контент */
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.deleteProductWindow-content {
+  position: relative; /* <-- Добавлено: чтобы кнопка закрытия позиционировалась относительно этого блока */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 32px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  width: 520px;
+  height: 300px;
+  /* padding: 20px; Добавим внутренние отступы, чтобы контент не прилипал к краям, а кнопка закрытия не вылезала за них */
+  box-sizing: border-box; /* Чтобы padding не увеличивал общую ширину/высоту */
+}
+
+.NameDeleteProductWindow {
+  margin-top: 28px; /* Этот margin теперь будет внутри padding родителя
+  width: 100%; /* Чтобы текст заголовка мог центрироваться или занимать всю доступную ширину */
+  text-align: center; /* Если хотите заголовок по центру */
+  /* height: 29px; /* Высота будет определяться контентом, если нужно фиксировать, можно оставить */
+  /* display: flex; */ /* Уже не так критично, если только p внутри */
+  /* flex-direction: column; */
+}
+
+.NameDeleteProductWindow p {
+  color: #000;
+  font-family: "Inter", sans-serif;
+  font-size: 24px;
+  font-weight: 500; /* 'border' - некорректное значение для font-weight, используйте bold, 500, 600 и т.д. */
+  margin: 0; /* Убираем стандартные отступы параграфа, чтобы лучше контролировать положение */
+}
+
+.closeDeleteProductWindow {
+  position: absolute; /* <-- Изменено: позиционирование относительно .deleteProductWindow-content */
+  right: 10px;       /* Отступ справа от края .deleteProductWindow-content (с учетом padding) */
+  top: 10px;         /* Отступ сверху от края .deleteProductWindow-content (с учетом padding) */
+  background-color: transparent; /* Часто кнопки закрытия делают без фона */
+  border: none;
+  cursor: pointer;
+  width: 60px; /* Можно сделать поменьше, если 60px слишком много для внутреннего элемента */
+  height: 60px;
+  padding: 0; /* Убираем внутренние отступы кнопки, если они есть по умолчанию */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.closeDeleteProductWindow img { /* Если иконка внутри кнопки, можно ей задать размеры */
+  width: 100%;
+  height: 100%;
+}
+
+.DescriptionDeleteProductWindow {
+  /* margin-left: 40px; */ /* Эти margin теперь будут внутри padding родителя, можно уменьшить или убрать */
+  /* margin-right: 40px; */
+  text-align: center; /* Часто текст описания центрируют */
+  width: calc(100% - 40px); /* Если хотите оставить боковые отступы для текста внутри */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.DescriptionDeleteProductWindow p {
+  color: #000;
+  font-family: "Inter", sans-serif;
+  font-size: 18px; /* 20px может быть крупновато для описания, но это на ваш вкус */
+  font-weight: 400; /* '500px' - некорректное значение, используйте числовое значение или normal, bold */
+  line-height: 1.4; /* Для лучшей читаемости */
+}
+
+  .conteiner_buttons{
+    margin-left: 40px;
+    margin-right: 40px;
+    margin-bottom: 29px;
+    display: flex;
+    flex-direction: row;
+    gap: 21px;
+  }

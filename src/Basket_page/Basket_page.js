@@ -6,6 +6,7 @@ import ListProductsInBasket from './ListProductsInBasket/ListProductsInBasket.js
 import ResultConteiner from './ResultConteiner/ResultConteiner.jsx';
 import "./Basket_page.css";
 import DeleteAllBasketButton from './DeleteAllBasketButton/DeleteAllBasketButton.jsx';
+import DeleteProductWindow from './DeleteProductWindow/DeleteProductWindow.jsx';
 
 const BasketPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
