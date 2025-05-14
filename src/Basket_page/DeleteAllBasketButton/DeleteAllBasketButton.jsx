@@ -3,10 +3,10 @@ import "./DeleteAllBasketButton.css";
 import bag from '../../images/bag.png';
 
 
-const DeleteAllBasketButton = () => {
+const DeleteAllBasketButton = ({ onOpenDeleteWindow }) => {
 
     return (
-        <button className='buttonAllBasket'>
+        <button  onClick={onOpenDeleteWindow} className='buttonAllBasket'>
         <img src={bag} alt="" />
         <p>Очистить корзину</p>
         </button>
