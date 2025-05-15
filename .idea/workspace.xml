@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f2925715-e3c4-46be-ba56-f6ba77fa2aea" name="Changes" comment="fix dockerfiles - 2">
+    <list default="true" id="f2925715-e3c4-46be-ba56-f6ba77fa2aea" name="Changes" comment="fix dockerfiles - 3">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -76,7 +76,7 @@
       <updated>1747219184094</updated>
       <workItem from="1747219186520" duration="49000" />
       <workItem from="1747219315074" duration="19595000" />
-      <workItem from="1747329821970" duration="1692000" />
+      <workItem from="1747329821970" duration="3265000" />
     </task>
     <task id="LOCAL-00001" summary="change project structure">
       <option name="closed" value="true" />
@@ -166,7 +166,15 @@
       <option name="project" value="LOCAL" />
       <updated>1747325643097</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="fix dockerfiles - 3">
+      <option name="closed" value="true" />
+      <created>1747331821567</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1747331821567</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -206,6 +214,7 @@
     <MESSAGE value="try 4 - fix dockerfile front" />
     <MESSAGE value="fix dockerfiles" />
     <MESSAGE value="fix dockerfiles - 2" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix dockerfiles - 2" />
+    <MESSAGE value="fix dockerfiles - 3" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix dockerfiles - 3" />
   </component>
 </project>
