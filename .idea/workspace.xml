@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f2925715-e3c4-46be-ba56-f6ba77fa2aea" name="Changes" comment="preparation for deploy - 2" />
+    <list default="true" id="f2925715-e3c4-46be-ba56-f6ba77fa2aea" name="Changes" comment="preparation for deploy - 3">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/Dockerfile" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -71,7 +74,7 @@
       <option name="presentableId" value="Default" />
       <updated>1747219184094</updated>
       <workItem from="1747219186520" duration="49000" />
-      <workItem from="1747219315074" duration="8352000" />
+      <workItem from="1747219315074" duration="12122000" />
     </task>
     <task id="LOCAL-00001" summary="change project structure">
       <option name="closed" value="true" />
@@ -97,7 +100,15 @@
       <option name="project" value="LOCAL" />
       <updated>1747315423116</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="preparation for deploy - 3">
+      <option name="closed" value="true" />
+      <created>1747316151196</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1747316151196</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -130,6 +141,7 @@
     <MESSAGE value="change project structure" />
     <MESSAGE value="preparation for deploy" />
     <MESSAGE value="preparation for deploy - 2" />
-    <option name="LAST_COMMIT_MESSAGE" value="preparation for deploy - 2" />
+    <MESSAGE value="preparation for deploy - 3" />
+    <option name="LAST_COMMIT_MESSAGE" value="preparation for deploy - 3" />
   </component>
 </project>
