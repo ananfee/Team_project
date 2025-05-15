@@ -1,0 +1,36 @@
+.history{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 16px;
+}
+
+.historyHeader{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1160px;
+}
+
+.historyHeader p{
+    color: #5D3C64;
+    font-family: "Inter", sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.ListOrders {
+    margin-top: 38px;
+    width: 960px;
+    height: 859px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.ListOrders::-webkit-scrollbar {
+    display: none;
+}
