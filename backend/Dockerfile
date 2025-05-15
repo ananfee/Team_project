@@ -1,8 +1,13 @@
-FROM python:3.12-slim
+FROM python:3.10
 
-COPY requirements.txt requirements.txt
-RUN pip install -r requirements.txt
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --upgrade pip && pip install -r requirements.txt
 
 COPY . .
 
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "bookshop.wsgi"]
+CMD ["gunicorn", "bookshop.wsgi:application", "--bind", "0.0.0.0:8000"]
