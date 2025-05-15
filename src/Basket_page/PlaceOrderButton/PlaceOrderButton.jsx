@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import "./PlaceOrderButton.css";
 
-const PlaceOrderButton = () => {
+const PlaceOrderButton = ({ onOpenPlaceOrderWindow }) => {
 
     return (
-        <button  className="buttonPlaceOrder">
+        <button onClick={onOpenPlaceOrderWindow} className="buttonPlaceOrder">
         <p>Оформить заказ</p>
         </button>
     );
