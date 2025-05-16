@@ -9,23 +9,25 @@ services:
       - 8000
     depends_on:
       - db
+    command: >
+      sh -c "while ! nc -z db 5432; do sleep 1; done;
+             python manage.py migrate &&
+             gunicorn bookshop.wsgi:application --bind 0.0.0.0:8000"
 
   frontend:
     build:
       context: ./frontend
     container_name: frontend
-    volumes:
-      - ./frontend:/app
     depends_on:
       - backend
 
-  db:
+  localhost:
     image: postgres:14
     container_name: db
     environment:
-      POSTGRES_DB: mydb
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
+      POSTGRES_DB: bookshop
+      POSTGRES_USER: postgres_bookshop
+      POSTGRES_PASSWORD: postgres_bookshop
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:

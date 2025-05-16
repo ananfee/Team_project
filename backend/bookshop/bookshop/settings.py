@@ -131,8 +131,8 @@ DATABASES = {
         'NAME': 'bookshop',
         'USER': 'postgres_bookshop',
         'PASSWORD': 'postgres_bookshop',
-        'HOST': 'localhost',
-        'PORT': 5432,
+        'HOST': 'db',
+        'PORT': '5432',
     }
 }
 
