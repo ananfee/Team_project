@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f2925715-e3c4-46be-ba56-f6ba77fa2aea" name="Changes" comment="try to deploy back and db">
+    <list default="true" id="f2925715-e3c4-46be-ba56-f6ba77fa2aea" name="Changes" comment="edit docker-compose.yml">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/bookshop/bookshop/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/bookshop/bookshop/settings.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -135,7 +134,7 @@
       <workItem from="1747219315074" duration="19595000" />
       <workItem from="1747329821970" duration="5213000" />
       <workItem from="1747370946610" duration="5290000" />
-      <workItem from="1747383064092" duration="8848000" />
+      <workItem from="1747383064092" duration="10162000" />
     </task>
     <task id="LOCAL-00001" summary="change project structure">
       <option name="closed" value="true" />
@@ -273,7 +272,31 @@
       <option name="project" value="LOCAL" />
       <updated>1747499353760</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="fix error">
+      <option name="closed" value="true" />
+      <created>1747500513061</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1747500513061</updated>
+    </task>
+    <task id="LOCAL-00019" summary="fix error">
+      <option name="closed" value="true" />
+      <created>1747500647140</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1747500647140</updated>
+    </task>
+    <task id="LOCAL-00020" summary="edit docker-compose.yml">
+      <option name="closed" value="true" />
+      <created>1747501398745</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1747501398745</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -319,6 +342,8 @@
     <MESSAGE value="edit DB" />
     <MESSAGE value="edit DB - 2" />
     <MESSAGE value="try to deploy back and db" />
-    <option name="LAST_COMMIT_MESSAGE" value="try to deploy back and db" />
+    <MESSAGE value="fix error" />
+    <MESSAGE value="edit docker-compose.yml" />
+    <option name="LAST_COMMIT_MESSAGE" value="edit docker-compose.yml" />
   </component>
 </project>
