@@ -7,9 +7,18 @@ from .handlers.notifications import *
 from .handlers.cart import *
 from .handlers.order_history import *
 from .handlers.сatalog_management import *
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+@api_view(["GET"])
+def hello(request):
+
+    permission_classes = [permissions.AllowAny]
+    return Response({"Hello": "World"})
 
 
 urlpatterns = ([
+    path('hello/', hello),
     path('categories/', CategoryListView.as_view(), name='category-list'),
     path('books/sorted/', SortedBooksView.as_view(), name='sorted-books'),
     path('cart/', AddToCartView.as_view(), name='add-to-cart'),
