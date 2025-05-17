@@ -4,14 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f2925715-e3c4-46be-ba56-f6ba77fa2aea" name="Changes" comment="edit DB - 2">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+    <list default="true" id="f2925715-e3c4-46be-ba56-f6ba77fa2aea" name="Changes" comment="try to deploy back and db">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/bookshop/bookshop/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/bookshop/bookshop/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/bookshop/catalog/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/bookshop/catalog/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/backend/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -140,7 +135,7 @@
       <workItem from="1747219315074" duration="19595000" />
       <workItem from="1747329821970" duration="5213000" />
       <workItem from="1747370946610" duration="5290000" />
-      <workItem from="1747383064092" duration="7738000" />
+      <workItem from="1747383064092" duration="8848000" />
     </task>
     <task id="LOCAL-00001" summary="change project structure">
       <option name="closed" value="true" />
@@ -270,7 +265,15 @@
       <option name="project" value="LOCAL" />
       <updated>1747380458719</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="try to deploy back and db">
+      <option name="closed" value="true" />
+      <created>1747499353760</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1747499353760</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -315,6 +318,7 @@
     <MESSAGE value="add nginx directory" />
     <MESSAGE value="edit DB" />
     <MESSAGE value="edit DB - 2" />
-    <option name="LAST_COMMIT_MESSAGE" value="edit DB - 2" />
+    <MESSAGE value="try to deploy back and db" />
+    <option name="LAST_COMMIT_MESSAGE" value="try to deploy back and db" />
   </component>
 </project>
