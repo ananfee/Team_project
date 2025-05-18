@@ -4,39 +4,8 @@ import image1 from '../../images/image 1.png';
 import NumberProducts from '../NumberProducts/NumberProducts.jsx';
 import DeleteButton from '../DeleteButton/DeleteButton.jsx';
 import DeleteProductWindow from '../DeleteProductWindow/DeleteProductWindow.jsx';
-
-// const ProductInBasket = () => {
-//     return (
-//         <div className='product_container'>
-//             <div className='conteinerImgInfo'>
-//                 <div className='imgProduct'>
-//                     <img src={image1} alt="" />
-//                 </div>
-//                 <div className='conteiner0'>
-//                     <div className='infoBook'>
-//                         <p style={{fontSize: 16, color: "#000000"}}>Если все кошки в мире исчезнут</p>
-//                         <p style={{fontSize: 14, color: "#777777"}}>Гэнки Кавамура</p>
-//                     </div>
-//                     <NumberProducts />
-//                 </div>
-//             </div>
-//             <div className='conteiner00'>
-//                 <div className='priceProduct'>
-//                     <p style={{color: "#777777", textDecoration: 'line-through', 
-//                     textDecorationColor: 'red',}}>339 ₽</p>
-//                     <p style={{fontWeight: 500}}>300 ₽</p>
-//                 </div>
-//                 <DeleteButton />
-//             </div>
-//         </div>
-
-//     );
-//   };
-
-//   export default ProductInBasket;
-
   
-const ProductInBasket = ({ title, author, price, discounted_price, cover_image, total_price }) => { 
+const ProductInBasket = ({ book, count_of_book, total_price }) => { 
     const [isDeleteWindowOpen, setIsDeleteWindowOpen] = useState(false);
 
     const handleOpenDeleteWindow = () => {
@@ -46,25 +15,41 @@ const ProductInBasket = ({ title, author, price, discounted_price, cover_image, 
     const handleCloseDeleteWindow = () => {
         setIsDeleteWindowOpen(false);
     };
+        // Вспомогательная функция для форматирования полного имени автора из объекта { author_last_name, author_first_name, author_patronymic }
+    const formatAuthorName = (author) => {
+        if (!author) return '';
+        // Собираем части имени, отфильтровывая пустые или null значения
+        const parts = [author.author_last_name, author.author_first_name, author.author_patronymic].filter(Boolean);
+        // Объединяем части имени пробелами
+        return parts.join(' ');
+    };
+        // Форматируем список авторов
+    let authorsString = 'Автор неизвестен'; // Текст по умолчанию
+    if (book && Array.isArray(book.authors) && book.authors.length > 0) {
+        // Если массив авторов существует и не пустой, проходим по нему
+        authorsString = book.authors.map(author => formatAuthorName(author)).join(', '); // Объединяем имена авторов через запятую с пробелом
+    }
     
     return (
         <div className='product_container'>
             <div className='conteinerImgInfo'>
                 <div className='imgProduct'>
-                    <img src={cover_image} alt={title} /> {/* Используем пропс image */}
+                    <img src={book.cover_image} alt={book.title} /> {/* Используем пропс image */}
                 </div>
                 <div className='conteiner0'>
                     <div className='infoBook'>
-                        <p style={{fontSize: 16, color: "#000000"}}>{title}</p> {/* Используем пропс name */}
-                        <p style={{fontSize: 14, color: "#777777"}}>{author}</p> {/* Используем пропс author */}
-                    </div>
-                    <NumberProducts />
+                        {/* Используем пропс title из book. Добавляем проверку на существование book и title */}
+                        <p style={{fontSize: 16, color: "#000000"}}>{book?.title || 'Название неизвестно'}</p>
+                        {/* Отображаем отформатированную строку с авторами */}
+                        <p style={{fontSize: 14, color: "#777777"}}>{authorsString}</p>
+                </div>
+                    <NumberProducts initialCount={count_of_book} />
                 </div>
             </div>
             <div className='conteiner00'>
                 <div className='priceProduct'>
-                    <p style={{color: "#777777", textDecoration: 'line-through', textDecorationColor: 'red'}}>{price} ₽</p> {/* Используем пропс oldPrice */}
-                    <p style={{fontWeight: 500}}>{discounted_price} ₽</p> {/* Используем пропс newPrice */}
+                    <p style={{color: "#777777", textDecoration: 'line-through', textDecorationColor: 'red'}}>{book.price*count_of_book} ₽</p> {/* Используем пропс oldPrice */}
+                    <p style={{fontWeight: 500}}>{book.discounted_price*count_of_book} ₽</p> {/* Используем пропс newPrice */}
                 </div>
                 <div>
                     <DeleteButton onOpenModal={handleOpenDeleteWindow} /> {/* Передаем функцию */}
@@ -76,3 +61,4 @@ const ProductInBasket = ({ title, author, price, discounted_price, cover_image, 
 };
 
 export default ProductInBasket;
+

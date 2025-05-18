@@ -1,6 +1,6 @@
 // PlaceOrderWindow.jsx
 import React, { useEffect } from 'react';
-import CancelButton from "../DeleteProductWindow/CancelButton/CancelButton.jsx";
+import OKButton from "./OKButton/OKButton";
 import DeleteProductButton from "../DeleteProductWindow/DeleteProductButton/DeleteProductButton.jsx";
 import '../DeleteProductWindow/DeleteProductWindow.css';
 import cp from '../../images/add.png';
@@ -40,9 +40,8 @@ const PlaceOrderWindow = ({ onClose, isOpen }) => {
                 <div className='DescriptionDeleteProductWindow'>
                     <p>Для просмотра подробной информации о заказе вы можете перейти к истории заказов.</p>
                 </div>
-                <div className='conteiner_buttons'>
-                    <CancelButton onClick={onClose} />
-                    <DeleteProductButton onClick={onClose} />
+                <div className='conteiner_buttons' style={{marginRight: 20}}>
+                    <OKButton onClick={onClose}/>
                 </div>
             </div>
         </div>
