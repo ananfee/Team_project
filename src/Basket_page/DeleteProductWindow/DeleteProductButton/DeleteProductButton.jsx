@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import "./DeleteProductButton.css";
 
-const DeleteProductButton = () => {
+const DeleteProductButton = ({ onOpenModal }) => {
 
 
     return (
-        <button  className="deleteProductButton">
+        <button  className="deleteProductButton" onClick={onOpenModal}>
             <p>Удалить</p>
             </button>
     );

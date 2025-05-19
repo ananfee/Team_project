@@ -4,17 +4,11 @@ import DeleteProductButton from "./DeleteProductButton/DeleteProductButton";
 import './DeleteProductWindow.css';
 import cp from '../../images/add.png';
 
-const DeleteProductWindow = ({ onClose, isOpen }) => {
-    const handleClose = () => {
-        if (onClose) {
-            onClose();
-        }
-    };
-
+const DeleteProductWindow = ({ onClose, isOpen, onConfirmDelete }) => {
     return (
         <div className="deleteProductWindow-overlay" style={{ display: isOpen ? 'flex' : 'none' }}>
-            <div className="deleteProductWindow-content" style={{ placeItems: 'center' }}>
-                <div className='NameDeleteProductWindow' onClose={handleClose}>
+            <div className="deleteProductWindow-content">
+                <div className='NameDeleteProductWindow'>
                     <p>Удаление товара</p>
                     <button className='closeDeleteProductWindow' onClick={onClose}>
                         <img src={cp} alt="Закрыть" />
@@ -24,8 +18,8 @@ const DeleteProductWindow = ({ onClose, isOpen }) => {
                     <p>Вы уверены, что хотите удалить из корзины выбранный товар? Отменить данное действие будет невозможно.</p>
                 </div>
                 <div className='conteiner_buttons'>
-                <CancelButton onClick={onClose} />
-                <DeleteProductButton onClick={handleClose} />
+                    <CancelButton onClick={onClose} />
+                    <button onClick={onConfirmDelete} className="confirm-delete-button">Удалить</button>
                 </div>
             </div>
         </div>
@@ -33,3 +27,4 @@ const DeleteProductWindow = ({ onClose, isOpen }) => {
 };
 
 export default DeleteProductWindow;
+
