@@ -152,15 +152,17 @@ class RemoveCartItemSerializer(serializers.Serializer):
 
 class BookInOrderSerializer(serializers.ModelSerializer):
     book_id = serializers.IntegerField(source='book.id', read_only=True)
-    cover_image = serializers.SerializerMethodField()
+    cover_image = serializers.ImageField(source='book.cover_image', read_only=True)
     title = serializers.CharField(source='book.title', read_only=True)
     class Meta:
         model = BookInOrder
         fields = ['book_id', 'title', 'count_of_book', 'cover_image']
 
+
 class OrderHistorySerializer(serializers.ModelSerializer):
     books = BookInOrderSerializer(many=True, read_only=True, source='bookinorder_set', context={'request': None})
     status_name = serializers.CharField(source='status.status_name', read_only=True)
+
     class Meta:
         model = OrderHistory
         fields = ['id', 'sale_date', 'sale_price', 'status_name', 'books']
