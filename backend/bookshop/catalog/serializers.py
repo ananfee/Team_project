@@ -184,28 +184,72 @@ class OrderHistorySerializer(serializers.ModelSerializer):
         fields = ['id', 'sale_date', 'sale_price', 'status_name', 'books']
 
 class BookCreateUpdateSerializer(serializers.ModelSerializer):
-    authors = serializers.PrimaryKeyRelatedField(many=True, queryset=Author.objects.all(), required=False)
+    authors = AuthorSerializer(many=True, required=False)
     class Meta:
         model = Book
         fields = '__all__'
 
     def create(self, validated_data):
-        author_ids = self.initial_data.get('author', [])
-        authors = Author.objects.filter(pk__in=author_ids)
-        book = super().create(validated_data)
-        book.authors.set(authors)
-        return book
-    def update(self, instance, validated_data):
-        author_ids = self.initial_data.get('author', [])
-        authors = Author.objects.filter(pk__in=author_ids)
-        book = super().update(instance, validated_data)
+        authors_data = validated_data.pop('authors', None)
+        authors = []
+
+        if authors_data:
+            for author_data in authors_data:
+                try:
+                    author = Author.objects.get(
+                        author_last_name=author_data['author_last_name'],
+                        author_first_name=author_data['author_first_name'],
+                        author_patronymic=author_data.get('author_patronymic', None)
+                    )
+                    authors.append(author)
+                except Author.DoesNotExist:
+                    author = Author(
+                        author_last_name=author_data['author_last_name'],
+                        author_first_name=author_data['author_first_name'],
+                        author_patronymic=author_data.get('author_patronymic', None)
+                    )
+                    author.save()
+                    authors.append(author)
+
+
+        book = Book.objects.create(**validated_data)
         book.authors.set(authors)
         return book
 
+
+    def update(self, instance, validated_data):
+        authors_data = validated_data.pop('authors', None)
+        authors = []
+
+        if authors_data:
+            for author_data in authors_data:
+                try:
+                    author = Author.objects.get(
+                        author_last_name=author_data['author_last_name'],
+                        author_first_name=author_data['author_first_name'],
+                        author_patronymic=author_data.get('author_patronymic', None)
+                    )
+                    authors.append(author)
+                except Author.DoesNotExist:
+                    author = Author(
+                        author_last_name=author_data['author_last_name'],
+                        author_first_name=author_data['author_first_name'],
+                        author_patronymic=author_data.get('author_patronymic', None)
+                    )
+                    author.save()
+                    authors.append(author)
+
+        instance.authors.set(authors)
+        return super().update(instance, validated_data)
+
 class AuthorSerializerForList(serializers.ModelSerializer):
+    last_name = serializers.CharField(source='author_last_name', read_only=True)
+    first_name = serializers.CharField(source='author_first_name', read_only=True)
+    patronymic = serializers.CharField(source='author_patronymic', read_only=True)
+
     class Meta:
         model = Author
-        fields = ['id', 'author_last_name', 'author_first_name', 'author_patronymic']
+        fields = ['last_name', 'first_name', 'patronymic']
 
 class OrderHistoryAdminSerializer(serializers.ModelSerializer):
     books = BookInOrderSerializer(many=True, read_only=True, source='bookinorder_set')
