@@ -5,7 +5,7 @@ import NumberProducts from '../NumberProducts/NumberProducts.jsx';
 import DeleteButton from '../DeleteButton/DeleteButton.jsx';
 import DeleteProductWindow from '../DeleteProductWindow/DeleteProductWindow.jsx';
   
-const ProductInBasket = ({ book, count_of_book, total_price }) => { 
+const ProductInBasket = ({ book, count_of_book, onDelete }) => { 
     const [isDeleteWindowOpen, setIsDeleteWindowOpen] = useState(false);
 
     const handleOpenDeleteWindow = () => {
@@ -14,6 +14,10 @@ const ProductInBasket = ({ book, count_of_book, total_price }) => {
 
     const handleCloseDeleteWindow = () => {
         setIsDeleteWindowOpen(false);
+    };
+        const handleConfirmDelete = () => {
+        handleCloseDeleteWindow(); // Закрываем окно после подтверждения
+        onDelete(book.id); // Вызываем функцию удаления из родительского компонента
     };
         // Вспомогательная функция для форматирования полного имени автора из объекта { author_last_name, author_first_name, author_patronymic }
     const formatAuthorName = (author) => {
@@ -53,7 +57,7 @@ const ProductInBasket = ({ book, count_of_book, total_price }) => {
                 </div>
                 <div>
                     <DeleteButton onOpenModal={handleOpenDeleteWindow} /> {/* Передаем функцию */}
-                    <DeleteProductWindow isOpen={isDeleteWindowOpen} onClose={handleCloseDeleteWindow} /> {/* Передаем состояние и onClose */}
+                    <DeleteProductWindow isOpen={isDeleteWindowOpen} onClose={handleCloseDeleteWindow} onConfirmDelete={handleConfirmDelete} /> {/* Передаем состояние и onClose */}
                 </div>
             </div>
         </div>
