@@ -6,9 +6,9 @@ import "./History_page.css";
 import Order from './Order/Order';
 import Footer from "../components/footer/footer";
 import FetchWithAuth from '../layout/LoginWindow/FetchWithAuth.js';
-// import book1 from '../images/image 1.png';
-// import book2 from '../images/image 2.png';
-// import book3 from '../../images/image 3.png';
+import book1 from '../images/image 1.png';
+import book2 from '../images/image 2.png';
+import book3 from '../images/image 3.png';
 
 // const HistoryPage = () => {
 //     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -29,13 +29,13 @@ import FetchWithAuth from '../layout/LoginWindow/FetchWithAuth.js';
 //             sale_price: '870',
 //             status_name: 'Оформлен',
 //             books: [
-//               { cover_image: '/media/book_covers/book_example.jpg' }
+//               { cover_image: book1 }
 //             ]
 //          },
 //         { orderNumber: '029330', date: '02.03.2025', sale_price: '504', status_name: 'Оформлен',
 //             books: [
-//                 {book_id: '1', cover_image: '/media/book_covers/book_example.jpg' },
-//                 {book_id: '4', cover_image: '/media/book_covers/book_example.jpg' },
+//                 {book_id: '1', cover_image: book1 },
+//                 {book_id: '4', cover_image: book2 },
 //               ]
 //          },
 //         { orderNumber: '029331', date: '03.03.2025', sale_price: '906', status_name: 'Оформлен',

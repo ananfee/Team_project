@@ -5,8 +5,12 @@ import NumberProducts from '../NumberProducts/NumberProducts.jsx';
 import DeleteButton from '../DeleteButton/DeleteButton.jsx';
 import DeleteProductWindow from '../DeleteProductWindow/DeleteProductWindow.jsx';
   
-const ProductInBasket = ({ book, count_of_book, onDelete }) => { 
+const ProductInBasket = ({ book, count_of_book, onDelete, onQuantityChange }) => { 
     const [isDeleteWindowOpen, setIsDeleteWindowOpen] = useState(false);
+
+    const handleQuantityChange = (newQuantity) => {
+        onQuantityChange(book.id, newQuantity);
+    };
 
     const handleOpenDeleteWindow = () => {
         setIsDeleteWindowOpen(true);
