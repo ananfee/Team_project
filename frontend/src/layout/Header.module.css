@@ -3,7 +3,8 @@
    width: 1160px;
    display: flex;
    align-items: center;
-   gap: 497px;
+   margin-bottom: 10px;
+   position: relative;
 }
 
 .content{
@@ -12,6 +13,7 @@
    display: flex;
    align-items: center;
    gap: 32px;
+   position: relative;
 }
 
 .logoContainer{
@@ -57,7 +59,8 @@
 }
 
 .containerButtonHeader{
-   width: 223px;
+   position: absolute;
+   right: 0;
    height: 35px;
    display: flex;
    align-items: center;

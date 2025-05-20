@@ -120,12 +120,7 @@ function LoginWindow ({isOpen, onClose})
       newErrors.password = "Заполните поле";
       hasError = true;
     }
-
-    if (!repeatPassword) {
-      newErrors.repeatPassword = "Повторите пароль";
-      hasError = true;
-    }
-
+  
     if (password !== repeatPassword) {
       newErrors.repeatPassword = "Пароли не совпадают";
       hasError = true;
@@ -157,25 +152,11 @@ function LoginWindow ({isOpen, onClose})
         password2: repeatPassword,
         role: selectedRole == "Администратор" ? "Сотрудник" : "Клиент"})
       });
+      if (!response.ok) throw new Error('Ошибка авторизации');
       const data = await response.json();
-      if (!response.ok) {
-        if (data.email) {
-          newErrors.email = data.email[0];
-        }
-        if (data.phone_number) {
-          newErrors.phone = data.phone_number[0];
-        }
-
-        setError(newErrors);
-        return;
-      }
-      
       setIsRegistering(false);
     } catch {
-        setError({
-        ...newErrors,
-        common: "Ошибка сервера. Попробуйте еще раз."
-      });
+      
     }
   };
 
@@ -331,8 +312,6 @@ function LoginWindow ({isOpen, onClose})
                 </>
             )}
             {error.repeatPassword && <div className={styles.Error}>{error.repeatPassword}</div>}
-            {error.common && (<div className={styles.Error}>{error.common}</div>
-              )}
           </div>
           </div>
             

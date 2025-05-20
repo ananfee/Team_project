@@ -47,3 +47,64 @@ p{
    height: 18px;
    color: white;
  }
+
+ .ButtonContainer{
+   margin-top: 4px;
+   display: flex;
+   width: 100%;
+   gap: 2px;
+
+ }
+
+ .EditBook{
+   position: relative;
+   color: white;
+   font-size: 12px;
+   font-family: "Inter", sans-serif;
+   width: 128px;
+   height: 35px;
+   border: none;
+   border-radius: 16px;
+   background-color: #5D3C64;
+   cursor: pointer;
+   text-align: left;
+   padding-left: 9px;
+ }
+
+ .EditBook::before {
+   content: '';
+   background-image: url('edit.svg');
+   background-repeat: no-repeat;
+   position: absolute;
+   top: 50%;
+   right: 6px;
+   transform: translateY(-50%);
+   width: 18px; 
+   height: 18px;
+   color: white;
+ }
+
+ .Trash{
+   position: relative;
+   color: white;
+   width: 31px;
+   height: 35px;
+   border: none;
+   border-radius: 15px;
+   background-color: #5D3C64;
+   cursor: pointer;
+   padding: 0;
+ }
+
+ .Trash::before {
+   content: '';
+   background-image: url('trash.svg');
+   background-repeat: no-repeat;
+   position: absolute;
+   transform: translateY(-53%);
+   width: 22px; 
+   height: 22px;
+   color: white;
+   right: 6px;
+ }
+
