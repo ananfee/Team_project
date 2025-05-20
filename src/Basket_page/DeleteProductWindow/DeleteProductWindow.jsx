@@ -4,7 +4,7 @@ import DeleteProductButton from "./DeleteProductButton/DeleteProductButton";
 import './DeleteProductWindow.css';
 import cp from '../../images/add.png';
 
-const DeleteProductWindow = ({ onClose, isOpen, onConfirmDelete }) => {
+const DeleteProductWindow = ({ onClose, isOpen, onQuantityChange }) => {
         const handleClose = () => {
         if (onClose) {
             onClose();
@@ -36,7 +36,7 @@ const DeleteProductWindow = ({ onClose, isOpen, onConfirmDelete }) => {
                 </div>
                 <div className='conteiner_buttons'>
                     <CancelButton onClick={onClose} />
-                    <DeleteProductButton onClick={onConfirmDelete}/>
+                    <DeleteProductButton onClick={onQuantityChange}/>
                 </div>
             </div>
         </div>

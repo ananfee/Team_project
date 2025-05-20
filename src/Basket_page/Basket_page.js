@@ -284,86 +284,83 @@ const BasketPage = () => {
         setIsDeleteAllWindowOpen(false);
     };
 
-     // TODO: Добавить функцию для удаления отдельного товара по ID книги
-     // Эту функцию нужно будет передать в ProductInBasket
-     // Должна включать API-вызов на удаление товара с помощью FetchWithAuth
-    // const handleDeleteItem = async (bookIdToDelete) => {
-    //      console.log(`Попытка удалить товар с ID: ${bookIdToDelete}`);
-    //      try {
-    //           // TODO: Уточните URL и метод для удаления одного товара
-    //           // Пример URL: `http://127.0.0.1:8000/catalog/remove_from_cart/${bookIdToDelete}/`
-    //           const response = await FetchWithAuth(http://127.0.0.1:8000/catalog/remove_from_cart/${bookIdToDelete}/, {
-    //                method: 'DELETE', // Или 'POST', зависит от API
-    //                // FetchWithAuth автоматически добавит заголовки авторизации
-    //                // 'Content-Type': 'application/json', // Не нужен для DELETE без тела
-    //           });
+    //  TODO: Добавить функцию для удаления отдельного товара по ID книги
+    const handleDeleteItem = async (bookIdToDelete) => {
+         try {
+              // TODO: Уточните URL и метод для удаления одного товара
+                const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/cart/remove/', {
+                    method: 'DELETE',
+              });
 
-    //           if (response === null) { // FetchWithAuth вернул null при неудаче обновления токена
-    //               throw new Error("Не удалось обновить токен авторизации.");
-    //           }
+              if (response === null) { // FetchWithAuth вернул null при неудаче обновления токена
+                  throw new Error("Не удалось обновить токен авторизации.");
+              }
 
-    //           if (!response.ok) {
-    //                throw new Error(`Ошибка удаления товара: ${response.status}`);
-    //           }
+              if (!response.ok) {
+                   throw new Error(`Ошибка удаления товара: ${response.status}`);
+              }
 
-    //           // Если удаление на сервере успешно, обновляем state
-    //           const updatedBasketItems = basketItems.filter(item => item.book?.id !== bookIdToDelete);
-    //           setBasketItems(updatedBasketItems);
-    //           // Возможно, показать сообщение об успехе
-    //      } catch (error) {
-    //           console.error("Ошибка при удалении товара из корзины:", error);
-    //           // Показать сообщение об ошибке пользователю
-    //      }
-    // };
+              // Если удаление на сервере успешно, обновляем state
+              const updatedBasketItems = basketItems.filter(item => item.book?.id !== bookIdToDelete);
+              setBasketItems(updatedBasketItems);
+              // Возможно, показать сообщение об успехе
+         } catch (error) {
+              console.error("Ошибка при удалении товара из корзины:", error);
+              // Показать сообщение об ошибке пользователю
+         }
+    };
+
+        const handleClearBasket = () => {
+        setBasketItems([]); // Очистка состояния корзины
+        // Также можно вызвать loadBasket(), если хотите загрузить изначально пустую корзину с сервера.
+    };
 
      // TODO: Добавить функцию для изменения количества товара
-     // Должна включать API-вызов на изменение количества с помощью FetchWithAuth
-    // const handleQuantityChange = async (bookIdToUpdate, newQuantity) => {
-    //     console.log(`Попытка изменить количество товара с ID: ${bookIdToUpdate} на ${newQuantity}`);
-    //      // Убедимся, что новое количество валидно
-    //     if (typeof newQuantity !== 'number' || newQuantity < 0 || !Number.isFinite(newQuantity)) {
-    //         console.warn("Некорректное количество:", newQuantity);
-    //         return; // Не делаем API-вызов с некорректными данными
-    //     }
+    const handleQuantityChange = async (bookIdToUpdate, newQuantity) => {
+         // Убедимся, что новое количество валидно
+        if (typeof newQuantity !== 'number' || newQuantity < 0 || !Number.isFinite(newQuantity)) {
+            console.warn("Некорректное количество:", newQuantity);
+            return; // Не делаем API-вызов с некорректными данными
+        }
 
-    //     try {
-    //          // TODO: Уточните URL, метод и формат данных для изменения количества
-    //          // Пример URL: `http://127.0.0.1:8000/catalog/update_cart_item/${bookIdToUpdate}/`
-    //          const response = await FetchWithAuth(http://127.0.0.1:8000/catalog/update_cart_item/${bookIdToUpdate}/, {
-    //               method: 'PUT', // Или 'POST', зависит от API
-    //               headers: {
-    //                    'Content-Type': 'application/json', // Обычно нужно для отправки тела запроса
-    //               },
-    //               body: JSON.stringify({ count_of_book: newQuantity }) // Отправляем новое количество
-    //          });
+        try {
+             // TODO: Уточните URL, метод и формат данных для изменения количества
+             // Пример URL: `http://127.0.0.1:8000/catalog/update_cart_item/${bookIdToUpdate}/`
+             const response = await FetchWithAuth("http://127.0.0.1:8000/catalog/cart/update/", {
+                  method: 'PATCH', // Или 'POST', зависит от API
+                  headers: {
+                       'Content-Type': 'application/json', // Обычно нужно для отправки тела запроса
+                  },
+                  body: JSON.stringify({ count_of_book: newQuantity }) // Отправляем новое количество
+             });
 
-    //          if (response === null) { // FetchWithAuth вернул null при неудаче обновления токена
-    //             throw new Error("Не удалось обновить токен авторизации.");
-    //         }
+             if (response === null) { // FetchWithAuth вернул null при неудаче обновления токена
+                throw new Error("Не удалось обновить токен авторизации.");
+            }
 
-    //          if (!response.ok) {
-    //               throw new Error(`Ошибка обновления количества: ${response.status}`);
-    //          }
+             if (!response.ok) {
+                  throw new Error(`Ошибка обновления количества: ${response.status}`);
+             }
 
-    //           // Если обновление на сервере успешно, обновляем state
-    //           // Лучше всего после успешного обновления получить актуальные данные всей корзины
-    //           // или обновить только измененный элемент в state
-    //           // Если API возвращает обновленный элемент:
-    //           const updatedItem = await response.json(); // Пример получения обновленного элемента
-    //           const updatedBasketItems = basketItems.map(item => {
-    //               if (item.book?.id === bookIdToUpdate) {
-    //                    return updatedItem; // Заменяем старый элемент на обновленный из API
-    //               }
-    //               return item;
-    //           });
+              // Если обновление на сервере успешно, обновляем state
+              // Лучше всего после успешного обновления получить актуальные данные всей корзины
+              // или обновить только измененный элемент в state
+              // Если API возвращает обновленный элемент:
+              const updatedItem = await response.json(); // Пример получения обновленного элемента
+              const updatedBasketItems = basketItems.map(item => {
+                  if (item.book?.id === bookIdToUpdate) {
+                       return updatedItem; // Заменяем старый элемент на обновленный из API
+                  }
+                  return item;
+              });
 
-    //           setBasketItems(updatedBasketItems.filter(item => item.count_of_book > 0)); // Удаляем элементы, если количество стало 0
-    //           // Возможно, показать сообщение об успехе
-    //      } catch (error) {
-    //           console.error("Ошибка при изменении количества товара:", error);
-    //           // Показать сообщение об ошибке пользователю
-    //      }
-    // };
+              setBasketItems(updatedBasketItems.filter(item => item.count_of_book > 0)); // Удаляем элементы, если количество стало 0
+              // Возможно, показать сообщение об успехе
+         } catch (error) {
+              console.error("Ошибка при изменении количества товара:", error);
+              // Показать сообщение об ошибке пользователю
+         }
+    };
 
 
     // --- Логика загрузки данных корзины (выполняется один раз при монтировании) ---
@@ -527,7 +524,7 @@ const BasketPage = () => {
                     </div>
                     {/* Отображаем кнопку "Удалить все" только если корзина не пуста */}
                     {basketItems.length > 0 && (
-                        <DeleteAllBasketButton onOpenDeleteWindow={openDeleteAllWindow} />
+                        <DeleteAllBasketButton onOpenDeleteWindow={openDeleteAllWindow}  onClose={closeDeleteAllWindow} onClearBasket={handleClearBasket} />
                     )}
                 </div>
 
@@ -556,8 +553,8 @@ const BasketPage = () => {
                                     count_of_book={item.count_of_book} // Передаем количество этой книги
                                     total_price={item.total_price} // Передаем общую цену за эту позицию (из API - опционально, но может быть полезно)
                                     // TODO: Передать обработчики удаления и изменения количества
-                                    // onDelete={() => handleDeleteItem(item.book?.id)} // Передать функцию handleDeleteItem
-                                    // onQuantityChange={(newQuantity) => handleQuantityChange(item.book?.id, newQuantity)} // Передать функцию handleQuantityChange
+                                    onDelete={() => handleDeleteItem(item.book?.id)} // Передать функцию handleDeleteItem
+                                    onQuantityChange={(newQuantity) => handleQuantityChange(item.book?.id, newQuantity)} // Передать функцию handleQuantityChange
                                 />
                             ))
                         ) : (
