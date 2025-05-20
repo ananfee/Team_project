@@ -31,8 +31,8 @@ services:
       POSTGRES_DB: bookshop
       POSTGRES_USER: postgres_bookshop
       POSTGRES_PASSWORD: postgres_bookshop
-#    volumes:
-#      - postgres_data:/var/lib/postgresql/data
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     ports:
       - "5433:5432"
 
@@ -47,5 +47,5 @@ services:
 #      - frontend
 #      - backend
 #
-#volumes:
-#  postgres_data:
+volumes:
+  postgres_data:
