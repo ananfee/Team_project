@@ -36,7 +36,3 @@ const Order = ({ orderNumber, date, sale_price, status_name, books }) => {
   };
 
   export default Order;
-
-                      {/* <img src={book1} alt="" />
-                    <img src={book2} alt="" />
-                    <img src={book3} alt="" /> */}

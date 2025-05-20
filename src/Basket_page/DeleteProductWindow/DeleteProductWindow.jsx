@@ -4,7 +4,7 @@ import DeleteProductButton from "./DeleteProductButton/DeleteProductButton";
 import './DeleteProductWindow.css';
 import cp from '../../images/add.png';
 
-const DeleteProductWindow = ({ onClose, isOpen, onConfirmDelete }) => {
+const DeleteProductWindow = ({ onClose, isOpen, onQuantityChange }) => {
     return (
         <div className="deleteProductWindow-overlay" style={{ display: isOpen ? 'flex' : 'none' }}>
             <div className="deleteProductWindow-content">
@@ -19,7 +19,7 @@ const DeleteProductWindow = ({ onClose, isOpen, onConfirmDelete }) => {
                 </div>
                 <div className='conteiner_buttons'>
                     <CancelButton onClick={onClose} />
-                    <button onClick={onConfirmDelete} className="confirm-delete-button">Удалить</button>
+                    <DeleteProductButton onClick={onQuantityChange}/>
                 </div>
             </div>
         </div>
