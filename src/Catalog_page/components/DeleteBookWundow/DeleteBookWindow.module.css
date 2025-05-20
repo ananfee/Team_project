@@ -1,0 +1,88 @@
+.overlay {
+   position: fixed;
+   left: 0;
+   top: 0;
+   width: 100vw;
+   height: 100vh;
+   background: rgba(0,0,0,0.4);
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   z-index: 1000;
+ }
+ 
+ .modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: white;
+  border-radius: 32px;
+  width: 520px;
+  height: 300px;
+  position: relative;
+  box-sizing: border-box;
+}
+ 
+ .closeBtn {
+   position: absolute;
+   top: 30px;
+   right: 30px;
+   width: 60px;
+   height: 60px;
+   border: none;
+   cursor: pointer;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   background-color: white;
+   transform: rotate(45deg);
+ }
+
+ .closeBtn::before {
+   content: '';
+   background-image: url('close.svg');
+   background-size: contain; 
+   background-repeat: no-repeat;
+   background-position: center;
+   transform: rotate(45deg);
+   width: 70px; 
+   height: 70px;
+   position: absolute;
+ }
+
+ .nameWindow{
+   font-family: "Inter", sans-serif;
+   font-size: 32px;
+   font-weight: 500;
+   margin-top: 43px;
+ }
+
+ .Content{
+   margin-top: 40px;
+   width: 440px;
+   height: 138px;
+ }
+
+ .Content p{
+   font-family: "Inter", sans-serif;
+   font-size: 23px;
+   font-weight: 400;
+   margin-bottom: 42px;
+ }
+
+ .ButtonContainer{
+   width: 100%;
+   height: 41px;
+   display: flex;
+   gap: 20px;
+ }
+
+ .ButtonContainer button {
+   height: 41px;
+   width: 210px;
+   border-radius: 24px;
+   border: none;
+   font-family: "Inter", sans-serif;
+   font-size: 22px;
+   font-weight: 500;
+}

@@ -68,6 +68,7 @@ function LoginWindow ({isOpen, onClose})
         localStorage.setItem('accessToken', data.access);
         localStorage.setItem('role', data.role);
         localStorage.setItem('refreshToken', data.refresh);
+        window.location.reload(); 
         onClose();
       } catch {
         setError({ email: "", password: "", common: "Неверный email или пароль" });
@@ -153,21 +154,32 @@ function LoginWindow ({isOpen, onClose})
       });
       if (!response.ok) throw new Error('Ошибка авторизации');
       const data = await response.json();
-      onClose();
+      setIsRegistering(false);
     } catch {
       
     }
   };
+
+  useEffect(() => {
+      setEmail('');
+      setPassword('');
+      setRepeatPassword('');
+      setName('');
+      setPhone('');
+      setCompanyCode('');
+      setError({email: "", password: "", repeatPassword: "", name: "", phone: "", role: "", companyCode: "", common: ""})
+  }, [isRegistering]);
 
   if (!isOpen) return null;
 
   return (
     <div className={styles.overlay}>
       <div className={styles.modal}>
+        
         <button onClick={() => {onClose(); 
           setIsRegistering(false); 
           setSelectedRole('Выберите роль'); 
-          setError({email: "", password: "", repeatPassword: "", name: "", phone: "", role: "", companyCode: "", common: ""})
+          setError({email: "", password: "", repeatPassword: "", name: "", phone: "", role: "", companyCode: "", common: ""});
           setEmail('');
           setPassword('');
           setRepeatPassword('');
