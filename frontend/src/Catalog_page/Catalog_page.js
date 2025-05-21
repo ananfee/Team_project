@@ -33,8 +33,8 @@ function Catalog_page()
     setLoading(true);
     try {
       const [response1, response2] = await Promise.all([
-        fetch("http://backend:8000/catalog/books/"),
-        fetch("http://backend:8000/catalog/categories/")
+        fetch("http://5.129.207.153:8001/catalog/books/"),
+        fetch("http://5.129.207.153:8001/catalog/categories/")
       ]);
 
       const [data1, data2] = await Promise.all([
