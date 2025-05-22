@@ -1,0 +1,18 @@
+.OKButton{
+    width: 210px;
+    height: 40.51px;
+    display: flex;
+    border-radius: 24px;
+    border: none;
+    background-color: rgb(93, 60, 100);
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.OKButton p {
+    color: white;
+    font-family: "Inter", sans-serif;
+    font-size: 20px;
+    font-weight: 500px;
+}
