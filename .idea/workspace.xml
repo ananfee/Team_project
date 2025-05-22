@@ -399,7 +399,31 @@
       <option name="project" value="LOCAL" />
       <updated>1747911704833</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="delete files from src">
+      <option name="closed" value="true" />
+      <created>1747911915465</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1747911915465</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Logic Delete Product">
+      <option name="closed" value="true" />
+      <created>1747911961568</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1747911961568</updated>
+    </task>
+    <task id="LOCAL-00032" summary="logic BasketPage">
+      <option name="closed" value="true" />
+      <created>1747912036832</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1747912036832</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -429,9 +453,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="change project structure" />
-    <MESSAGE value="preparation for deploy" />
-    <MESSAGE value="preparation for deploy - 2" />
     <MESSAGE value="preparation for deploy - 3" />
     <MESSAGE value="fix dockerfile front" />
     <MESSAGE value="try 2 - fix dockerfile front" />
@@ -454,6 +475,9 @@
     <MESSAGE value="Fixed the logical of the History page" />
     <MESSAGE value="ad basket_page files" />
     <MESSAGE value="Logic Basket Page" />
-    <option name="LAST_COMMIT_MESSAGE" value="Logic Basket Page" />
+    <MESSAGE value="delete files from src" />
+    <MESSAGE value="Logic Delete Product" />
+    <MESSAGE value="logic BasketPage" />
+    <option name="LAST_COMMIT_MESSAGE" value="logic BasketPage" />
   </component>
 </project>
