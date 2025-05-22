@@ -1,41 +1,11 @@
 import React, {useState, useRef, useEffect} from "react";
 import styles from './AddBookWindow.module.css';
-
-const genre = [
-   {
-       "id": 1,
-       "category_name": "Детектив"
-   },
-   {
-       "id": 2,
-       "category_name": "Фантастика"
-   },
-   {
-       "id": 3,
-       "category_name": "Приключения"
-   },
-   {
-      "id": 4,
-      "category_name": "Роман"
-   }];
-
-const discount = [
-      {
-        "id": 1,
-        "discount_value": "10%"
-      },
-      {
-        "id": 2,
-        "discount_value": "20%"
-      },
-      {
-        "id": 3,
-        "discount_value": "30%"
-      }
-    ];
+import AutocompleteInput from "./AutocompleteInput";
+import FetchWithAuth from "../../../layout/LoginWindow/FetchWithAuth";
 
 function AddBookWindow({isOpen, onClose, obj})
 {
+   //для хранения значений полей для ввода
    const [title, setTitle] = useState('');
    const [count, setCount] = useState('');
    const [authors, setAuthors] = useState([
@@ -49,10 +19,186 @@ function AddBookWindow({isOpen, onClose, obj})
    const [selectedDiscount, setSelectedDiscount] = useState(null);
    const [description, setDescription] = useState('');
    const [img, setImg] = useState('');
+   //для хранения данных с сервера
+   const [last_name, setLast_name] = useState([]);
+   const [first_names, setFirst_names] = useState([]);
+   const [patronymics, setPatronymics] = useState([]);
+   const [discount, setDiscount] = useState([]);
+   const [genre, setGenre] = useState([]);
+   //для ошибок в полях при отправлении формы
+   const [error, setError] = useState({title: "", count: "", genre: "", publisher: "",year: "",isbn: "",price: "", description: "", img: "", common: ""});
+   // для выпадающих списков
    const [isOpenDropDown, setIsOpenDropDown] = useState(false);
    const [isOpenDropDownDiscount, setIsOpenDropDownDiscount] = useState(false);
    const container = useRef();
    const container1 = useRef();
+   //для картинки
+   const inputRef = useRef();
+
+   // Загрузка авторов, категорий и скидок
+   const fetchDropdownData = async () => {
+      // Авторы
+      try {
+        const authors = await FetchWithAuth('http://127.0.0.1:8000/catalog/authors/');
+        setLast_name(authors.last_names || []);
+        setFirst_names(authors.first_names || []);
+        setPatronymics(authors.patronymics || []);
+      } catch (error) {
+        console.error('Ошибка при получении авторов', error);
+      }
+  
+      // Скидки
+      try {
+        const discounts = await FetchWithAuth('http://127.0.0.1:8000/catalog/discounts/');
+        setDiscount(discounts || []);
+      } catch (error) {
+        console.error('Ошибка при получении скидок', error);
+      }
+  
+      // Категории
+      try {
+        const categories = await FetchWithAuth('http://127.0.0.1:8000/catalog/categories/');
+        setGenre(categories || []);
+      } catch (error) {
+        console.error('Ошибка при получении категорий', error);
+      }
+    };
+
+
+    const handleAddBook = async(e) => {
+      e.preventDefault();
+      let newErrors = {
+         title: "", count: "", genre: "", publisher: "",year: "",isbn: "",price: "", 
+         description: "", img: "", common: ""
+      };
+      let hasError = false;
+    
+      if (!title) {
+        newErrors.title = "Введите название книги";
+        hasError = true;
+      }
+    
+      if (!count) {
+         newErrors.count = "Введите количество экземпляров";
+         hasError = true;
+     } else if (
+         isNaN(Number(count)) ||
+         count.toString().trim() === '' ||
+         !Number.isInteger(Number(count))
+     ) {
+         newErrors.count = "Введите корректное целое число";
+         hasError = true;
+     }
+
+      if (!selectedGenre) {
+         newErrors.genre = "Выберите жанр книги";
+         hasError = true;
+      }
+
+      if (!publisher) {
+         newErrors.publisher = "Введите издательство книги";
+         hasError = true;
+      }
+      
+      if (!year) {
+         newErrors.year = "Введите год издания";
+         hasError = true;
+      } else if (
+            isNaN(Number(year)) ||
+            year.toString().trim() === '' ||
+            !Number.isInteger(Number(year))
+      ) {
+            newErrors.year = "Введите корректный год";
+            hasError = true;
+      }
+      
+       if (!isbn) {
+         newErrors.isbn = "Введите ISBN";
+         hasError = true;
+       } else if (!/^97[89]-\d-\d{2}-\d{6}-\d$/.test(isbn)) {
+         newErrors.isbn = "ISBN должен быть в формате: 978-5-05-000000-0";
+         hasError = true;
+       }
+      
+       if (!price) {
+         newErrors.price = "Введите цену книги";
+         hasError = true;
+       } else if (isNaN(Number(price)) || price.toString().trim() === '')
+       {
+          newErrors.price = "Введите корректное число";
+          hasError = true;
+       }
+
+       if (!description) {
+         newErrors.description = "Введите описание книги";
+         hasError = true;
+       }
+
+       if (!img) {
+         newErrors.img = "Загрузите картинку книги";
+         hasError = true;
+       }
+
+
+      if (hasError) {
+        setError(newErrors);
+        return;
+      }
+
+      const data = {
+         title: title,
+         authors: authors,
+         category: selectedGenre.id,           
+         publishing: publisher,
+         publishing_year: Number(year),
+         ISBN: isbn,
+         price: Number(price),
+         discount: selectedDiscount.id,     
+         number_of_copies: Number(count),
+         description: description 
+       };
+      
+       const isEdit = !!obj; 
+  
+       const url = isEdit
+         ? `http://127.0.0.1:8000/catalog/books/update/${obj.id}/`
+         : 'http://127.0.0.1:8000/catalog/books/create/';
+       const method = isEdit ? 'PUT' : 'POST';
+     
+       try {
+         const response = await FetchWithAuth(url, {
+           method: method,
+           headers: {
+             'Content-Type': 'application/json'
+           },
+           body: JSON.stringify(data)
+         });
+     
+         if (!response.ok) throw new Error('Ошибка');
+         onClose();
+         window.location.reload();
+       } catch {
+         setError({
+           title: "",
+           count: "",
+           genre: "",
+           publisher: "",
+           year: "",
+           isbn: "",
+           price: "",
+           description: "",
+           img: "",
+           common: isEdit ? "Ошибка при редактировании книги" : "Ошибка при добавлении книги"
+         });
+       }
+    };
+  
+   
+    useEffect(() => {
+      if (isOpen) {
+        fetchDropdownData();
+      }
+    }, [isOpen]);
 
       useEffect(() => {
          if (!isOpen) {
@@ -69,6 +215,7 @@ function AddBookWindow({isOpen, onClose, obj})
            setSelectedDiscount(null);
            setDescription('');
            setImg('');
+           setError({title: "", count: "", genre: "", publisher: "",year: "",isbn: "",price: "", description: "", img: "", common: ""});
            return;
          }
          if (obj) {
@@ -83,13 +230,13 @@ function AddBookWindow({isOpen, onClose, obj})
                      author_patronymic: ''
                   }]
                );
-            const foundGenre = genre.find(item => item.category_name === obj.genre);
+            const foundGenre = genre.find(item => item.category_name === obj.category_name);
             setSelectedGenre(foundGenre || null);
             setPublisher(obj.publishing || '');
             setYear(obj.publishing_year || '');
             setISBN(obj.ISBN || '');
             setPrice(obj.price || '');
-            const foundDiscount = discount.find(item => item.discount_value === obj.discount);
+            const foundDiscount = discount.find(item => item.id === obj.discount.id);
             setSelectedDiscount(foundDiscount || null);
             setDescription(obj.description || '');
             setImg(obj.cover_image || '');
@@ -110,7 +257,20 @@ function AddBookWindow({isOpen, onClose, obj})
            setImg('');
          }
        }, [isOpen, obj, genre, discount]);
-
+   
+       const handleDeletePhoto = () => {
+         setImg('');
+       };
+     
+       const handleDownloadPhoto = (e) => {
+         const file = e.target.files && e.target.files[0];
+         if (file) {
+           const reader = new FileReader();
+           reader.onload = (ev) => setImg(ev.target.result);
+           reader.readAsDataURL(file);
+         }
+       };
+      
    useEffect(() => {
       document.addEventListener("mousedown", handleClickOutside);
       return () => document.removeEventListener("mousedown",  handleClickOutside);
@@ -141,51 +301,110 @@ function AddBookWindow({isOpen, onClose, obj})
       <div className={styles.overlay}>
         <div className={styles.modal}>
         <p className={styles.nameWindow}>{obj ? 'Редактирование книги' : 'Добавление книги'}</p>
-            <button onClick={() => {onClose(); setSelectedGenre(null); setSelectedDiscount(null);}} className={styles.closeBtn}></button>
+            <button onClick={() => {onClose(); 
+               setError({title: "", count: "", genre: "", publisher: "",year: "",isbn: "",price: "", description: "", img: "", common: ""});
+               setSelectedGenre(null); setSelectedDiscount(null);}} className={styles.closeBtn}></button>
             <div className={styles.ContentContainer}>
                <div className={styles.FhotoContainer}>
-                  <div className={styles.Fhoto}>{obj ? <img style={{height: 370, width: 236}} src={img}/> : 'FHOTO'}</div>
-                  <button className={styles.DeleteFhotoButton} style={obj ? {backgroundColor: "#5D3C64", color: "white"} : {}}>Удалить фото</button>
-                  <button className={styles.DownloadFhotoButton} style={obj ? {backgroundColor: "#efeeee", color: "#424245"} : {}}>Загрузить фото</button>
+               <div className={styles.Fhoto}>
+                  {img ? (
+                     <img style={{ height: 370, width: 236 }} src={img} alt="Фото" />
+                  ) : (
+                     "ФОТО"
+                  )}
                </div>
+
+               <button
+                  className={styles.DeleteFhotoButton}
+                  type="button"
+                  disabled={!img}
+                  onClick={handleDeletePhoto}
+                  style={
+                     img
+                        ? { backgroundColor: "#5D3C64", color: "white" }
+                        : { opacity: 0.5}
+                  }>Удалить фото</button>
+
+               <button
+                  className={styles.DownloadFhotoButton}
+                  type="button"
+                  disabled={!!img}
+                  onClick={() => !img && inputRef.current.click()}
+                  style={
+                     !img
+                        ? { backgroundColor: "#5D3C64", color: "white" }
+                        : { backgroundColor: "#efeeee", color: "#424245", opacity: 0.5}
+                  }
+               >Загрузить фото</button>
+
+               <input
+                  ref={inputRef}
+                  type="file"
+                  accept="image/*"
+                  style={{ display: "none" }}
+                  onChange={handleDownloadPhoto}/>
+               </div>
+               <form onSubmit={handleAddBook}>
                <div className={styles.Button}>
                <div className={styles.InputContainer}>
                <div className={styles.InputContainerInner}>
                   <p>Название</p>
-                  <input value={title} onChange={e => setTitle(e.target.value)} />
+                  <input value={title} onChange={e => {setTitle(e.target.value); setError(prev => ({ ...prev, title: ""}));}} 
+                  style={error.title ? { border: '1px solid #e13939' } : {}}/>
+                  {error.title && <div className={styles.Error}>{error.title}</div>}
                   <p>Количество экземпляров</p>
-                  <input value={count} onChange={e => setCount(e.target.value)} />
+                  <input value={count} onChange={e => {setCount(e.target.value); setError(prev => ({ ...prev, count: ""}));}} 
+                  style={error.count ? { border: '1px solid #e13939' } : {}}/>
+                  {error.count && <div className={styles.Error}>{error.count}</div>}
                   {authors.map((author, idx) => (
-                     <div key={idx}>
+                     <div key={idx} style={{ marginBottom: 14, borderBottom: "1px solid rgb(190, 189, 189)", width: 298 }}>
                         <p>Автор {idx + 1}</p>
-                        <input
-                           value={
-                           author.author_last_name + ' ' +
-                           author.author_first_name + ' ' +
-                           author.author_patronymic
-                           }
-                           style={{ marginBottom: 10 }}
-                           onChange={e => {
-                           const parts = e.target.value.split(' ');
+                        <AutocompleteInput
+                           value={author.author_last_name}
+                           onChange={val =>
                            setAuthors(prev =>
                               prev.map((a, i) =>
-                                 i === idx
-                                 ? {
-                                       author_last_name: parts[0] || '',
-                                       author_first_name: parts[1] || '',
-                                       author_patronymic: parts[2] || '',
-                                    }
-                                 : a
+                                 i === idx ? { ...a, author_last_name: val } : a
                               )
-                           );
-                           }}
+                           )
+                           }
+                           suggestions={last_name}
+                           placeholder="Фамилия"
+                        />
+                        <AutocompleteInput
+                           value={author.author_first_name}
+                           onChange={val =>
+                           setAuthors(prev =>
+                              prev.map((a, i) =>
+                                 i === idx ? { ...a, author_first_name: val } : a
+                              )
+                           )
+                           }
+                           suggestions={first_names}
+                           placeholder="Имя"
+                        />
+                        <AutocompleteInput
+                           value={author.author_patronymic}
+                           onChange={val =>
+                           setAuthors(prev =>
+                              prev.map((a, i) =>
+                                 i === idx ? { ...a, author_patronymic: val } : a
+                              )
+                           )
+                           }
+                           suggestions={patronymics}
+                           placeholder="Отчество"
                         />
                      </div>
-                  ))}
-                  <div style={{display: "flex", width: 310 , justifyContent: "center"}}>
-                     <button className={styles.AddAuthorButton} 
-                        onClick={() => setAuthors(prev => [...prev, {author_last_name: '', author_first_name: '', author_patronymic: '' }])}></button>
-                  </div>
+                     ))}
+                     <div style={{ display: "flex", width: 310, justifyContent: "center" }}>
+                     <button
+                        className={styles.AddAuthorButton}
+                        onClick={() =>
+                           setAuthors(prev => [...prev, { author_last_name: '', author_first_name: '', author_patronymic: '' }])
+                        }
+                     ></button>
+                     </div>
                   <p>Жанр</p>
                   <div className={styles.DropDownSortContainer} ref={container}>
                   <button
@@ -193,8 +412,12 @@ function AddBookWindow({isOpen, onClose, obj})
                      className={`${styles.DropDownSortButton} ${isOpenDropDown ? styles.Open : ""}`}
                      onClick={handleToggle}
                      style={{
-                        color: selectedGenre ? "#000" : "#9b9b9b"
-                     }}>
+                        color: selectedGenre ? "#000" : "#9b9b9b",
+                        border: error.genre ? '1px solid #e13939' : undefined
+                     }}
+                     onChange={e => {
+                        setError(prev => ({ ...prev, genre: ""}));
+                      }}>
                      {selectedGenre ? selectedGenre.category_name : "Выберите жанр"}
                   </button>
                   {isOpenDropDown && (
@@ -215,14 +438,23 @@ function AddBookWindow({isOpen, onClose, obj})
                      </div>
                   )}
                   </div>
+                  {error.genre && <div className={styles.Error}>{error.genre}</div>}
                   <p>Издательство</p>
-                  <input value={publisher} onChange={e => setPublisher(e.target.value)} />
+                  <input value={publisher} onChange={e => {setPublisher(e.target.value); setError(prev => ({ ...prev, publisher: ""}));}}
+                  style={error.publisher ? { border: '1px solid #e13939' } : {}}/>
+                  {error.publisher && <div className={styles.Error}>{error.publisher}</div>}
                   <p>Год издания</p>
-                  <input value={year} onChange={e => setYear(e.target.value)} />
+                  <input value={year} onChange={e => {setYear(e.target.value); setError(prev => ({ ...prev, year: ""}));}} 
+                  style={error.year ? { border: '1px solid #e13939' } : {}}/>
+                  {error.year && <div className={styles.Error}>{error.year}</div>}
                   <p>ISBN</p>
-                  <input value={isbn} onChange={e => setISBN(e.target.value)} />
+                  <input value={isbn} onChange={e => {setISBN(e.target.value); setError(prev => ({ ...prev, isbn: ""}));}} 
+                  style={error.isbn ? { border: '1px solid #e13939' } : {}}/>
+                  {error.isbn && <div className={styles.Error}>{error.isbn}</div>}
                   <p>Цена</p>
-                  <input value={price} onChange={e => setPrice(e.target.value)} />
+                  <input value={price} onChange={e => {setPrice(e.target.value); setError(prev => ({ ...prev, price: ""}));}} 
+                  style={error.price ? { border: '1px solid #e13939' } : {}}/>
+                  {error.price && <div className={styles.Error}>{error.price}</div>}
                   <p>Скидка</p>
                   <div className={styles.DropDownSortContainer} ref={container1}>
                      <button
@@ -230,9 +462,9 @@ function AddBookWindow({isOpen, onClose, obj})
                         className={`${styles.DropDownSortButton} ${isOpenDropDownDiscount ? styles.Open : ""}`}
                         onClick={handleToggleDiscount}
                         style={{
-                           color: selectedDiscount ? "#000" : "#9b9b9b"
+                           color: selectedDiscount ? "#000" : "#9b9b9b",
                         }}>
-                        {selectedDiscount ? selectedDiscount.discount_value : "Выберите скидку"}
+                        {selectedDiscount ? selectedDiscount.discount_percentage : "Выберите скидку"}
                      </button>
                      {isOpenDropDownDiscount && (
                         <div className={styles.DropDown}>
@@ -245,7 +477,7 @@ function AddBookWindow({isOpen, onClose, obj})
                                  setSelectedDiscount(item);
                                  setIsOpenDropDownDiscount(false);
                                  }}>
-                                 {item.discount_value}
+                                 {item.discount_percentage}
                               </li>
                            ))}
                            </ul>
@@ -253,11 +485,14 @@ function AddBookWindow({isOpen, onClose, obj})
                      )}
                   </div>
                   <p>Описание</p>
-                  <textarea value={description} rows={5} onChange={e => setDescription(e.target.value)} />
+                  <textarea value={description} rows={5} onChange={e => {setDescription(e.target.value); setError(prev => ({ ...prev, description: ""}));}}
+                  style={error.description ? { border: '1px solid #e13939' } : {}} />
+                  {error.description && <div className={styles.Error}>{error.description}</div>}
                </div>
                </div>
-            <button className={styles.ButtonD}>{obj ? 'Изменить' : 'Добавить'}</button>
+            <button className={styles.ButtonD} type="submit">{obj ? 'Изменить' : 'Добавить'}</button>
             </div>
+            </form>
             </div>
          </div>
       </div>
