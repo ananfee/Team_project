@@ -68,7 +68,7 @@ class BooksView(APIView):
                 return Response("Книга успешно добавлена", status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({"error": "Произошла ошибка при добавлении книги"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @transaction.atomic
     def put(self, request, book_id):
@@ -94,7 +94,7 @@ class BooksView(APIView):
         except Book.DoesNotExist:
             return Response({"error": "Книга не найдена"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({"error": "Произошла ошибка при обновлении книги"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def delete(self, request, book_id):
         try:
@@ -106,4 +106,4 @@ class BooksView(APIView):
         except Book.DoesNotExist:
             return Response({"error": "Книга не найдена"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({"error": "Произошла ошибка при удалении книги"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
