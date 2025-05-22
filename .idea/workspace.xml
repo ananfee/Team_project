@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f2925715-e3c4-46be-ba56-f6ba77fa2aea" name="Changes" comment="edit front">
+    <list default="true" id="f2925715-e3c4-46be-ba56-f6ba77fa2aea" name="Changes" comment="edit rout">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/Catalog_page/Catalog_page.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/Catalog_page/Catalog_page.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -136,7 +135,7 @@
       <workItem from="1747329821970" duration="5213000" />
       <workItem from="1747370946610" duration="5290000" />
       <workItem from="1747383064092" duration="13843000" />
-      <workItem from="1747838492066" duration="1833000" />
+      <workItem from="1747838492066" duration="3400000" />
     </task>
     <task id="LOCAL-00001" summary="change project structure">
       <option name="closed" value="true" />
@@ -322,7 +321,23 @@
       <option name="project" value="LOCAL" />
       <updated>1747726516985</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="edit rout">
+      <option name="closed" value="true" />
+      <created>1747842480413</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1747842480413</updated>
+    </task>
+    <task id="LOCAL-00025" summary="edit rout">
+      <option name="closed" value="true" />
+      <created>1747843883196</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1747843883196</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -372,6 +387,7 @@
     <MESSAGE value="edit docker-compose.yml" />
     <MESSAGE value="edit docker-compose.yml and dockerfile-back" />
     <MESSAGE value="edit front" />
-    <option name="LAST_COMMIT_MESSAGE" value="edit front" />
+    <MESSAGE value="edit rout" />
+    <option name="LAST_COMMIT_MESSAGE" value="edit rout" />
   </component>
 </project>
