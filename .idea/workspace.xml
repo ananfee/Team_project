@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f2925715-e3c4-46be-ba56-f6ba77fa2aea" name="Changes" comment="Logic Basket Page" />
+    <list default="true" id="f2925715-e3c4-46be-ba56-f6ba77fa2aea" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -375,7 +375,31 @@
       <option name="project" value="LOCAL" />
       <updated>1747910784292</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="ad basket_page files">
+      <option name="closed" value="true" />
+      <created>1747911452126</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1747911452126</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Logic Basket Page">
+      <option name="closed" value="true" />
+      <created>1747911639656</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1747911639656</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Logic Basket Page">
+      <option name="closed" value="true" />
+      <created>1747911704833</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1747911704833</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -428,6 +452,7 @@
     <MESSAGE value="edit rout" />
     <MESSAGE value="fix problems" />
     <MESSAGE value="Fixed the logical of the History page" />
+    <MESSAGE value="ad basket_page files" />
     <MESSAGE value="Logic Basket Page" />
     <option name="LAST_COMMIT_MESSAGE" value="Logic Basket Page" />
   </component>
