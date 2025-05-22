@@ -31,8 +31,22 @@ class AuthorListView(ListAPIView):
                 {"message": "Авторы не найдены"},
                 status=status.HTTP_404_NOT_FOUND
             )
+
+        last_names = []
+        first_names = []
+        patronymics = []
+
         serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        for author_data in serializer.data:
+            last_names.append(author_data.get('last_name', ''))
+            first_names.append(author_data.get('first_name', ''))
+            patronymics.append(author_data.get('patronymic', ''))
+
+        return Response({
+            "last_names": last_names,
+            "first_names": first_names,
+            "patronymics": patronymics
+        }, status=status.HTTP_200_OK)
 
 class BooksView(APIView):
     @transaction.atomic
@@ -52,39 +66,35 @@ class BooksView(APIView):
 
                 book = serializer.save()
                 return Response("Книга успешно добавлена", status=status.HTTP_201_CREATED)
-
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
         except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({"error": "Произошла ошибка при добавлении книги"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @transaction.atomic
     def put(self, request, book_id):
         try:
             book = Book.objects.get(pk=book_id)
-            serializer = BookCreateUpdateSerializer(book, data=request.data, partial=True)
-
+            serializer = BookCreateUpdateSerializer(instance=book, data=request.data, partial=True)
             if serializer.is_valid():
                 discount_id = request.data.get('discount')
                 if discount_id:
                     try:
                         discount = Discount.objects.get(pk=discount_id)
-                        serializer.validated_data['discounted_price'] = serializer.validated_data.get('price', book.price) * (
-                                                                                    1 - discount.discount_percentage / 100)
+                        serializer.validated_data['discounted_price'] = serializer.validated_data.get('price',
+                                                                                                      book.price) * (
+                                                                                1 - discount.discount_percentage / 100)
                     except Discount.DoesNotExist:
                         return Response({"error": "Скидка не существует"}, status=status.HTTP_400_BAD_REQUEST)
                 elif discount_id is None:
                     serializer.validated_data['discounted_price'] = None
 
-                book = serializer.save()
-                return Response("Изменения сохранены")
-
+                serializer.save()
+                return Response("Изменения сохранены", status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
         except Book.DoesNotExist:
             return Response({"error": "Книга не найдена"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({"error": "Произошла ошибка при обновлении книги"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def delete(self, request, book_id):
         try:
@@ -96,4 +106,4 @@ class BooksView(APIView):
         except Book.DoesNotExist:
             return Response({"error": "Книга не найдена"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({"error": "Произошла ошибка при удалении книги"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

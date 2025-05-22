@@ -7,6 +7,7 @@ from .handlers.notifications import *
 from .handlers.cart import *
 from .handlers.order_history import *
 from .handlers.сatalog_management import *
+from .handlers.order_history_admin import *
 
 
 urlpatterns = ([
@@ -33,4 +34,7 @@ urlpatterns = ([
     path('books/delete/<int:book_id>/', BooksView.as_view(), name='book-delete'),
     path('discounts/', DiscountListView.as_view(), name='discount-list'),
     path('authors/', AuthorListView.as_view(), name='author-list'),
+    path('admin/orders/', OrderHistoryAdminView.as_view(), name='admin-order-history'),
+    path('admin/orders/<int:order_id>/status/', OrderStatusUpdateView.as_view(), name='order-status-update'),
+    path('status/', StatusListView.as_view(), name='status-list'),
 ])
