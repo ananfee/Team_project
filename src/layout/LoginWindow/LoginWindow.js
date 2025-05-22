@@ -68,6 +68,7 @@ function LoginWindow ({isOpen, onClose})
         localStorage.setItem('accessToken', data.access);
         localStorage.setItem('role', data.role);
         localStorage.setItem('refreshToken', data.refresh);
+        window.location.reload(); 
         onClose();
       } catch {
         setError({ email: "", password: "", common: "Неверный email или пароль" });
@@ -119,7 +120,12 @@ function LoginWindow ({isOpen, onClose})
       newErrors.password = "Заполните поле";
       hasError = true;
     }
-  
+
+    if (!repeatPassword) {
+      newErrors.repeatPassword = "Повторите пароль";
+      hasError = true;
+    }
+
     if (password !== repeatPassword) {
       newErrors.repeatPassword = "Пароли не совпадают";
       hasError = true;
@@ -151,23 +157,48 @@ function LoginWindow ({isOpen, onClose})
         password2: repeatPassword,
         role: selectedRole == "Администратор" ? "Сотрудник" : "Клиент"})
       });
-      if (!response.ok) throw new Error('Ошибка авторизации');
       const data = await response.json();
-      onClose();
-    } catch {
+      if (!response.ok) {
+        if (data.email) {
+          newErrors.email = data.email[0];
+        }
+        if (data.phone_number) {
+          newErrors.phone = data.phone_number[0];
+        }
+
+        setError(newErrors);
+        return;
+      }
       
+      setIsRegistering(false);
+    } catch {
+        setError({
+        ...newErrors,
+        common: "Ошибка сервера. Попробуйте еще раз."
+      });
     }
   };
+
+  useEffect(() => {
+      setEmail('');
+      setPassword('');
+      setRepeatPassword('');
+      setName('');
+      setPhone('');
+      setCompanyCode('');
+      setError({email: "", password: "", repeatPassword: "", name: "", phone: "", role: "", companyCode: "", common: ""})
+  }, [isRegistering]);
 
   if (!isOpen) return null;
 
   return (
     <div className={styles.overlay}>
       <div className={styles.modal}>
+        
         <button onClick={() => {onClose(); 
           setIsRegistering(false); 
           setSelectedRole('Выберите роль'); 
-          setError({email: "", password: "", repeatPassword: "", name: "", phone: "", role: "", companyCode: "", common: ""})
+          setError({email: "", password: "", repeatPassword: "", name: "", phone: "", role: "", companyCode: "", common: ""});
           setEmail('');
           setPassword('');
           setRepeatPassword('');
@@ -300,6 +331,8 @@ function LoginWindow ({isOpen, onClose})
                 </>
             )}
             {error.repeatPassword && <div className={styles.Error}>{error.repeatPassword}</div>}
+            {error.common && (<div className={styles.Error}>{error.common}</div>
+              )}
           </div>
           </div>
             

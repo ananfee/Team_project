@@ -37,7 +37,7 @@ function Catalog({data})
         <div key={item.id}
         onDoubleClick={() => navigate(`/new/${item.id}`)}
         style={{cursor: 'pointer'}}>
-            <CatalogBook product={item} />
+            <CatalogBook product={item}/>
         </div>
       ))}
     </div>
