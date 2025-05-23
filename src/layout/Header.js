@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom"; // Импортируем Link
+import { Link } from "react-router-dom"; 
 import styles from "../layout/Header.module.css";
 import NotificationButton from "./NotificationButton/NotificationButton.js";
 import OrdersButton from "./OrdersButton/OrdersButton.jsx";
 import BasketButton from "./BasketButton/BasketButton.jsx";
 import LoginWindow from "./LoginWindow/LoginWindow.js";
+import FetchWithAuth from "./LoginWindow/FetchWithAuth.js";
 
 function Header({onOpenModal}) {
    const [loginModalOpen, setLoginModalOpen] = useState(false);
@@ -19,7 +20,7 @@ function Header({onOpenModal}) {
     const handleLogout = async () => {
       const refreshToken = localStorage.getItem('refreshToken');
       try {
-         const response = await fetch('http://127.0.0.1:8000/catalog/logout/', {
+         const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/logout/', {
             method: 'POST',
             headers: {
                'Content-Type': 'application/json'
@@ -79,7 +80,8 @@ function Header({onOpenModal}) {
                }
             {isAuth 
                ? <button className={styles.loginButton} onClick={handleLogout}>Выйти</button>
-               : <button className={styles.loginButton} onClick={() => setLoginModalOpen(true)}>Войти</button>
+               : 
+               <button className={styles.loginButton} onClick={() => setLoginModalOpen(true)}>Войти</button>
             }
             <LoginWindow isOpen={loginModalOpen} onClose={() => setLoginModalOpen(false)} />
          </div>
