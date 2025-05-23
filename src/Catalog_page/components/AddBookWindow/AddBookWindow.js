@@ -34,6 +34,7 @@ function AddBookWindow({isOpen, onClose, obj})
    const container1 = useRef();
    //для картинки
    const inputRef = useRef();
+   const [imgFile, setImgFile] = useState(null); //правки
 
    // Загрузка авторов, категорий и скидок
    const fetchDropdownData = async () => {
@@ -145,18 +146,24 @@ function AddBookWindow({isOpen, onClose, obj})
         return;
       }
 
-      const data = {
-         title: title,
-         authors: authors,
-         category: selectedGenre.id,           
-         publishing: publisher,
-         publishing_year: Number(year),
-         ISBN: isbn,
-         price: Number(price),
-         discount: selectedDiscount.id,     
-         number_of_copies: Number(count),
-         description: description 
-       };
+       // Формируем FormData
+      const formData = new FormData();
+
+      // Добавляем обычные поля
+      formData.append('title', title);
+      formData.append('category', selectedGenre.id);
+      formData.append('publishing', publisher);
+      formData.append('publishing_year', year);
+      formData.append('ISBN', isbn);
+      formData.append('price', Number(price));
+      formData.append('discount', selectedDiscount.id);
+      formData.append('number_of_copies', Number(count));
+      formData.append('description', description);
+      formData.append('authors', JSON.stringify(authors));
+
+      if (imgFile) {
+         formData.append('cover_image', imgFile);
+      }
       
        const isEdit = !!obj; 
   
@@ -168,10 +175,7 @@ function AddBookWindow({isOpen, onClose, obj})
        try {
          const response = await FetchWithAuth(url, {
            method: method,
-           headers: {
-             'Content-Type': 'application/json'
-           },
-           body: JSON.stringify(data)
+           body: formData,
          });
      
          if (!response.ok) throw new Error('Ошибка');
@@ -215,6 +219,7 @@ function AddBookWindow({isOpen, onClose, obj})
            setSelectedDiscount(null);
            setDescription('');
            setImg('');
+           setImgFile(null);
            setError({title: "", count: "", genre: "", publisher: "",year: "",isbn: "",price: "", description: "", img: "", common: ""});
            return;
          }
@@ -255,19 +260,22 @@ function AddBookWindow({isOpen, onClose, obj})
            setSelectedDiscount(null);
            setDescription('');
            setImg('');
+           setImgFile(null);
          }
        }, [isOpen, obj, genre, discount]);
    
        const handleDeletePhoto = () => {
          setImg('');
+         setImgFile(null);
        };
      
        const handleDownloadPhoto = (e) => {
          const file = e.target.files && e.target.files[0];
          if (file) {
-           const reader = new FileReader();
-           reader.onload = (ev) => setImg(ev.target.result);
-           reader.readAsDataURL(file);
+            setImgFile(file);  //правки
+            const reader = new FileReader();
+            reader.onload = (ev) => setImg(ev.target.result);
+            reader.readAsDataURL(file); 
          }
        };
       
