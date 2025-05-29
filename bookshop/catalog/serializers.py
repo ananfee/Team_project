@@ -36,12 +36,24 @@ class BookSerializer(serializers.ModelSerializer):
             return obj.cover_image.url
         return None
 
+class DiscountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Discount
+        fields = ['id', 'discount_name', 'discount_percentage']
+
+class OrderStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderStatus
+        fields = ['id', 'name_status']
+
 class DetailBookSerializer(serializers.ModelSerializer):
     authors = AuthorSerializer(many=True, read_only=True)
     cover_image = serializers.SerializerMethodField()
+    category_name = serializers.CharField(source='category.category_name', read_only=True)
+    discount = DiscountSerializer(read_only=True)
     class Meta:
         model = Book
-        fields = ['id', 'title', 'price', 'discounted_price', 'authors', 'cover_image', 'ISBN', 'description', 'publishing', 'publishing_year', 'number_of_copies']
+        fields = ['id', 'title', 'category_name', 'price', 'discount', 'discounted_price', 'authors', 'cover_image', 'ISBN', 'description', 'publishing', 'publishing_year', 'number_of_copies']
 
     def get_cover_image(self, obj):
         request = self.context.get('request')
@@ -158,6 +170,10 @@ class BookInOrderSerializer(serializers.ModelSerializer):
         model = BookInOrder
         fields = ['book_id', 'title', 'count_of_book', 'cover_image']
 
+    def get_cover_image(self, obj):
+        if obj.book.cover_image:
+            return obj.book.cover_image.url
+        return None
 
 class OrderHistorySerializer(serializers.ModelSerializer):
     books = BookInOrderSerializer(many=True, read_only=True, source='bookinorder_set', context={'request': None})
@@ -168,30 +184,80 @@ class OrderHistorySerializer(serializers.ModelSerializer):
         fields = ['id', 'sale_date', 'sale_price', 'status_name', 'books']
 
 class BookCreateUpdateSerializer(serializers.ModelSerializer):
-    authors = serializers.PrimaryKeyRelatedField(many=True, queryset=Author.objects.all(), required=False)
+    authors = AuthorSerializer(many=True, required=False)
     class Meta:
         model = Book
         fields = '__all__'
 
     def create(self, validated_data):
-        author_ids = self.initial_data.get('author', [])
-        authors = Author.objects.filter(pk__in=author_ids)
-        book = super().create(validated_data)
-        book.authors.set(authors)
-        return book
-    def update(self, instance, validated_data):
-        author_ids = self.initial_data.get('author', [])
-        authors = Author.objects.filter(pk__in=author_ids)
-        book = super().update(instance, validated_data)
+        authors_data = validated_data.pop('authors', None)
+        authors = []
+
+        if authors_data:
+            for author_data in authors_data:
+                try:
+                    author = Author.objects.get(
+                        author_last_name=author_data['author_last_name'],
+                        author_first_name=author_data['author_first_name'],
+                        author_patronymic=author_data.get('author_patronymic', None)
+                    )
+                    authors.append(author)
+                except Author.DoesNotExist:
+                    author = Author(
+                        author_last_name=author_data['author_last_name'],
+                        author_first_name=author_data['author_first_name'],
+                        author_patronymic=author_data.get('author_patronymic', None)
+                    )
+                    author.save()
+                    authors.append(author)
+
+
+        book = Book.objects.create(**validated_data)
         book.authors.set(authors)
         return book
 
-class DiscountSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Discount
-        fields = ['id', 'discount_name', 'discount_percentage']
+
+    def update(self, instance, validated_data):
+        authors_data = validated_data.pop('authors', None)
+        authors = []
+
+        if authors_data:
+            for author_data in authors_data:
+                try:
+                    author = Author.objects.get(
+                        author_last_name=author_data['author_last_name'],
+                        author_first_name=author_data['author_first_name'],
+                        author_patronymic=author_data.get('author_patronymic', None)
+                    )
+                    authors.append(author)
+                except Author.DoesNotExist:
+                    author = Author(
+                        author_last_name=author_data['author_last_name'],
+                        author_first_name=author_data['author_first_name'],
+                        author_patronymic=author_data.get('author_patronymic', None)
+                    )
+                    author.save()
+                    authors.append(author)
+
+        instance.authors.set(authors)
+        return super().update(instance, validated_data)
 
 class AuthorSerializerForList(serializers.ModelSerializer):
+    last_name = serializers.CharField(source='author_last_name', read_only=True)
+    first_name = serializers.CharField(source='author_first_name', read_only=True)
+    patronymic = serializers.CharField(source='author_patronymic', read_only=True)
+
     class Meta:
         model = Author
-        fields = ['id', 'author_last_name', 'author_first_name', 'author_patronymic']
+        fields = ['last_name', 'first_name', 'patronymic']
+
+class OrderHistoryAdminSerializer(serializers.ModelSerializer):
+    books = BookInOrderSerializer(many=True, read_only=True, source='bookinorder_set')
+    status = serializers.PrimaryKeyRelatedField(queryset=OrderStatus.objects.all())
+    client_name = serializers.CharField(source='client.user.username', read_only=True)
+    client_phone = serializers.CharField(source='client.user.phone_number', read_only=True)
+
+    class Meta:
+        model = OrderHistory
+        fields = ['id', 'client_name', 'client_phone', 'sale_date', 'sale_price', 'status', 'books']
+

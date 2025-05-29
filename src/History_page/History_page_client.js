@@ -1,16 +1,16 @@
 // History_page.js
 import React, { useState, useEffect } from 'react';
-import NotificationModal from '../NotificationModal/NotificationModal';
+import NotificationModal from '../NotificationModal/NotificationModal.js';
 import Header from '../layout/Header.js';
 import "./History_page.css";
-import Order from './Order/Order';
-import Footer from "../components/footer/footer";
+import OrderClient from './Order/Order_client.jsx';
+import Footer from "../components/footer/footer.jsx";
 import FetchWithAuth from '../layout/LoginWindow/FetchWithAuth.js';
 import book1 from '../images/image 1.png';
 import book2 from '../images/image 2.png';
 import book3 from '../images/image 3.png';
 
-// const HistoryPage = () => {
+// const HistoryPageClient = () => {
 //     const [isModalOpen, setIsModalOpen] = useState(false);
 
 //     const openModal = () => {
@@ -20,7 +20,8 @@ import book3 from '../images/image 3.png';
 //     const closeModal = () => {
 //         setIsModalOpen(false);
 //     };
-
+//     const role = localStorage.getItem('role'); 
+    
 //     // Массив данных для заказов
 //     const ordersData = [
 //         {
@@ -50,7 +51,7 @@ import book3 from '../images/image 3.png';
 //          },
 //     ];
 
-//     return (
+//  return (
 //         <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', alignItems: 'center' }}>
 //             <Header onOpenModal={openModal} />
 //             {isModalOpen && <NotificationModal onClose={closeModal} />}
@@ -61,7 +62,7 @@ import book3 from '../images/image 3.png';
 //                 <div className='ListOrders'>
 //                     {/* Рендерим несколько компонентов Order, используя map */}
 //                     {ordersData.map((order, index) => (
-//                         <Order
+//                         <OrderClient
 //                             key={index} // Важно! Добавляем key для каждого элемента
 //                             orderNumber={order.orderNumber}
 //                             date={order.date}
@@ -77,9 +78,12 @@ import book3 from '../images/image 3.png';
 //     );
 // };
 
-// export default HistoryPage;
+// export default HistoryPageClient;
 
-const HistoryPage = () => {
+
+
+
+const HistoryPageClient = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     // Инициализируем ordersData как пустой массив
     const [ordersData, setOrdersData] = useState([]);
@@ -177,7 +181,7 @@ const HistoryPage = () => {
                     {/* Условный рендеринг списка заказов */}
                     {!fetchLoading && !fetchError && Array.isArray(ordersData) && ordersData.length > 0 ? (
                         ordersData.map((order) => (
-                            <Order
+                            <OrderClient
                                 key={order.id} // Используем оригинальный id для key
                                 orderNumber={order.orderNumber} // Используем обработанный orderNumber
                                 date={order.date}         // Используем обработанную дату
@@ -197,4 +201,5 @@ const HistoryPage = () => {
     );
 };
 
-export default HistoryPage;
+export default HistoryPageClient;
+
