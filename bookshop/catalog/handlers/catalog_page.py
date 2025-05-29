@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView
 from rest_framework.response import Response
-from rest_framework import status, permissions
+from rest_framework import status, permissions, generics
 from catalog.models import *
 from catalog.serializers import *
 from django.shortcuts import get_object_or_404
@@ -54,38 +54,89 @@ class SortedBooksView(ListAPIView):
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-
-class AddToCartView(CreateAPIView):
+class AddToCartView(generics.CreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
     queryset = BookInCart.objects.all()
     serializer_class = CartSerializer
 
     def create(self, request, *args, **kwargs):
-        book_id = request.data.get('book')
-        client_user_id = request.data.get('client')
+        try:
+            user = request.user
+            try:
+                client = Client.objects.get(user=user)
+            except Client.DoesNotExist:
+                return Response(
+                    {"message": "Клиент не найден"},
+                    status=status.HTTP_404_NOT_FOUND
+                )
 
-        # Проверка существования книги
-        if not Book.objects.filter(id=book_id).exists():
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            book_id = serializer.validated_data['book'].id
+            count_of_book = serializer.validated_data.get('count_of_book', 1)
+
+            try:
+                book = Book.objects.get(id=book_id)
+            except Book.DoesNotExist:
+                return Response(
+                    {"message": "Книга не найдена"},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+
+            try:
+                cart_item, created = BookInCart.objects.get_or_create(
+                    client=client,
+                    book=book,
+                    defaults={'count_of_book': count_of_book}
+                )
+                if not created:
+                    cart_item.count_of_book += count_of_book
+                    if hasattr(book, 'stock') and book.stock < cart_item.count_of_book:
+                        return Response(
+                            {"message": f"Недостаточно книг в наличии: доступно {book.stock}"},
+                            status=status.HTTP_400_BAD_REQUEST
+                        )
+                    cart_item.save()
+            except DatabaseError as e:
+                return Response(
+                    {"message": "Ошибка при добавлении книги в корзину"},
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                )
+
+            try:
+                updated_cart = BookInCart.objects.filter(client=client)
+                output_serializer = CartSerializer(updated_cart, many=True, context={'request': request})
+            except DatabaseError as e:
+                return Response(
+                    {"message": "Ошибка при получении корзины"},
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                )
+            except ValidationError as e:
+                return Response(
+                    {"message": "Ошибка сериализации данных корзины"},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            return Response(output_serializer.data, status=status.HTTP_201_CREATED)
+
+        except Exception as e:
             return Response(
-                {"message": "Книга не найдена"},
-                status=status.HTTP_400_BAD_REQUEST
+                {"message": "Произошла непредвиденная ошибка"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
-
-        # Проверка существования клиента (через user_id)
-        if not Client.objects.filter(user_id=client_user_id).exists():
-            return Response(
-                {"message": "Клиент не найден"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        return super().create(request, *args, **kwargs)
-
 
 class BookListView(ListAPIView):
     permission_classes = [AllowAny]
     queryset = Book.objects.prefetch_related('authors').all()
     serializer_class = BookSerializer
 
+    def get(self, request, *args, **kwargs):
+        if not self.queryset.exists():
+            return Response(
+                {"message": "Книги не найдены"},
+                status=status.HTTP_200_OK
+            )
+        return super().get(request, *args, **kwargs)
 
 class BookSearchView(APIView):
     permission_classes = [AllowAny]
@@ -101,6 +152,10 @@ class BookSearchView(APIView):
             Q(authorsofbook__author__author_first_name__icontains=query) |
             Q(category__category_name__icontains=query)
         ).distinct()
-
+        if not books.exists():
+            return Response(
+                {"message": "Книги не найдены"},
+                status=status.HTTP_200_OK
+            )
         serializer = BookSerializer(books, many=True, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
