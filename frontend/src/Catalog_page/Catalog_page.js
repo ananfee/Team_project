@@ -57,7 +57,7 @@ function Catalog_page()
   async function editBooks(filterOptions) {
     setLoading(true);
     try {
-      let url = "http://backend:8001/catalog/books/sorted/";
+      let url = "http://5.129.207.153:8001/catalog/books/sorted/";
       const params = new URLSearchParams();
   
       if (filterOptions.category) {
@@ -82,7 +82,7 @@ function Catalog_page()
   async function editBooksSearch(query)
   {
     try{
-      let url = `http://backend:8001/catalog/books/search/?q=${query}`;
+      let url = `http://5.129.207.153:8001/catalog/books/search/?q=${query}`;
       const response = await fetch(url);
       const data = await response.json();
       setBooks(data);

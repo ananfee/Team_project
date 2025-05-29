@@ -288,7 +288,7 @@ const BasketPage = () => {
     const handleDeleteItem = async (bookIdToDelete) => {
          try {
               // TODO: Уточните URL и метод для удаления одного товара
-                const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/cart/remove/', {
+                const response = await FetchWithAuth('http://5.129.207.153:8001/catalog/cart/remove/', {
                     method: 'DELETE',
               });
 
@@ -326,7 +326,7 @@ const BasketPage = () => {
         try {
              // TODO: Уточните URL, метод и формат данных для изменения количества
              // Пример URL: `http://127.0.0.1:8000/catalog/update_cart_item/${bookIdToUpdate}/`
-             const response = await FetchWithAuth("http://127.0.0.1:8000/catalog/cart/update/", {
+             const response = await FetchWithAuth("http://5.129.207.153:8001/catalog/cart/update/", {
                   method: 'PATCH', // Или 'POST', зависит от API
                   headers: {
                        'Content-Type': 'application/json', // Обычно нужно для отправки тела запроса
@@ -371,7 +371,7 @@ const BasketPage = () => {
                 setError(null); // Сбрасываем ошибку перед новой попыткой
 
                 // Используем вашу функцию FetchWithAuth
-                const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/get_cart/', {
+                const response = await FetchWithAuth('http://5.129.207.153:8001/catalog/get_cart/', {
                     method: 'GET', // Метод GET для получения данных
                     // Заголовок Authorization будет добавлен автоматически в FetchWithAuth
                     // 'Content-Type': 'application/json', // Обычно не нужен для GET-запросов, но не помешает
