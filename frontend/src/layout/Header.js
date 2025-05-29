@@ -19,7 +19,7 @@ function Header({onOpenModal}) {
     const handleLogout = async () => {
       const refreshToken = localStorage.getItem('refreshToken');
       try {
-         const response = await fetch('http://5.129.207.153/api/catalog/logout/', {
+         const response = await fetch('http://5.129.207.153:8001/catalog/logout/', {
             method: 'POST',
             headers: {
                'Content-Type': 'application/json'

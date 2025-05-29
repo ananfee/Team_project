@@ -98,7 +98,7 @@ const HistoryPage = () => {
         const fetchData = async () => {
             try {
                 // 1. Используем FetchWithAuth для получения Response
-                const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/order-history/');
+                const response = await FetchWithAuth('http://5.129.207.153:8001/catalog/order-history/');
 
                 // 2. Проверяем статус ответа
                 if (!response.ok) {
