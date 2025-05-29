@@ -1,43 +1,42 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom"; // Импортируем Link
+import { Link } from "react-router-dom"; 
 import styles from "../layout/Header.module.css";
 import NotificationButton from "./NotificationButton/NotificationButton.js";
 import OrdersButton from "./OrdersButton/OrdersButton.jsx";
+import BasketButton from "./BasketButton/BasketButton.jsx";
 import LoginWindow from "./LoginWindow/LoginWindow.js";
 import FetchWithAuth from "./LoginWindow/FetchWithAuth.js";
 
-
 function Header({onOpenModal}) {
    const [loginModalOpen, setLoginModalOpen] = useState(false);
-   const role = "Сотрудник"
-   // const [role, setRole] = useState("");
-   // const [isAuth, setIsAuth] = useState(!!localStorage.getItem('accessToken'));
+   const [role, setRole] = useState("");
+   const [isAuth, setIsAuth] = useState(!!localStorage.getItem('accessToken'));
 
-   // useEffect(() => {
-   //    setIsAuth(!!localStorage.getItem('accessToken'));
-   //    setRole(localStorage.getItem('role'));
-   //  }, []);
+   useEffect(() => {
+      setIsAuth(!!localStorage.getItem('accessToken'));
+      setRole(localStorage.getItem('role'));
+    }, []);
 
-   //  const handleLogout = async () => {
-   //    const refreshToken = localStorage.getItem('refreshToken');
-   //    try {
-   //       const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/logout/', {
-   //          method: 'POST',
-   //          headers: {
-   //             'Content-Type': 'application/json'
-   //          },
-   //          body: JSON.stringify({ refresh: refreshToken })
-   //       });
-   //       if (!response.ok) throw new Error('Ошибка при выходе');
-   //       localStorage.removeItem('accessToken');
-   //       localStorage.removeItem('refreshToken');
-   //       localStorage.removeItem('role');
-   //       setIsAuth(false); 
-   //       setRole("");   
-   //       window.location.reload(); 
-   //    } catch (error) {
-   //    }
-   //  };
+    const handleLogout = async () => {
+      const refreshToken = localStorage.getItem('refreshToken');
+      try {
+         const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/logout/', {
+            method: 'POST',
+            headers: {
+               'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ refresh: refreshToken })
+         });
+         if (!response.ok) throw new Error('Ошибка при выходе');
+         localStorage.removeItem('accessToken');
+         localStorage.removeItem('refreshToken');
+         localStorage.removeItem('role');
+         setIsAuth(false); 
+         setRole("");   
+         window.location.reload(); 
+      } catch (error) {
+      }
+    };
 
    return (
       <div className={styles.headerContainer}>
@@ -67,9 +66,7 @@ function Header({onOpenModal}) {
                      <>
                         <NotificationButton onClick={onOpenModal} />
                         <OrdersButton />
-                        <button className={styles.deliveryButton}>
-                        <img src="shopping-cart.svg" alt="корзина" />
-                        </button>
+                        <BasketButton />
                         <button className={styles.Role}>Покупатель</button>
                      </>
                   )
@@ -77,17 +74,15 @@ function Header({onOpenModal}) {
                      <>
                         <NotificationButton onClick={onOpenModal} />
                         <OrdersButton />
-                        <button className={styles.deliveryButton}>
-                        <img src="shopping-cart.svg" alt="корзина" />
-                        </button>
+                        <BasketButton />
                      </>
                   )
                }
-            {/* {isAuth 
+            {isAuth 
                ? <button className={styles.loginButton} onClick={handleLogout}>Выйти</button>
-               :  */}
+               : 
                <button className={styles.loginButton} onClick={() => setLoginModalOpen(true)}>Войти</button>
-            {/* } */}
+            }
             <LoginWindow isOpen={loginModalOpen} onClose={() => setLoginModalOpen(false)} />
          </div>
       </div>

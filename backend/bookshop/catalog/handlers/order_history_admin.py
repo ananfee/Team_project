@@ -27,15 +27,35 @@ class OrderHistoryAdminView(APIView):
 
 
 class OrderStatusUpdateView(APIView):
-
     def patch(self, request, order_id):
         try:
             order = OrderHistory.objects.get(pk=order_id)
         except OrderHistory.DoesNotExist:
             return Response({"error": "Заказ не найден"}, status=status.HTTP_404_NOT_FOUND)
 
-        serializer = OrderHistoryAdminSerializer(order, data={"status": request.data.get("status")}, partial=True)
+        new_status_id = request.data.get('status')
+
+        # Проверка на пустой статус
+        if new_status_id is None:
+            return Response({"error": "Статус не может быть пустым"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            new_status = OrderStatus.objects.get(pk=new_status_id)
+        except OrderStatus.DoesNotExist:
+            return Response({"error": "Статус не найден"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Проверка на повтор статуса
+        if order.status_id == new_status_id:
+            return Response({"error": "Новый статус совпадает с текущим"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Проверка на изменение статуса на статус с меньшим id
+        if new_status.id < order.status.id:
+            return Response({"error": "Нельзя изменить статус на статус с меньшим id"},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = OrderHistoryAdminSerializer(order, data={"status": new_status_id}, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response({'Статус заказа изменен'}, status=status.HTTP_200_OK)
+            return Response({'message': 'Статус заказа изменен', 'order': serializer.data},
+                            status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

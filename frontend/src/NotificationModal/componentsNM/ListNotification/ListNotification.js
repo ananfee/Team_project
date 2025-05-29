@@ -105,7 +105,7 @@ const ListNotification = () => {
     useEffect(() => {
         const fetchNotifications = async () => {
             try {
-                const response = await FetchWithAuth('http://5.129.207.153:8001/catalog/notifications/');
+                const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/notifications/');
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }

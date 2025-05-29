@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/static/css/main.dabca11a.css",
+    "main.js": "/static/js/main.460e079d.js",
+    "static/media/books.png": "/static/media/books.1dc74420adc4da3feaf5.png",
+    "static/media/image 1.png": "/static/media/image 1.741a6333632094393762.png",
+    "static/media/image 3.png": "/static/media/image 3.30164a793beb4933c1ef.png",
+    "static/media/image 2.png": "/static/media/image 2.efccdb99f247cae0222c.png",
+    "static/media/arrow-circle-left.svg": "/static/media/arrow-circle-left.623f2c390c4bafbf78eb.svg",
+    "static/media/shopping-cart.svg": "/static/media/shopping-cart.9f61e30accf7182e45f8.svg",
+    "index.html": "/index.html",
+    "static/media/search-normal.svg": "/static/media/search-normal.f12cca7b1ee8f7449313.svg",
+    "static/media/close.svg": "/static/media/close.415a5c7f6e4c5ca18e3e.svg",
+    "static/media/down.svg": "/static/media/down.c4c71e77e2722cecb0c7.svg",
+    "static/media/back.svg": "/static/media/back.80e48d565f368eaa0030.svg",
+    "static/media/arrow-down.svg": "/static/media/arrow-down.2c65921a5a485cab9f44.svg",
+    "main.dabca11a.css.map": "/static/css/main.dabca11a.css.map",
+    "main.460e079d.js.map": "/static/js/main.460e079d.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.dabca11a.css",
+    "static/js/main.460e079d.js"
+  ]
+}

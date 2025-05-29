@@ -7,18 +7,10 @@ from .handlers.notifications import *
 from .handlers.cart import *
 from .handlers.order_history import *
 from .handlers.сatalog_management import *
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-
-@api_view(["GET"])
-def hello(request):
-
-    permission_classes = [permissions.AllowAny]
-    return Response({"Hello": "World"})
+from .handlers.order_history_admin import *
 
 
 urlpatterns = ([
-    path('hello/', hello),
     path('categories/', CategoryListView.as_view(), name='category-list'),
     path('books/sorted/', SortedBooksView.as_view(), name='sorted-books'),
     path('cart/', AddToCartView.as_view(), name='add-to-cart'),
@@ -42,4 +34,7 @@ urlpatterns = ([
     path('books/delete/<int:book_id>/', BooksView.as_view(), name='book-delete'),
     path('discounts/', DiscountListView.as_view(), name='discount-list'),
     path('authors/', AuthorListView.as_view(), name='author-list'),
+    path('admin/orders/', OrderHistoryAdminView.as_view(), name='admin-order-history'),
+    path('admin/orders/<int:order_id>/status/', OrderStatusUpdateView.as_view(), name='order-status-update'),
+    path('status/', StatusListView.as_view(), name='status-list'),
 ])

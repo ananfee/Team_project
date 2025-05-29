@@ -1,10 +1,27 @@
-import React from 'react'; // Убрал useState
+import React,  { useEffect } from 'react'; // Убрал useState
 import CancelButton from "./CancelButton/CancelButton";
 import DeleteProductButton from "./DeleteProductButton/DeleteProductButton";
 import './DeleteProductWindow.css';
 import cp from '../../images/add.png';
 
 const DeleteProductWindow = ({ onClose, isOpen, onQuantityChange }) => {
+        const handleClose = () => {
+        if (onClose) {
+            onClose();
+        }
+    };
+        useEffect(() => {
+            const handleEsc = (event) => {
+                if (event.key === "Escape") {
+                    onClose();
+                }
+            };
+    
+            window.addEventListener("keydown", handleEsc);
+            return () => {
+                window.removeEventListener("keydown", handleEsc);
+            };
+        }, [onClose]);
     return (
         <div className="deleteProductWindow-overlay" style={{ display: isOpen ? 'flex' : 'none' }}>
             <div className="deleteProductWindow-content">

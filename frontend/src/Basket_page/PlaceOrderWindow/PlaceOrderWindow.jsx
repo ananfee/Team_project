@@ -1,7 +1,6 @@
 // PlaceOrderWindow.jsx
-import React, { useEffect } from 'react';
-import CancelButton from "../DeleteProductWindow/CancelButton/CancelButton.jsx";
-import PlaceOrderButton from "../PlaceOrderButton/PlaceOrderButton.jsx";
+import { useEffect } from 'react';
+import OKButton from "./OKButton/OKButton";
 import '../DeleteProductWindow/DeleteProductWindow.css';
 import cp from '../../images/add.png';
 
@@ -82,9 +81,8 @@ const PlaceOrderWindow = ({ onClose, isOpen, onPlaceOrder, orderMessage }) => {
                     <p>Вы уверены, что хотите оформить заказ?</p>
                     {orderMessage && <p className='order-message'>{orderMessage}</p>} {/* Отображаем сообщение о результате */}
                 </div>
-                <div className='conteiner_buttons'>
-                    <CancelButton onClick={onClose} />
-                    <PlaceOrderButton onClick={onPlaceOrder} /> {/* Кнопка для оформления заказа */}
+                <div className='conteiner_buttons' style={{marginRight: 20}}>
+                    <OKButton onClick={onClose}/>
                 </div>
             </div>
         </div>
