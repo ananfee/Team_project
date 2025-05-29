@@ -99,7 +99,7 @@
  }
 
  .DownloadFhotoButton{
-      width: 100%;
+   width: 100%;
       height: 40px;
       border: none;
       cursor: pointer;
@@ -304,15 +304,3 @@
       color: white;
       margin-top: 37px;
  }
-
- .Error{
-
-  color: #e13939;
-  font-family: "Inter", sans-serif;
-  font-size: 16px;
-  margin-bottom: 10px;
-}
-
-.Error:last-child{
-  margin-bottom: 0;
-}
