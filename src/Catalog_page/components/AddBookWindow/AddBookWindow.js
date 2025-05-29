@@ -40,7 +40,8 @@ function AddBookWindow({isOpen, onClose, obj})
    const fetchDropdownData = async () => {
       // Авторы
       try {
-        const authors = await FetchWithAuth('http://127.0.0.1:8000/catalog/authors/');
+        const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/authors/');
+        const authors = await response.json();
         setLast_name(authors.last_names || []);
         setFirst_names(authors.first_names || []);
         setPatronymics(authors.patronymics || []);
@@ -50,7 +51,8 @@ function AddBookWindow({isOpen, onClose, obj})
   
       // Скидки
       try {
-        const discounts = await FetchWithAuth('http://127.0.0.1:8000/catalog/discounts/');
+        const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/discounts/');
+        const discounts = await response.json();
         setDiscount(discounts || []);
       } catch (error) {
         console.error('Ошибка при получении скидок', error);
@@ -58,7 +60,8 @@ function AddBookWindow({isOpen, onClose, obj})
   
       // Категории
       try {
-        const categories = await FetchWithAuth('http://127.0.0.1:8000/catalog/categories/');
+        const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/categories/');
+         const categories = await response.json();
         setGenre(categories || []);
       } catch (error) {
         console.error('Ошибка при получении категорий', error);
@@ -132,11 +135,6 @@ function AddBookWindow({isOpen, onClose, obj})
 
        if (!description) {
          newErrors.description = "Введите описание книги";
-         hasError = true;
-       }
-
-       if (!img) {
-         newErrors.img = "Загрузите картинку книги";
          hasError = true;
        }
 

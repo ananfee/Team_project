@@ -125,10 +125,6 @@ function Catalog_page()
     editBooks(filters);
   }, [filters]);
 
-  if (loading)
-  {
-    return <p>"Загрузка ..."</p>
-  }
   const [role, setRole] = useState("");
   const [isAuth, setIsAuth] = useState(!!localStorage.getItem('accessToken'));
   
@@ -136,6 +132,11 @@ function Catalog_page()
     setIsAuth(!!localStorage.getItem('accessToken'));
     setRole(localStorage.getItem('role'));
   }, []);
+
+  if (loading)
+  {
+    return <p>"Загрузка ..."</p>
+  }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', alignItems: 'center' }}>
