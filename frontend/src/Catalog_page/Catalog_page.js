@@ -5,11 +5,14 @@ import DropDownSort from './components/DropDownSort/DropDownSort.js';
 import DropDownCategories from './components/DropDownCategories/DropDownCategories.js';
 import Catalog from './components/Catalog/Catalog.js';
 import Footer from "../components/footer/footer";
-import NotificationModal from '../NotificationModal/NotificationModal'; 
+import NotificationModal from '../NotificationModal/NotificationModal';
+import styles from './Catalog_page.module.css';
+import AddBookWindow from './components/AddBookWindow/AddBookWindow.js'
 
 
 function Catalog_page()
 {
+  const [addBookModalOpen, setAddBookModalOpen] = useState(false);
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -33,8 +36,8 @@ function Catalog_page()
     setLoading(true);
     try {
       const [response1, response2] = await Promise.all([
-        fetch("http://5.129.207.153:8001/catalog/books/"),
-        fetch("http://5.129.207.153:8001/catalog/categories/")
+        fetch("http://127.0.0.1:8000/catalog/books/"), 
+        fetch("http://127.0.0.1:8000/catalog/categories/") 
       ]);
 
       const [data1, data2] = await Promise.all([
@@ -57,7 +60,7 @@ function Catalog_page()
   async function editBooks(filterOptions) {
     setLoading(true);
     try {
-      let url = "http://5.129.207.153:8001/catalog/books/sorted/";
+      let url = "http://127.0.0.1:8000/catalog/books/sorted/";
       const params = new URLSearchParams();
   
       if (filterOptions.category) {
@@ -82,7 +85,7 @@ function Catalog_page()
   async function editBooksSearch(query)
   {
     try{
-      let url = `http://5.129.207.153:8001/catalog/books/search/?q=${query}`;
+      let url = `http://127.0.0.1:8000/catalog/books/search/?q=${query}`;
       const response = await fetch(url);
       const data = await response.json();
       setBooks(data);
@@ -122,6 +125,14 @@ function Catalog_page()
     editBooks(filters);
   }, [filters]);
 
+  const [role, setRole] = useState("");
+  const [isAuth, setIsAuth] = useState(!!localStorage.getItem('accessToken'));
+  
+  useEffect(() => {
+    setIsAuth(!!localStorage.getItem('accessToken'));
+    setRole(localStorage.getItem('role'));
+  }, []);
+
   if (loading)
   {
     return <p>"Загрузка ..."</p>
@@ -129,22 +140,38 @@ function Catalog_page()
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', alignItems: 'center' }}>
-      <Header onOpenModal={openModal} />
-         {isModalOpen && (
+      <Header 
+      onOpenModal={openModal} 
+      />
+        {isModalOpen && (
         <NotificationModal onClose={closeModal} />
-         )}
+          )} 
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1 }}>
-            <div style={{ display: 'flex', alignItems: 'center', marginBottom: 42 ,marginTop: 42}}>
-                <Search onSearchChange={handleSearchChange} />
-                <DropDownSort onSortChange={handleSortChange} SelOr={selectedOrdering} />
-                <DropDownCategories allCategories={categories} onCategoriesChange={handleCategoryChange} SelCat={selectedCategory}/>
+
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: 42, marginTop: 42 }}>
+                <Search 
+                onSearchChange={handleSearchChange} 
+                />
+                <DropDownSort 
+                onSortChange={handleSortChange} SelOr={selectedOrdering} 
+                />
+                {role == 'Сотрудник' ? (<>
+                      <button className={styles.AddBook} onClick={() => setAddBookModalOpen(true)}>Добавить книгу</button> 
+                      <AddBookWindow isOpen={addBookModalOpen} onClose={() => setAddBookModalOpen(false)} />
+                    </>):
+                    <DropDownCategories 
+                    allCategories={categories} onCategoriesChange={handleCategoryChange} SelCat={selectedCategory}
+                    />
+                }
             </div>
             {error ? (
                 <p style={{ fontSize: 20, color: 'lightgray' }}>{error}</p>
             ) : (
-                books.length > 0 ? 
-                    (<Catalog data={books} />) : 
-                    (<p style={{ fontSize: 20, color: 'lightgray' }}>Похоже, у нас такого нет</p>)
+                 books.length > 0 ?  
+                    (
+                      <Catalog data={books}/>
+                    ) : 
+                    (<p style={{ fontSize: 20, color: 'lightgray' }}>Похоже, у нас такого нет</p>) 
             )}
         </div>
         <Footer />
