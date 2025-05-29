@@ -61,7 +61,7 @@ class ShortBookSerializer(serializers.ModelSerializer):
 class CartSerializer(serializers.ModelSerializer):
     class Meta:
         model = BookInCart
-        fields = '__all__'
+        fields = ['id', 'book', 'book_id', 'count_of_book']
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):

@@ -20,6 +20,15 @@ class CartView(generics.ListAPIView):
 
         return BookInCart.objects.filter(client=client).select_related('book')
 
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        if not queryset.exists():
+            return Response(
+                {"message": "Корзина пуста"},
+                status=status.HTTP_200_OK
+            )
+        return super().list(request, *args, **kwargs)
+
     def get_serializer_context(self):
         return {'request': self.request}
 
@@ -58,7 +67,14 @@ class RemoveCartItemView(generics.DestroyAPIView):
         client = Client.objects.get(user=request.user)
         book_id = serializer.validated_data['book_id']
 
-        BookInCart.objects.filter(client=client, book_id=book_id).delete()
+        cart_item = BookInCart.objects.filter(client=client, book_id=book_id).first()
+        if not cart_item:
+            return Response(
+                {"message": "Книга не найдена в корзине."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        cart_item.delete()
 
         updated_items = BookInCart.objects.filter(client=client)
         output_serializer = CartBookSerializer(updated_items, many=True, context={'request': request})
