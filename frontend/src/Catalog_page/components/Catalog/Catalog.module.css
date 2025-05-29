@@ -1,0 +1,45 @@
+.CatalogContainer{
+   display: grid; 
+   grid-template-columns: repeat(6, 1fr);
+   gap: 40px;
+   margin-bottom: 50px;
+}
+
+.paginationNav {
+   display: flex;
+   justify-content: center;
+   gap: 10px;
+   margin-bottom: 15px;
+ }
+ 
+.ButtonNav {
+   width: 100px;
+   height: 28px;
+   cursor: pointer;
+   border-radius: 22px;
+   border: 1px solid #5D3C64;
+   background-color: white;
+ }
+
+.ButtonNav:hover {  
+   cursor: pointer;
+   background-color: #9F76A7;
+}
+
+.NumberPageButton{
+   cursor: pointer;
+   border-radius: 22px;
+   border: 1px solid #5D3C64;
+   background-color: white;
+   width: 28px;
+ }
+
+.active {
+   font-weight: bold;
+   background-color: #9F76A7;
+ }
+
+.NumberPageButton:hover {  
+   cursor: pointer;
+   background-color: #9F76A7;
+}
