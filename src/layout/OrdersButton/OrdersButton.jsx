@@ -5,9 +5,16 @@ import "../NotificationButton/NotificationButton.css";
 const OrdersButton = () => {
     const navigate = useNavigate();
     const [isHovered, setIsHovered] = useState(false);
-
+    const role = localStorage.getItem('role'); 
     const handleClick = () => {
-        navigate("/history");
+        // Направляем пользователя на соответствующий маршрут в зависимости от его роли
+        if (role === 'Клиент') {
+            navigate("/historyClient");
+        } else if (role === 'Сотрудник') {
+            navigate("/historyAdmin");
+        } else {
+            navigate("/"); // Выводим предупреждение в консоль для неизвестной роли
+        }
     };
 
     return (
