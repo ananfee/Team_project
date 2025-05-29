@@ -34,14 +34,12 @@ function AddBookWindow({isOpen, onClose, obj})
    const container1 = useRef();
    //для картинки
    const inputRef = useRef();
-   const [imgFile, setImgFile] = useState(null); //правки
 
    // Загрузка авторов, категорий и скидок
    const fetchDropdownData = async () => {
       // Авторы
       try {
-        const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/authors/');
-        const authors = await response.json();
+        const authors = await FetchWithAuth('http://127.0.0.1:8000/catalog/authors/');
         setLast_name(authors.last_names || []);
         setFirst_names(authors.first_names || []);
         setPatronymics(authors.patronymics || []);
@@ -51,8 +49,7 @@ function AddBookWindow({isOpen, onClose, obj})
   
       // Скидки
       try {
-        const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/discounts/');
-        const discounts = await response.json();
+        const discounts = await FetchWithAuth('http://127.0.0.1:8000/catalog/discounts/');
         setDiscount(discounts || []);
       } catch (error) {
         console.error('Ошибка при получении скидок', error);
@@ -60,8 +57,7 @@ function AddBookWindow({isOpen, onClose, obj})
   
       // Категории
       try {
-        const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/categories/');
-         const categories = await response.json();
+        const categories = await FetchWithAuth('http://127.0.0.1:8000/catalog/categories/');
         setGenre(categories || []);
       } catch (error) {
         console.error('Ошибка при получении категорий', error);
@@ -138,30 +134,29 @@ function AddBookWindow({isOpen, onClose, obj})
          hasError = true;
        }
 
+       if (!img) {
+         newErrors.img = "Загрузите картинку книги";
+         hasError = true;
+       }
+
 
       if (hasError) {
         setError(newErrors);
         return;
       }
 
-       // Формируем FormData
-      const formData = new FormData();
-
-      // Добавляем обычные поля
-      formData.append('title', title);
-      formData.append('category', selectedGenre.id);
-      formData.append('publishing', publisher);
-      formData.append('publishing_year', year);
-      formData.append('ISBN', isbn);
-      formData.append('price', Number(price));
-      formData.append('discount', selectedDiscount.id);
-      formData.append('number_of_copies', Number(count));
-      formData.append('description', description);
-      formData.append('authors', JSON.stringify(authors));
-
-      if (imgFile) {
-         formData.append('cover_image', imgFile);
-      }
+      const data = {
+         title: title,
+         authors: authors,
+         category: selectedGenre.id,           
+         publishing: publisher,
+         publishing_year: Number(year),
+         ISBN: isbn,
+         price: Number(price),
+         discount: selectedDiscount.id,     
+         number_of_copies: Number(count),
+         description: description 
+       };
       
        const isEdit = !!obj; 
   
@@ -173,7 +168,10 @@ function AddBookWindow({isOpen, onClose, obj})
        try {
          const response = await FetchWithAuth(url, {
            method: method,
-           body: formData,
+           headers: {
+             'Content-Type': 'application/json'
+           },
+           body: JSON.stringify(data)
          });
      
          if (!response.ok) throw new Error('Ошибка');
@@ -217,7 +215,6 @@ function AddBookWindow({isOpen, onClose, obj})
            setSelectedDiscount(null);
            setDescription('');
            setImg('');
-           setImgFile(null);
            setError({title: "", count: "", genre: "", publisher: "",year: "",isbn: "",price: "", description: "", img: "", common: ""});
            return;
          }
@@ -258,22 +255,19 @@ function AddBookWindow({isOpen, onClose, obj})
            setSelectedDiscount(null);
            setDescription('');
            setImg('');
-           setImgFile(null);
          }
        }, [isOpen, obj, genre, discount]);
    
        const handleDeletePhoto = () => {
          setImg('');
-         setImgFile(null);
        };
      
        const handleDownloadPhoto = (e) => {
          const file = e.target.files && e.target.files[0];
          if (file) {
-            setImgFile(file);  //правки
-            const reader = new FileReader();
-            reader.onload = (ev) => setImg(ev.target.result);
-            reader.readAsDataURL(file); 
+           const reader = new FileReader();
+           reader.onload = (ev) => setImg(ev.target.result);
+           reader.readAsDataURL(file);
          }
        };
       
