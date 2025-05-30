@@ -23,9 +23,9 @@ def delete_cover_image(sender, instance, **kwargs):
 def add_user_to_role(sender, instance, created, **kwargs):
     if created:
         if instance.role:
-            if instance.role.id == 1:
+            if instance.role.role_name == "Сотрудник":
                 Employee.objects.create(user=instance)
-            elif instance.role.id == 2:
+            elif instance.role.role_name == "Клиент":
                 Client.objects.create(user=instance)
 
 
