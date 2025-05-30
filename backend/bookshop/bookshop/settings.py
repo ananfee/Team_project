@@ -227,9 +227,9 @@ AWS_QUERYSTRING_AUTH = False
 if os.environ.get('USE_S3', 'False') == 'True':
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
     # Если вы также хотите хранить статические файлы на Timeweb Cloud Object Storage:
-    # STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
-    # STATIC_URL = f'{AWS_S3_ENDPOINT_URL}/{AWS_STORAGE_BUCKET_NAME}/static/'
-    # AWS_LOCATION_STATIC = 'static' # Подпапка для статических файлов
+    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
+    STATIC_URL = f'{AWS_S3_ENDPOINT_URL}/{AWS_STORAGE_BUCKET_NAME}/static/'
+    AWS_LOCATION_STATIC = 'static' # Подпапка для статических файлов
 else:
     # Для локальной разработки, используйте локальное хранилище
     MEDIA_URL = '/media/'
