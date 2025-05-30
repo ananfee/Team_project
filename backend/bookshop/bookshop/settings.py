@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-0e2pxfd1-0vv31f(f3uyfze)qxa)s9lpjjv#^3x&-e3eam%r)s
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -82,10 +82,14 @@ MIDDLEWARE = [
 
 ]
 CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-    'http://127.0.0.1:3000'
-]
+# CORS_ALLOWED_ORIGINS = [
+#     'http://localhost:3000',
+#     'http://127.0.0.1:3000',
+#     'http://5.129.207.153'
+# ]
+# CORS_ALLOWED_ORIGINS = [
+#     '*'
+# ]
 CORS_ALLOW_HEADERS = [
     'content-type',
     'authorization',
@@ -131,8 +135,8 @@ DATABASES = {
         'NAME': 'bookshop',
         'USER': 'postgres_bookshop',
         'PASSWORD': 'postgres_bookshop',
-        'HOST': 'localhost',
-        'PORT': 5432,
+        'HOST': 'db',
+        'PORT': '5432',
     }
 }
 
