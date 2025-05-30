@@ -56,7 +56,7 @@ function LoginWindow ({isOpen, onClose})
     setError(errors);
     if (valid) {
       try {
-        const response = await fetch('http://127.0.0.1:8000/catalog/token/', {
+        const response = await fetch('http://5.129.207.153:8001/catalog/token/', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -144,7 +144,7 @@ function LoginWindow ({isOpen, onClose})
     }
     
     try {
-      const response = await fetch('http://127.0.0.1:8000/catalog/register/', {
+      const response = await fetch('http://5.129.207.153:8001/catalog/register/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

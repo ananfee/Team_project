@@ -106,7 +106,7 @@ const HistoryPageAdmin = () => {
         const fetchData = async () => {
             try {
                 // Получаем данные о заказах
-                const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/admin/orders/');
+                const response = await FetchWithAuth('http://5.129.207.153:8001/catalog/admin/orders/');
 
                 // Проверяем статус ответа
                 if (!response.ok) {

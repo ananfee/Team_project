@@ -5,7 +5,7 @@ async function RefreshToken() {
    if (!refreshToken) return null;
  
    try {
-     const response = await fetch('http://127.0.0.1:8000/catalog/token/refresh/', {
+     const response = await fetch('http:/5.129.207.153:8001/catalog/token/refresh/', {
        method: 'POST',
        headers: {
          'Content-Type': 'application/json'

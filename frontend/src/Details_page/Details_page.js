@@ -181,7 +181,7 @@ function Details_page()
    async function loadData() {
       setLoading(true);
       try {
-        let url = `http://127.0.0.1:8000/catalog/books/${id}/`;
+        let url = `http://5.129.207.153:8001/catalog/books/${id}/`;
         const response = await fetch(url);
         const data = await response.json();
         setBook(data.book); 
