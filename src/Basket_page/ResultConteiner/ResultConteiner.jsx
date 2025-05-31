@@ -94,9 +94,17 @@ const ResultConteiner = ({ totalItems, totalOriginalPrice, totalDiscount, finalP
         return 'товаров';
     };
 
+    // const formatPrice = (price) => {
+    //     return (price != null && typeof price === 'number' && Number.isFinite(price)) ? `${price.toFixed(2)} ₽` : '---';
+    // };
     const formatPrice = (price) => {
-        return (price != null && typeof price === 'number' && Number.isFinite(price)) ? `${price.toFixed(2)} ₽` : '---';
+        if (price == null || typeof price !== 'number' || !Number.isFinite(price)) {
+            return '---';
+        }
+        // Округляем до ближайшего целого числа
+        return `${Math.round(price)} ₽`;
     };
+
 
     const handlePlaceOrder = async () => {
         try {
@@ -128,19 +136,19 @@ const ResultConteiner = ({ totalItems, totalOriginalPrice, totalDiscount, finalP
     return (
         <div className='resultConteiner'>
             <div className='conteinerDop'>
-                <p className='total-title'>К оплате</p>
+                 <p style={{ fontSize: 24 }}>К оплате</p>
                 <div className='infoText'>
                     <div className='resultProductPrice'>
-                        <p className='item-count'>{totalItems ?? 0} {formatItemWord(totalItems)}</p>
-                        <p className='original-price'>{formatPrice(totalOriginalPrice)} </p>
+                        <p style={{ fontSize: 16 }}>{totalItems ?? 0} {formatItemWord(totalItems)}</p>
+                        <p style={{ fontSize: 16 }}>{formatPrice(totalOriginalPrice)} </p>
                     </div>
                     <div className='resultProductPrice'>
-                        <p className='discount-label'>Скидка</p>
-                        <p className='discount-value'>{formatPrice(totalDiscount ? -totalDiscount : 0)}</p>
+                        <p style={{ fontSize: 16 }}>Скидка</p>
+                        <p style={{ fontSize: 16, color: "#ED0006" }}>{formatPrice(totalDiscount ? -totalDiscount : 0)}</p>
                     </div>
                     <div className='resultProductPrice'>
-                        <p className='total-label'>Итого</p>
-                        <p className='total-value'>{formatPrice(finalPrice)}</p>
+                        <p style={{ fontSize: 16 }}>Итого</p>
+                        <p style={{ fontSize: 16 }}>{formatPrice(finalPrice)}</p>
                     </div>
                 </div>
                 <PlaceOrderButton onOpenPlaceOrderWindow={openPlaceOrderWindow} />

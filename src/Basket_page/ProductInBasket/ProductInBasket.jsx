@@ -19,7 +19,7 @@ const ProductInBasket = ({ book, count_of_book, onDelete, onQuantityChange }) =>
     const handleCloseDeleteWindow = () => {
         setIsDeleteWindowOpen(false);
     };
-        const handleConfirmDelete = () => {
+    const handleConfirmDelete = () => {
         handleCloseDeleteWindow(); // Закрываем окно после подтверждения
         onDelete(book.id); // Вызываем функцию удаления из родительского компонента
     };
@@ -51,7 +51,8 @@ const ProductInBasket = ({ book, count_of_book, onDelete, onQuantityChange }) =>
                         {/* Отображаем отформатированную строку с авторами */}
                         <p style={{fontSize: 14, color: "#777777"}}>{authorsString}</p>
                 </div>
-                    <NumberProducts initialCount={count_of_book} />
+                    <NumberProducts initialCount={count_of_book}
+                    onQuantityChange={handleQuantityChange}  />
                 </div>
             </div>
             <div className='conteiner00'>
@@ -60,7 +61,7 @@ const ProductInBasket = ({ book, count_of_book, onDelete, onQuantityChange }) =>
                     <p style={{color: "#777777", textDecoration: 'line-through', textDecorationColor: 'red'}}>{book.price*count_of_book} ₽</p> {/* Используем пропс oldPrice */}
                     <p style={{fontWeight: 500}}>{book.discounted_price*count_of_book} ₽</p> {/* Используем пропс newPrice */}
                 </div> ) : (<div className='priceProduct'>
-                    <p style={{fontWeight: 500}}>{book.discounted_price*count_of_book} ₽</p> {/* Используем пропс newPrice */}
+                    <p style={{fontWeight: 500}}>{book.price*count_of_book} ₽</p> {/* Используем пропс newPrice */}
                 </div>) }
                 <div>
                     <DeleteButton onOpenModal={handleOpenDeleteWindow} /> {/* Передаем функцию */}
