@@ -55,10 +55,13 @@ const ProductInBasket = ({ book, count_of_book, onDelete, onQuantityChange }) =>
                 </div>
             </div>
             <div className='conteiner00'>
-                <div className='priceProduct'>
+            {book.discounted_price != null ?
+              ( <div className='priceProduct'>
                     <p style={{color: "#777777", textDecoration: 'line-through', textDecorationColor: 'red'}}>{book.price*count_of_book} ₽</p> {/* Используем пропс oldPrice */}
                     <p style={{fontWeight: 500}}>{book.discounted_price*count_of_book} ₽</p> {/* Используем пропс newPrice */}
-                </div>
+                </div> ) : (<div className='priceProduct'>
+                    <p style={{fontWeight: 500}}>{book.discounted_price*count_of_book} ₽</p> {/* Используем пропс newPrice */}
+                </div>) }
                 <div>
                     <DeleteButton onOpenModal={handleOpenDeleteWindow} /> {/* Передаем функцию */}
                     <DeleteProductWindow isOpen={isDeleteWindowOpen} onClose={handleCloseDeleteWindow} onConfirmDelete={handleConfirmDelete} /> {/* Передаем состояние и onClose */}
