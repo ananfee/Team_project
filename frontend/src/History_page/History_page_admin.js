@@ -102,6 +102,37 @@ const HistoryPageAdmin = () => {
         setIsModalOpen(false);
     };
 
+        // Функция для обновления статуса заказа через API
+    const handleStatusUpdate = async (orderId, newStatus) => {
+        try {
+            // Предполагается, что FetchWithAuth сам добавит токен
+            const response = await FetchWithAuth(`http://127.0.0.1:8000/catalog/admin/orders/${orderId}/status/`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ status: newStatus }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json(); 
+                throw new Error(`HTTP error! status: ${response.status}, message: ${errorData.message || 'Unknown error'}`);
+            }
+
+            // Если успешно, обновляем состояние ordersData в родительском компоненте
+            setOrdersData(prevOrders => 
+                prevOrders.map(order => 
+                    order.id === orderId ? { ...order, status: newStatus } : order
+                )
+            );
+            console.log(`Статус заказа ${orderId} успешно обновлен на ${newStatus}`);
+        } catch (error) {
+            console.error("Ошибка при обновлении статуса заказа:", error);
+            // Перебрасываем ошибку, чтобы OrderAdmin мог ее поймать и показать пользователю
+            throw error; 
+        }
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -164,6 +195,7 @@ const HistoryPageAdmin = () => {
                                 sale_price={order.sale_price}
                                 status={order.status}
                                 books={order.books}
+                                onStatusUpdate={handleStatusUpdate}
                             />
                         ))
                     ) : (
