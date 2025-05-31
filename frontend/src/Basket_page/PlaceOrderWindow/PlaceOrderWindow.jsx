@@ -69,17 +69,16 @@ const PlaceOrderWindow = ({ onClose, isOpen, onPlaceOrder, orderMessage }) => {
     }, [onClose]);
 
     return (
-        <div className={`placeOrderWindow-overlay ${isOpen ? 'open' : ''}`} onClick={handleClose}>
-            <div className="placeOrderWindow-content">
-                <div className='NamePlaceOrderWindow'>
-                    <p>Подтверждение заказа</p>
-                    <button className='closePlaceOrderWindow' onClick={onClose}>
+        <div className={`deleteProductWindow-overlay ${isOpen ? 'open' : ''}`} onClick={handleClose}>
+            <div className="deleteProductWindow-content">
+                <div className='NameDeleteProductWindow'>
+                    <p>Заказ успешно оформлен</p>
+                    <button className='closeDeleteProductWindow' onClick={onClose}>
                         <img src={cp} alt="Закрыть" />
                     </button>
                 </div>
-                <div className='DescriptionPlaceOrderWindow'>
-                    <p>Вы уверены, что хотите оформить заказ?</p>
-                    {orderMessage && <p className='order-message'>{orderMessage}</p>} {/* Отображаем сообщение о результате */}
+                <div className='DescriptionDeleteProductWindow'>
+                    <p>Для просмотра подробной информации о заказе вы можете перейти к истории заказов.</p>
                 </div>
                 <div className='conteiner_buttons' style={{marginRight: 20}}>
                     <OKButton onClick={onClose}/>
