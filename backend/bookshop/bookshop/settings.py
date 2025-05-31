@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'catalog',
-    'storages',
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
@@ -177,64 +176,5 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-import os
-from dotenv import load_dotenv
-
-load_dotenv() # Загружает переменные из .env
-
-# --- Timeweb Cloud Object Storage Settings (для медиафайлов) ---
-# Ключи доступа, полученные в панели Timeweb Cloud
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-
-# Имя вашего контейнера (бакета) в Timeweb Cloud Object Storage
-AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
-
-# Эндпоинт Timeweb Cloud Object Storage. Это критически важно!
-# Обычно это https://s3.timeweb.com для стандартных контейнеров.
-# Если вы создавали контейнер в другом регионе, эндпоинт может отличаться (например, для Новосибирска: https://s3.nbl1.timeweb.com).
-# Уточните его в документации Timeweb Cloud, если есть сомнения.
-AWS_S3_ENDPOINT_URL = os.environ.get('AWS_S3_ENDPOINT_URL', 'https://s3.twcstorage.ru')
-
-# Опционально: если вы хотите использовать подпапку в контейнере для медиафайлов
-AWS_LOCATION = 'media' # Это означает, что все медиафайлы будут храниться в подпапке 'media/'
-
-# URL для доступа к медиафайлам
-MEDIA_URL = f'{AWS_S3_ENDPOINT_URL}/{AWS_STORAGE_BUCKET_NAME}/{AWS_LOCATION}/'
-
-# Определяем, какой класс хранения Django должен использовать по умолчанию для MEDIA_ROOT
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
-# Не перезаписывать файлы с одинаковыми именами, если они уже существуют (по умолчанию False)
-AWS_S3_FILE_OVERWRITE = False
-
-# Управление доступом к файлам. 'public-read' делает файлы доступными по URL.
-# Если вы не хотите, чтобы файлы были публично доступны, уберите это.
-# Важно: это также должно быть настроено в политике CORS контейнера.
-AWS_DEFAULT_ACL = 'public-read'
-
-# Отключает генерацию подписанных URL запросов (query string authentication) для публичных файлов.
-# Если файлы должны быть доступны всем по прямой ссылке, установите в False.
-AWS_QUERYSTRING_AUTH = False
-
-# Отключает проверку SSL-сертификатов (НЕ РЕКОМЕНДУЕТСЯ для продакшена, только если есть проблемы с сертификатами Timeweb)
-# AWS_S3_VERIFY_CERTS = False # По умолчанию True, оставьте True, если нет явных проблем
-
-# --- Настройки для локальной разработки vs. продакшн ---
-# Рекомендуется использовать переменную окружения USE_S3 для управления этим
-# Например, установите USE_S3=True в продакшене и USE_S3=False для локальной разработки
-if os.environ.get('USE_S3', 'False') == 'True':
-    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-    # Если вы также хотите хранить статические файлы на Timeweb Cloud Object Storage:
-    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
-    STATIC_URL = f'{AWS_S3_ENDPOINT_URL}/{AWS_STORAGE_BUCKET_NAME}/static/'
-    AWS_LOCATION_STATIC = 'static' # Подпапка для статических файлов
-else:
-    # Для локальной разработки, используйте локальное хранилище
-    MEDIA_URL = '/media/'
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
-    # STATIC_URL = '/static/'
-    # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    # STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
