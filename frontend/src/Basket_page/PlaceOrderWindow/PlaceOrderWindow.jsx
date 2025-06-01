@@ -69,7 +69,9 @@ const PlaceOrderWindow = ({ onClose, isOpen, onPlaceOrder, orderMessage }) => {
     }, [onClose]);
 
     return (
-        <div className="deleteProductWindow-overlay" onClick={handleClose}>
+        <div className="deleteProductWindow-overlay" 
+            style={{ display: isOpen ? 'flex' : 'none' }} 
+            onClick={handleClose}>
             <div className="deleteProductWindow-content">
                 <div className='NameDeleteProductWindow'>
                     <p>Заказ успешно оформлен</p>
