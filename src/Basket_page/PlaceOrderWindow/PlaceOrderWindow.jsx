@@ -1,6 +1,6 @@
 // PlaceOrderWindow.jsx
 import React, { useEffect } from 'react';
-import OKButton from ".OKButton/OKButton.jsx";
+import OKButton from "./OKButton/OKButton";
 import '../DeleteProductWindow/DeleteProductWindow.css';
 import cp from '../../images/add.png';
 
