@@ -81,7 +81,6 @@ const ResultConteiner = ({ totalItems, totalOriginalPrice, totalDiscount, finalP
     const openPlaceOrderWindow = () => setIsPlaceOrderWindowOpen(true);
     const closePlaceOrderWindow = () => {
         setIsPlaceOrderWindowOpen(false);
-        setOrderMessage('');
     };
 
     const formatItemWord = (count) => {
@@ -94,9 +93,6 @@ const ResultConteiner = ({ totalItems, totalOriginalPrice, totalDiscount, finalP
         return 'товаров';
     };
 
-    // const formatPrice = (price) => {
-    //     return (price != null && typeof price === 'number' && Number.isFinite(price)) ? `${price.toFixed(2)} ₽` : '---';
-    // };
     const formatPrice = (price) => {
         if (price == null || typeof price !== 'number' || !Number.isFinite(price)) {
             return '---';
@@ -152,8 +148,8 @@ const ResultConteiner = ({ totalItems, totalOriginalPrice, totalDiscount, finalP
                     </div>
                 </div>
                 <PlaceOrderButton onOpenPlaceOrderWindow={openPlaceOrderWindow} />
+                <PlaceOrderWindow onClose={closePlaceOrderWindow} isOpen={isPlaceOrderWindowOpen} onPlaceOrder={handlePlaceOrder} orderMessage={orderMessage} />
             </div>
-            <PlaceOrderWindow onClose={closePlaceOrderWindow} isOpen={isPlaceOrderWindowOpen} onPlaceOrder={handlePlaceOrder} orderMessage={orderMessage} />
         </div>
     );
 };

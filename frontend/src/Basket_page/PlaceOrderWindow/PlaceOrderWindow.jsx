@@ -80,8 +80,13 @@ const PlaceOrderWindow = ({ onClose, isOpen, onPlaceOrder, orderMessage }) => {
                 <div className='DescriptionDeleteProductWindow'>
                     <p>Для просмотра подробной информации о заказе вы можете перейти к истории заказов.</p>
                 </div>
+<<<<<<< HEAD:frontend/src/Basket_page/PlaceOrderWindow/PlaceOrderWindow.jsx
                 <div className='conteiner_buttons' style={{marginRight: 20}}>
                     <OKButton onClick={onClose}/>
+=======
+                <div className='conteiner_buttons'>
+                    <CancelButton onClick={onClose} />
+>>>>>>> Front:src/Basket_page/PlaceOrderWindow/PlaceOrderWindow.jsx
                 </div>
             </div>
         </div>
