@@ -44,18 +44,9 @@ class OrderStatusUpdateView(APIView):
         except OrderStatus.DoesNotExist:
             return Response({"error": "Статус не найден"}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Проверка на повтор статуса
-        if order.status_id == new_status_id:
-            return Response({"error": "Новый статус совпадает с текущим"}, status=status.HTTP_400_BAD_REQUEST)
-
-        # Проверка на изменение статуса на статус с меньшим id
-        if new_status.id < order.status.id:
-            return Response({"error": "Нельзя изменить статус на статус с меньшим id"},
-                            status=status.HTTP_400_BAD_REQUEST)
-
         serializer = OrderHistoryAdminSerializer(order, data={"status": new_status_id}, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response({'message': 'Статус заказа изменен', 'order': serializer.data},
-                            status=status.HTTP_400_BAD_REQUEST)
+                            status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
