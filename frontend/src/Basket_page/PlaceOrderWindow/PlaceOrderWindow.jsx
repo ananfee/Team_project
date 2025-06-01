@@ -1,5 +1,5 @@
 // PlaceOrderWindow.jsx
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import OKButton from "./OKButton/OKButton";
 import '../DeleteProductWindow/DeleteProductWindow.css';
 import cp from '../../images/add.png';
@@ -69,7 +69,7 @@ const PlaceOrderWindow = ({ onClose, isOpen, onPlaceOrder, orderMessage }) => {
     }, [onClose]);
 
     return (
-        <div className={`deleteProductWindow-overlay ${isOpen ? 'open' : ''}`} onClick={handleClose}>
+        <div className={"deleteProductWindow-overlay"} onClick={handleClose}>
             <div className="deleteProductWindow-content">
                 <div className='NameDeleteProductWindow'>
                     <p>Заказ успешно оформлен</p>
@@ -80,8 +80,8 @@ const PlaceOrderWindow = ({ onClose, isOpen, onPlaceOrder, orderMessage }) => {
                 <div className='DescriptionDeleteProductWindow'>
                     <p>Для просмотра подробной информации о заказе вы можете перейти к истории заказов.</p>
                 </div>
-                <div className='conteiner_buttons' style={{marginRight: 20}}>
-                    <OKButton onClick={onClose}/>
+                <div className='conteiner_buttons'>
+                    <OKButton onClick={onClose} />
                 </div>
             </div>
         </div>
