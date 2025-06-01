@@ -83,7 +83,6 @@ const PlaceOrderWindow = ({ onClose, isOpen, onPlaceOrder, orderMessage }) => {
                 </div>
                 <div className='conteiner_buttons'>
                     <CancelButton onClick={onClose} />
-                    <PlaceOrderButton onClick={onPlaceOrder} /> {/* Кнопка для оформления заказа */}
                 </div>
             </div>
         </div>
