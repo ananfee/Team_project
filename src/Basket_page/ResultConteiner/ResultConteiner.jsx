@@ -76,7 +76,7 @@ import FetchWithAuth from '../../layout/LoginWindow/FetchWithAuth.js';
 
 const ResultConteiner = ({ totalItems, totalOriginalPrice, totalDiscount, finalPrice, onClearBasket }) => {
     const [isPlaceOrderWindowOpen, setIsPlaceOrderWindowOpen] = useState(false);
-    const [orderMessage, setOrderMessage] = useState('');
+    // const [orderMessage, setOrderMessage] = useState('');
 
     const openPlaceOrderWindow = () => setIsPlaceOrderWindowOpen(true);
     const closePlaceOrderWindow = () => {
