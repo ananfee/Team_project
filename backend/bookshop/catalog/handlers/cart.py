@@ -105,7 +105,7 @@ class CheckoutView(generics.CreateAPIView):
                 item.count_of_book * (item.book.discounted_price or item.book.price)
                 for item in items
             )
-            status_pending, _ = OrderStatus.objects.get_or_create(name_status="В обработке")
+            status_pending, _ = OrderStatus.objects.get_or_create(name_status="Обрабатывается")
 
             order = OrderHistory.objects.create(
                 client=client,
