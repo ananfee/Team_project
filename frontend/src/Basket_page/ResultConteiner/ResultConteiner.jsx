@@ -289,7 +289,23 @@ const ResultConteiner = ({
         setIsPlaceOrderWindowOpen(false);
         setOrderMessage('');
     };
-
+    const formatItemWord = (count) => {
+        // Исправлен оператор ||
+        if (typeof count !== 'number' || count < 0 || !Number.isFinite(count)) return 'товаров';
+        const lastDigit = count % 10;
+        const lastTwoDigits = count % 100;
+        if (lastTwoDigits >= 11 && lastTwoDigits <= 14) return 'товаров';
+        if (lastDigit === 1) return 'товар';
+        if (lastDigit >= 2 && lastDigit <= 4) return 'товара';
+        return 'товаров';
+    };
+    const formatPrice = (price) => {
+        // Исправлен оператор || и синтаксис строки
+        if (price == null || typeof price !== 'number' || !Number.isFinite(price)) {
+            return '--- ₽';
+        }
+        return `${Math.round(price)} ₽`;
+    };
     const handlePlaceOrder = async () => {
         openPlaceOrderWindow();
         setOrderMessage('Оформление заказа...');
