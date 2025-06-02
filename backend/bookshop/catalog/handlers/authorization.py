@@ -31,34 +31,41 @@ class ProtectedView(APIView):
 
         return Response({"message": f"Привет, {request.user.email}! Это защищённый эндпоинт."})
 
-
 class LogoutView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
         try:
-            # Аннулируем refresh-токен
+            # Проверка refresh-токена
             refresh_token = request.data.get("refresh")
             if not refresh_token:
                 return Response({"error": "Refresh token is required"}, status=status.HTTP_400_BAD_REQUEST)
 
-            token = RefreshToken(refresh_token)
-            print(f"Blacklisting refresh token with JTI: {token['jti']}")
-            token.blacklist()
+            try:
+                token = RefreshToken(refresh_token)
+                token.blacklist()
+            except Exception as e:
+                raise AuthenticationFailed("Недействительный refresh токен")
 
-            # Аннулируем access-токен вручную
-            access_token = request.auth
-            if access_token:
-                access = AccessToken(str(access_token))
-                print(f"Blacklisting access token with JTI: {access['jti']}")
-                # Добавляем access-токен в чёрный список
-                outstanding_token = OutstandingToken.objects.filter(jti=access['jti']).first()
-                if outstanding_token:
-                    BlacklistedToken.objects.get_or_create(token=outstanding_token)
-                else:
-                    return Response({"error": "Access token not found in outstanding tokens"},
-                                    status=status.HTTP_400_BAD_REQUEST)
+            # Проверка и блокировка access-токена
+            access_token_raw = request.auth
+            if not access_token_raw:
+                raise AuthenticationFailed("Access токен не предоставлен")
+
+            try:
+                access_token = AccessToken(str(access_token_raw))
+            except Exception as e:
+                raise AuthenticationFailed("Недействительный access токен")
+
+            # Пытаемся внести access-токен в blacklist (если он есть в OutstandingToken)
+            outstanding_token = OutstandingToken.objects.filter(jti=access_token['jti']).first()
+            if outstanding_token:
+                BlacklistedToken.objects.get_or_create(token=outstanding_token)
 
             return Response({"message": "Успешный выход"}, status=status.HTTP_205_RESET_CONTENT)
+
+        except AuthenticationFailed as e:
+            return Response({"detail": str(e)}, status=status.HTTP_401_UNAUTHORIZED)
+
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
