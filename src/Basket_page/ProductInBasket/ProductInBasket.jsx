@@ -8,9 +8,9 @@ import DeleteProductWindow from '../DeleteProductWindow/DeleteProductWindow.jsx'
 const ProductInBasket = ({ book, count_of_book, onDelete, onQuantityChange }) => { 
     const [isDeleteWindowOpen, setIsDeleteWindowOpen] = useState(false);
 
-    const handleQuantityChange = (newQuantity) => {
-        onQuantityChange(book.id, newQuantity);
-    };
+    const handleQuantityChange = useCallback((newQuantity) => {
+        onQuantityChange(book.id, newQuantity); // Вызываем переданную функцию onQuantityChange
+    }, [onQuantityChange, book.id]);
 
     const handleOpenDeleteWindow = () => {
         setIsDeleteWindowOpen(true);
