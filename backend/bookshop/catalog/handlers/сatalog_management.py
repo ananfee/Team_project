@@ -58,7 +58,7 @@ class BooksView(APIView):
                 if discount_id:
                     try:
                         discount = Discount.objects.get(pk=discount_id)
-                        serializer.validated_data['discounted_price'] = serializer.validated_data.get('price') * (1 - discount.discount_percentage / 100)
+                        serializer.validated_data['discounted_price'] = round(serializer.validated_data.get('price') * (1 - discount.discount_percentage / 100), 2)
                     except Discount.DoesNotExist:
                         return Response({"error": "Скидка не существует"}, status=status.HTTP_400_BAD_REQUEST)
                     except KeyError:
