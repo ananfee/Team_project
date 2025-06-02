@@ -6,6 +6,7 @@ from catalog.models import *
 from catalog.serializers import OrderHistoryAdminSerializer, OrderStatusSerializer
 
 class StatusListView(ListAPIView):
+    permission_classes = [permissions.IsAuthenticated]
     queryset = OrderStatus.objects.all()
     serializer_class = OrderStatusSerializer
 
@@ -20,6 +21,7 @@ class StatusListView(ListAPIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class OrderHistoryAdminView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
     def get(self, request):
         orders = OrderHistory.objects.all()
         serializer = OrderHistoryAdminSerializer(orders, many=True)

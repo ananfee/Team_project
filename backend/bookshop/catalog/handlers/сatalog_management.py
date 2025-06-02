@@ -7,6 +7,8 @@ from catalog.models import *
 from catalog.serializers import *
 
 class DiscountListView(ListAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
     queryset = Discount.objects.all()
     serializer_class = DiscountSerializer
 
@@ -21,6 +23,8 @@ class DiscountListView(ListAPIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class AuthorListView(ListAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
     queryset = Author.objects.all()
     serializer_class = AuthorSerializerForList
 
@@ -49,6 +53,7 @@ class AuthorListView(ListAPIView):
         }, status=status.HTTP_200_OK)
 
 class BooksView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
     @transaction.atomic
     def post(self, request):
         try:
@@ -107,3 +112,47 @@ class BooksView(APIView):
             return Response({"error": "Книга не найдена"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({"error": "Произошла ошибка при удалении книги"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def get(self, request, book_id):
+        try:
+            book = Book.objects.get(pk=book_id)
+            serializer = DetailBookSerializer(book, context={'request': request})
+
+            # Получаем авторов текущей книги
+            authors = book.authors.all()
+            already_seen_ids = {book.id}
+
+            # 1. Книги с такой же категорией и хотя бы одним тем же автором
+            both_books = Book.objects.filter(
+                category=book.category,
+                authors__in=authors
+            ).exclude(id=book.id).distinct()[:5]
+
+            already_seen_ids.update(b.id for b in both_books)
+
+            # 2. Книги с такой же категорией
+            category_books = Book.objects.filter(
+                category=book.category
+            ).exclude(id__in=already_seen_ids).distinct()[:5]
+
+            already_seen_ids.update(b.id for b in category_books)
+
+            # 3. Книги с теми же авторами
+            author_books = Book.objects.filter(
+                authors__in=authors
+            ).exclude(id__in=already_seen_ids).distinct()[:5]
+
+            # Объединяем всё в один список
+            similar_books = list(both_books) + list(category_books) + list(author_books)
+            similar_serializer = BookSerializer(similar_books, many=True, context={'request': request})
+
+            return Response({
+                'book': serializer.data,
+                'similar_books': similar_serializer.data
+            }, status=status.HTTP_200_OK)
+
+        except Book.DoesNotExist:
+            return Response({"error": "Книга не найдена"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+

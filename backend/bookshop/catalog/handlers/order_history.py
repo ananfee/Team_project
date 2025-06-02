@@ -7,7 +7,7 @@ from catalog.serializers import OrderHistorySerializer
 
 
 class OrderHistoryView(APIView):
-    #permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
         try:

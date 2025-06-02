@@ -31,6 +31,7 @@ urlpatterns = ([
     path('order-history/', OrderHistoryView.as_view(), name='order-history'),
     path('books/create/', BooksView.as_view(), name='book-create'),
     path('books/update/<int:book_id>/', BooksView.as_view(), name='book-update'),
+    path('books/update_info/<int:book_id>/', BooksView.as_view(), name='book-update-info'),
     path('books/delete/<int:book_id>/', BooksView.as_view(), name='book-delete'),
     path('discounts/', DiscountListView.as_view(), name='discount-list'),
     path('authors/', AuthorListView.as_view(), name='author-list'),
