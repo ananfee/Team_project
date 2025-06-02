@@ -183,65 +183,75 @@ class OrderHistorySerializer(serializers.ModelSerializer):
         model = OrderHistory
         fields = ['id', 'sale_date', 'sale_price', 'status_name', 'books']
 
+import json
+
 class BookCreateUpdateSerializer(serializers.ModelSerializer):
-    authors = AuthorSerializer(many=True, required=False)
+    authors_data_json = serializers.CharField(write_only=True, required=False, allow_blank=True)
+
     class Meta:
         model = Book
         fields = '__all__'
 
     def create(self, validated_data):
-        authors_data = validated_data.pop('authors', None)
-        authors = []
+        authors_json_str = validated_data.pop('authors_data_json', '[]')
+        authors_data = []
 
-        if authors_data:
-            for author_data in authors_data:
-                try:
-                    author = Author.objects.get(
-                        author_last_name=author_data['author_last_name'],
-                        author_first_name=author_data['author_first_name'],
-                        author_patronymic=author_data.get('author_patronymic', None)
-                    )
-                    authors.append(author)
-                except Author.DoesNotExist:
-                    author = Author(
-                        author_last_name=author_data['author_last_name'],
-                        author_first_name=author_data['author_first_name'],
-                        author_patronymic=author_data.get('author_patronymic', None)
-                    )
-                    author.save()
-                    authors.append(author)
-
+        if authors_json_str:
+            try:
+                authors_data = json.loads(authors_json_str)
+            except json.JSONDecodeError:
+                raise serializers.ValidationError({"authors_data_json": "Некорректный формат JSON для авторов."})
 
         book = Book.objects.create(**validated_data)
-        book.authors.set(authors)
-        return book
-
-
-    def update(self, instance, validated_data):
-        authors_data = validated_data.pop('authors', None)
-        authors = []
 
         if authors_data:
+            if not isinstance(authors_data, list):
+                 raise serializers.ValidationError({"authors_data_json": "Авторы должны быть списком объектов."})
+
             for author_data in authors_data:
-                try:
-                    author = Author.objects.get(
+                if not isinstance(author_data, dict):
+                    raise serializers.ValidationError({"authors_data_json": "Каждый автор должен быть объектом."})
+                if 'author_last_name' not in author_data or 'author_first_name' not in author_data:
+                    raise serializers.ValidationError({"authors_data_json": "Для каждого автора необходимы 'author_last_name' и 'author_first_name'."})
+
+                author, created = Author.objects.get_or_create(
+                    author_last_name=author_data['author_last_name'],
+                    author_first_name=author_data['author_first_name'],
+                    defaults={'author_patronymic': author_data.get('author_patronymic')})
+                AuthorsOfBook.objects.create(book=book, author=author)
+        return book
+
+    def update(self, instance, validated_data):
+        authors_json_str = validated_data.pop('authors_data_json', None)
+        authors_data = []
+
+        if authors_json_str is not None:
+            try:
+                authors_data = json.loads(authors_json_str)
+            except json.JSONDecodeError:
+                raise serializers.ValidationError({"authors_data_json": "Некорректный формат JSON для авторов."})
+
+            AuthorsOfBook.objects.filter(book=instance).delete()
+            if authors_data:
+                if not isinstance(authors_data, list):
+                     raise serializers.ValidationError({"authors_data_json": "Авторы должны быть списком объектов."})
+
+                for author_data in authors_data:
+                    if not isinstance(author_data, dict):
+                        raise serializers.ValidationError({"authors_data_json": "Каждый автор должен быть объектом."})
+                    if 'author_last_name' not in author_data or 'author_first_name' not in author_data:
+                        raise serializers.ValidationError({"authors_data_json": "Для каждого автора необходимы 'author_last_name' и 'author_first_name'."})
+
+                    author, created = Author.objects.get_or_create(
                         author_last_name=author_data['author_last_name'],
                         author_first_name=author_data['author_first_name'],
-                        author_patronymic=author_data.get('author_patronymic', None)
-                    )
-                    authors.append(author)
-                except Author.DoesNotExist:
-                    author = Author(
-                        author_last_name=author_data['author_last_name'],
-                        author_first_name=author_data['author_first_name'],
-                        author_patronymic=author_data.get('author_patronymic', None)
-                    )
-                    author.save()
-                    authors.append(author)
+                        defaults={'author_patronymic': author_data.get('author_patronymic')})
+                    AuthorsOfBook.objects.create(book=instance, author=author)
 
-        instance.authors.set(authors)
-        return super().update(instance, validated_data)
-
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        return instance
 class AuthorSerializerForList(serializers.ModelSerializer):
     last_name = serializers.CharField(source='author_last_name', read_only=True)
     first_name = serializers.CharField(source='author_first_name', read_only=True)
