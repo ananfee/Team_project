@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react'; // <-- Добавлен useCallback
 import './ProductInBasket.css'
 import image1 from '../../images/image 1.png';
 import NumberProducts from '../NumberProducts/NumberProducts.jsx';
