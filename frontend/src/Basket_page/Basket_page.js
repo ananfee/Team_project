@@ -628,6 +628,7 @@ import image2 from '../images/image 2.png';
 
 
 
+<<<<<<< HEAD
 // BasketPage.jsx
 import React, { useState, useEffect, useCallback } from 'react'; // <-- Добавлен useCallback
 import ProductInBasket from './ProductInBasket';
@@ -640,6 +641,8 @@ import './BasketPage.css';
 // import NotificationModal from './NotificationModal';
 // import DeleteAllBasketWindow from './DeleteAllBasketWindow';
 
+=======
+>>>>>>> Front
 
 const BasketPage = () => {
     const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false);
@@ -688,7 +691,11 @@ const BasketPage = () => {
     const loadBasket = useCallback(async () => {
         setLoading(true);
         try {
+<<<<<<< HEAD
             const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/cart/', {
+=======
+            const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/get_cart/', {
+>>>>>>> Front
                 method: 'GET',
             });
 
@@ -862,34 +869,66 @@ const BasketPage = () => {
     if (loading) return <div className="loading-message">Загрузка корзины...</div>;
     if (error) return <div className="error-message">Ошибка: {error}</div>;
 
+        // --- Отображение страницы корзины ---
     return (
-        <div className="basket-page-container">
-            <div className='basket-page'>
-                <h1>Корзина</h1>
-                <div className='main-content'>
-                    <div className='products-list'>
+        <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', alignItems: 'center' }}>
+            <Header onOpenModal={openNotificationModal} />
+            {isNotificationModalOpen && <NotificationModal onClose={closeNotificationModal} />}
+            {/* TODO: Передать логику удаления всех товаров в DeleteAllBasketWindow */}
+            {isDeleteAllWindowOpen && <DeleteAllBasketWindow onClose={closeDeleteAllWindow} isOpen={isDeleteAllWindowOpen} />}
+
+            <div className='basket_container'>
+                <div className='basket_header'>
+                    <div className='name_numberOfProducts'>
+                        <p style={{ fontSize: 24, color: "#5D3C64" }}>КОРЗИНА</p>
+                    </div>
+                    {/* Отображаем кнопку "Удалить все" только если корзина не пуста */}
+                    {basketItems.length > 0 && (
+                        <DeleteAllBasketButton onOpenDeleteWindow={openDeleteAllWindow}  onClose={closeDeleteAllWindow} onClearBasket={handleClearBasket} />
+                    )}
+                </div>
+
+                <div className='all_products'>
+                     {/* Отображаем текст "Все товары" только если корзина не пуста */}
+                    {basketItems.length > 0 && (
+                        <p>Все товары</p>
+                    )}
+                </div>
+
+                <div className='conteinerDown'>
+                    {/*
+                       Рендерим список ProductInBasket напрямую, используя map.
+                       Каждый ProductInBasket отвечает за отображение одной позиции (книги и ее количества).
+                    */}
+                    <div className='ListProductsInBasketConteiner'> {/* Сохраняем контейнер для стилей */}
                         {basketItems.length > 0 ? (
-                            basketItems.map((item) => (
+                            // Перебираем массив basketItems
+                            basketItems.map(item => ( // item - это объект { book: {...}, count_of_book: ..., total_price: ... }
+                                // Важно использовать уникальный key для каждого элемента списка.
+                                // Используем book.id из вложенного объекта книги.
+                                // Проверяем наличие book и id для надежности.
                                 <ProductInBasket
-                                    key={item.book?.id || `item-${item.id}`} // Убедитесь, что book.id существует и уникален
-                                    book={item.book}
-                                    count_of_book={item.count_of_book}
-                                    onDelete={handleDeleteItem}
-                                    onQuantityChange={handleQuantityChange}
+                                    key={item.book?.id || `item-${item.id}`} // Если book.id недоступен, используем резервный ключ
+                                    book={item.book} // Передаем объект книги
+                                    count_of_book={item.count_of_book} // Передаем количество этой книги
+                                    total_price={item.total_price} // Передаем общую цену за эту позицию (из API - опционально, но может быть полезно)
+                                    // TODO: Передать обработчики удаления и изменения количества
+                                    onDelete={() => handleDeleteItem(item.book?.id)} // Передать функцию handleDeleteItem
+                                    onQuantityChange={(newQuantity) => handleQuantityChange(item.book?.id, newQuantity)} // Передать функцию handleQuantityChange
                                 />
                             ))
                         ) : (
+                            // Сообщение, если корзина пуста после загрузки
                             !loading && <div className="empty-basket-message">Ваша корзина пуста.</div>
                         )}
                     </div>
-
                     {basketItems.length > 0 && (
                         <ResultConteiner
                             totalItems={totalItems}
                             totalOriginalPrice={totalOriginalPrice}
                             totalDiscount={totalDiscount}
                             finalPrice={finalPrice}
-                            onClearBasket={handleClearBasket} // Передаем функцию очистки корзины
+                            onClearBasket={handleClearBasket}
                         />
                     )}
                 </div>
