@@ -65,31 +65,15 @@ def create_order_note(sender, instance, created, **kwargs):
                 order=instance
             )
 
-@receiver(post_save, sender=OrderHistory)
-def update_book_quantity(sender, instance, created, **kwargs):
+@receiver(post_save, sender=BookInOrder)
+def decrease_book_copies(sender, instance, created, **kwargs):
     if created:
-        try:
-            with transaction.atomic():
-                # Получаем все книги в этом заказе
-                book_orders = BookInOrder.objects.filter(order=instance)
+        book = instance.book
+        quantity_ordered = instance.count_of_book
 
-                for book_order in book_orders:
-                    book = book_order.book
-                    # Уменьшаем количество экземпляров
-                    book.number_of_copies -= book_order.count_of_book
-
-                    # Проверяем, чтобы количество не стало отрицательным
-                    if book.number_of_copies < 0:
-                        raise ValueError(
-                            f"Недостаточно экземпляров книги {book.title}. "
-                            f"Доступно: {book.number_of_copies + book_order.count_of_book}, "
-                            f"требуется: {book_order.count_of_book}"
-                        )
-
-                    book.save()
-
-        except Exception as e:
-            # Если произошла ошибка, отменяем транзакцию
-            transaction.set_rollback(True)
-            # Можно добавить логирование ошибки
-            raise e
+        if book.number_of_copies >= quantity_ordered:
+            book.number_of_copies = F('number_of_copies') - quantity_ordered
+            book.save(update_fields=['number_of_copies'])
+            print(f"Уменьшено количество книги '{book.title}' на {quantity_ordered}. Новое количество: {book.number_of_copies}")
+        else:
+            print(f"ВНИМАНИЕ: Недостаточно копий книги '{book.title}' (ID: {book.id}). Заказано: {quantity_ordered}, Доступно: {book.number_of_copies}")
