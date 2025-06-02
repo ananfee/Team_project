@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react'; // <-- Добавлен useCallback
 import NotificationModal from '../NotificationModal/NotificationModal';
 import Header from '../layout/Header.js';
 import Footer from "../components/footer/footer";
@@ -6,7 +6,6 @@ import ResultConteiner from './ResultConteiner/ResultConteiner.jsx';
 import "./Basket_page.css";
 import DeleteAllBasketButton from './DeleteAllBasketButton/DeleteAllBasketButton.jsx';
 import DeleteAllBasketWindow from './DeleteAllBasketWindow/DeleteAllBasketWindow.jsx'; // Изменено название компонента
-import {useEffect} from 'react';
 import ProductInBasket from './ProductInBasket/ProductInBasket.jsx';
 import FetchWithAuth from '../layout/LoginWindow/FetchWithAuth.js';
 import image1 from '../images/image 1.png';
@@ -628,22 +627,6 @@ import image2 from '../images/image 2.png';
 
 
 
-<<<<<<< HEAD
-// BasketPage.jsx
-import React, { useState, useEffect, useCallback } from 'react'; // <-- Добавлен useCallback
-import ProductInBasket from './ProductInBasket';
-import ResultConteiner from './ResultConteiner';
-import Footer from '../components/Footer';
-import { FetchWithAuth } from '../FetchWithAuth'; // Убедитесь, что FetchWithAuth доступен
-import './BasketPage.css';
-
-// Предполагаемые компоненты (раскомментируйте, если они у вас есть)
-// import NotificationModal from './NotificationModal';
-// import DeleteAllBasketWindow from './DeleteAllBasketWindow';
-
-=======
->>>>>>> Front
-
 const BasketPage = () => {
     const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false);
     const [isDeleteAllWindowOpen, setIsDeleteAllWindowOpen] = useState(false);
@@ -691,11 +674,8 @@ const BasketPage = () => {
     const loadBasket = useCallback(async () => {
         setLoading(true);
         try {
-<<<<<<< HEAD
-            const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/cart/', {
-=======
+
             const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/get_cart/', {
->>>>>>> Front
                 method: 'GET',
             });
 
