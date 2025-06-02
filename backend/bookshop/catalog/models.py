@@ -62,9 +62,9 @@ class OrderStatus(models.Model):
 
 class OrderHistory(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
-    sale_date = models.DateField()
+    sale_date = models.DateField(auto_now_add=True)
     sale_price = models.FloatField()
-    status = models.ForeignKey(OrderStatus, on_delete=models.CASCADE)
+    status = models.ForeignKey(OrderStatus, on_delete=models.CASCADE, default=1)
 
 class BookInOrder(models.Model):
     order = models.ForeignKey(OrderHistory, on_delete=models.CASCADE)
