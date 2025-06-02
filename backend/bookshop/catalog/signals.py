@@ -5,6 +5,7 @@ from django.conf import settings
 from django.db import transaction
 from django.db.models.signals import post_save, pre_save
 from django.utils import timezone
+from django.db.models import F
 from .models import *
 
 
