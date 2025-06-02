@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react'; // <-- Добавлен useCallback
 import NotificationModal from '../NotificationModal/NotificationModal';
 import Header from '../layout/Header.js';
 import Footer from "../components/footer/footer";
@@ -6,7 +6,6 @@ import ResultConteiner from './ResultConteiner/ResultConteiner.jsx';
 import "./Basket_page.css";
 import DeleteAllBasketButton from './DeleteAllBasketButton/DeleteAllBasketButton.jsx';
 import DeleteAllBasketWindow from './DeleteAllBasketWindow/DeleteAllBasketWindow.jsx'; // Изменено название компонента
-import {useEffect} from 'react';
 import ProductInBasket from './ProductInBasket/ProductInBasket.jsx';
 import FetchWithAuth from '../layout/LoginWindow/FetchWithAuth.js';
 import image1 from '../images/image 1.png';
@@ -207,6 +206,15 @@ const BasketPage = () => {
                 throw new Error(errorMessage);
             }
 
+            // Если сервер вернул успешный ответ (например, 200 OK)
+            // Мы оптимистично обновляем локальное состояние, предполагая, что сервер применил изменения.
+            // Если ваш API возвращает обновленный элемент или всю корзину, лучше использовать эти данные:
+            // const updatedItemFromServer = await response.json();
+            // const updatedBasketItems = basketItems.map(item =>
+            //     item.book?.id === updatedItemFromServer.book.id ? updatedItemFromServer : item
+            // );
+
+            // Текущий подход: Обновляем локальное состояние на основе отправленных данных
             const updatedBasketItems = basketItems.map(item =>
                 item.book?.id === bookIdToUpdate
                     ? { ...item, count_of_book: parsedQuantity, total_price: (item.book.discounted_price || item.book.price) * parsedQuantity }
