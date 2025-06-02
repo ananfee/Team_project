@@ -1,4 +1,4 @@
-import React,  { useEffect } from 'react'; // Убрал useState
+import React from 'react'; // Убрал useState
 import CancelButton from "./CancelButton/CancelButton";
 import DeleteProductButton from "./DeleteProductButton/DeleteProductButton";
 import './DeleteProductWindow.css';
@@ -16,7 +16,7 @@ const DeleteProductWindow = ({ onClose, isOpen, onQuantityChange }) => {
                     onClose();
                 }
             };
-    
+
             window.addEventListener("keydown", handleEsc);
             return () => {
                 window.removeEventListener("keydown", handleEsc);

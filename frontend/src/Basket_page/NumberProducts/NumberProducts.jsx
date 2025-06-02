@@ -48,22 +48,66 @@ import mc from '../../images/minus-cirlce.png';
 // export default NumberProducts;
 
 
+// const NumberProducts = ({ initialCount, onQuantityChange }) => {
+//     const [count, setCount] = useState(Math.max(1, initialCount));
+
+
+//     useEffect(() => {
+//         setCount(Math.max(1, initialCount));
+//     }, [initialCount]);
+
+//     const handleIncrement = () => {
+//         setCount(count + 1);
+//         onQuantityChange(count + 1); // Вызов callback с новым количеством
+//     };
+
+//     const handleDecrement = () => {
+//         setCount(Math.max(1, count - 1));
+//         onQuantityChange(Math.max(1, count - 1)); // Вызов callback с новым количеством
+//     };
+
+//     return (
+//         <div className='rectangle0'>
+//             <button className='rectangleAdd' onClick={handleIncrement}>
+//                 <img src={ac} alt="Увеличить" />
+//             </button>
+//             <div className='NumberProducts'>
+//                 <p>{count}</p>
+//             </div>
+//             <button className='rectangleMinuss' onClick={handleDecrement}>
+//                 <img src={mc} alt="Уменьшить" />
+//             </button>
+//         </div>
+//     );
+// };
+
+// export default NumberProducts;
+
+
 const NumberProducts = ({ initialCount, onQuantityChange }) => {
-    const [count, setCount] = useState(Math.max(1, initialCount));
+    const [count, setCount] = useState(initialCount);
 
-
+    // Используем useEffect для синхронизации внутреннего состояния с внешним пропсом
+    // Это важно, если initialCount может меняться извне (например, при загрузке корзины)
     useEffect(() => {
-        setCount(Math.max(1, initialCount));
+        setCount(initialCount);
     }, [initialCount]);
 
     const handleIncrement = () => {
-        setCount(count + 1);
-        onQuantityChange(count + 1); // Вызов callback с новым количеством
+        const newCount = count + 1;
+        setCount(newCount); // Обновляем внутреннее состояние
+        onQuantityChange(newCount); // Сообщаем родителю об изменении
     };
 
     const handleDecrement = () => {
-        setCount(Math.max(1, count - 1));
-        onQuantityChange(Math.max(1, count - 1)); // Вызов callback с новым количеством
+        if (count > 1) { // Не позволяем количеству стать меньше 1
+            const newCount = count - 1;
+            setCount(newCount); // Обновляем внутреннее состояние
+            onQuantityChange(newCount); // Сообщаем родителю об изменении
+        }
+        // Если count === 1, то при нажатии '-' не делаем ничего.
+        // Если вы хотите, чтобы при уменьшении до 0 товар удалялся,
+        // то нужно добавить дополнительную логику здесь, вызывающую функцию удаления.
     };
 
     return (
@@ -82,4 +126,3 @@ const NumberProducts = ({ initialCount, onQuantityChange }) => {
 };
 
 export default NumberProducts;
-
