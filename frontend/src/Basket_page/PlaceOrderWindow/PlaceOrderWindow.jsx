@@ -50,8 +50,12 @@ import cp from '../../images/add.png';
 
 // export default PlaceOrderWindow;
 
-const PlaceOrderWindow = ({ onClose, isOpen, orderMessage }) => { // onPlaceOrder удален из пропсов
+const PlaceOrderWindow = ({ onClose, isOpen, orderMessage, onConfirm }) => { // onPlaceOrder удален из пропсов
     // Обработчик закрытия по клику на оверлей
+    const handleConfirm = () => {
+        onConfirm(); // Вызываем переданную функцию onConfirm (onClearBasket)
+        onClose();
+    };
     const handleClose = (event) => {
         // Закрываем окно только если клик был непосредственно по фоновому оверлею,
         // а не по содержимому модального окна.
@@ -121,7 +125,7 @@ const PlaceOrderWindow = ({ onClose, isOpen, orderMessage }) => { // onPlaceOrde
                 </div>
                 <div className='conteiner_buttons'> {/* Класс сохранен */}
                     {/* Кнопка "ОК", которая просто закрывает модальное окно */}
-                    <OKButton onClick={onClose} />
+                    <OKButton onClick={handleConfirm} />
                 </div>
             </div>
         </div>
