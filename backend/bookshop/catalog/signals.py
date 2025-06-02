@@ -2,6 +2,7 @@ from django.db.models.signals import post_delete
 from django.dispatch import receiver
 import os
 from django.conf import settings
+from django.db import transaction
 from django.db.models.signals import post_save, pre_save
 from django.utils import timezone
 from .models import *
@@ -63,3 +64,32 @@ def create_order_note(sender, instance, created, **kwargs):
                 client=instance.client,
                 order=instance
             )
+
+@receiver(post_save, sender=OrderHistory)
+def update_book_quantity(sender, instance, created, **kwargs):
+    if created:
+        try:
+            with transaction.atomic():
+                # Получаем все книги в этом заказе
+                book_orders = BookInOrder.objects.filter(order=instance)
+
+                for book_order in book_orders:
+                    book = book_order.book
+                    # Уменьшаем количество экземпляров
+                    book.number_of_copies -= book_order.count_of_book
+
+                    # Проверяем, чтобы количество не стало отрицательным
+                    if book.number_of_copies < 0:
+                        raise ValueError(
+                            f"Недостаточно экземпляров книги {book.title}. "
+                            f"Доступно: {book.number_of_copies + book_order.count_of_book}, "
+                            f"требуется: {book_order.count_of_book}"
+                        )
+
+                    book.save()
+
+        except Exception as e:
+            # Если произошла ошибка, отменяем транзакцию
+            transaction.set_rollback(True)
+            # Можно добавить логирование ошибки
+            raise e
