@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import "./DeleteProductButton.css";
 
-const DeleteProductButton = ({ onQuantityChange }) => {
-
-
+const DeleteProductButton = ({ onClick }) => {
     return (
-        <button  className="deleteProductButton" onClick={onQuantityChange}>
+        <button className="deleteProductButton" onClick={onClick}>
             <p>Удалить</p>
-            </button>
+        </button>
     );
 };
 
 export default DeleteProductButton;
+

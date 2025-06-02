@@ -284,84 +284,122 @@ const BasketPage = () => {
         setIsDeleteAllWindowOpen(false);
     };
 
-    //  TODO: Добавить функцию для удаления отдельного товара по ID книги
+    // Вспомогательная функция для пересчета итогов
+    const calculateTotals = (items) => {
+        let newTotalItems = 0;
+        let newTotalOriginalPrice = 0;
+        let newTotalDiscount = 0;
+        let newFinalPrice = 0;
+
+        items.forEach(item => {
+            const itemQuantity = item.count_of_book;
+            newTotalItems += itemQuantity;
+
+            // Предполагаем, что 'price' - это оригинальная цена, 'discounted_price' - цена со скидкой
+            const originalItemPrice = item.book.price || 0;
+            const discountedItemPrice = item.book.discounted_price !== null && item.book.discounted_price !== undefined
+                                      ? item.book.discounted_price
+                                      : originalItemPrice; // Если скидки нет, используем оригинальную цену
+
+            newTotalOriginalPrice += originalItemPrice * itemQuantity;
+            newFinalPrice += discountedItemPrice * itemQuantity;
+        });
+
+        newTotalDiscount = newTotalOriginalPrice - newFinalPrice;
+
+        setTotalItems(newTotalItems);
+        setTotalOriginalPrice(newTotalOriginalPrice);
+        setTotalDiscount(newTotalDiscount);
+        setFinalPrice(newFinalPrice);
+    };
+
+        // --- ИСПРАВЛЕННАЯ ФУНКЦИЯ УДАЛЕНИЯ ОТДЕЛЬНОГО ТОВАРА ---
     const handleDeleteItem = async (bookIdToDelete) => {
-         try {
-              // TODO: Уточните URL и метод для удаления одного товара
-                const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/cart/remove/', {
-                    method: 'DELETE',
-              });
-
-              if (response === null) { // FetchWithAuth вернул null при неудаче обновления токена
-                  throw new Error("Не удалось обновить токен авторизации.");
-              }
-
-              if (!response.ok) {
-                   throw new Error(`Ошибка удаления товара: ${response.status}`);
-              }
-
-              // Если удаление на сервере успешно, обновляем state
-              const updatedBasketItems = basketItems.filter(item => item.book?.id !== bookIdToDelete);
-              setBasketItems(updatedBasketItems);
-              // Возможно, показать сообщение об успехе
-         } catch (error) {
-              console.error("Ошибка при удалении товара из корзины:", error);
-              // Показать сообщение об ошибке пользователю
-         }
-    };
-
-        const handleClearBasket = () => {
-        setBasketItems([]); // Очистка состояния корзины
-        // Также можно вызвать loadBasket(), если хотите загрузить изначально пустую корзину с сервера.
-    };
-
-     // TODO: Добавить функцию для изменения количества товара
-    const handleQuantityChange = async (bookIdToUpdate, newQuantity) => {
-         // Убедимся, что новое количество валидно
-        if (typeof newQuantity !== 'number' || newQuantity < 0 || !Number.isFinite(newQuantity)) {
-            console.warn("Некорректное количество:", newQuantity);
-            return; // Не делаем API-вызов с некорректными данными
-        }
-
         try {
-             // TODO: Уточните URL, метод и формат данных для изменения количества
-             // Пример URL: `http://127.0.0.1:8000/catalog/update_cart_item/${bookIdToUpdate}/`
-             const response = await FetchWithAuth("http://127.0.0.1:8000/catalog/cart/update/", {
-                  method: 'PATCH', // Или 'POST', зависит от API
-                  headers: {
-                       'Content-Type': 'application/json', // Обычно нужно для отправки тела запроса
-                  },
-                  body: JSON.stringify({ count_of_book: newQuantity }) // Отправляем новое количество
-             });
+            // Уточните URL и метод: Предполагаем, что API ожидает book_id в теле запроса DELETE
+            const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/cart/remove/', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json', // Обязательно для отправки JSON-тела
+                },
+                body: JSON.stringify({ book_id: bookIdToDelete }) // Отправляем ID книги в теле запроса
+            });
 
-             if (response === null) { // FetchWithAuth вернул null при неудаче обновления токена
+            if (response === null) {
                 throw new Error("Не удалось обновить токен авторизации.");
             }
 
-             if (!response.ok) {
-                  throw new Error(`Ошибка обновления количества: ${response.status}`);
-             }
+            if (!response.ok) {
+                const errorData = await response.json(); // Попробуйте получить сообщение об ошибке с сервера
+                const errorMessage = errorData?.detail || `Ошибка удаления товара: ${response.status}`;
+                throw new Error(errorMessage);
+            }
 
-              // Если обновление на сервере успешно, обновляем state
-              // Лучше всего после успешного обновления получить актуальные данные всей корзины
-              // или обновить только измененный элемент в state
-              // Если API возвращает обновленный элемент:
-              const updatedItem = await response.json(); // Пример получения обновленного элемента
-              const updatedBasketItems = basketItems.map(item => {
-                  if (item.book?.id === bookIdToUpdate) {
-                       return updatedItem; // Заменяем старый элемент на обновленный из API
-                  }
-                  return item;
-              });
-
-              setBasketItems(updatedBasketItems.filter(item => item.count_of_book > 0)); // Удаляем элементы, если количество стало 0
-              // Возможно, показать сообщение об успехе
-         } catch (error) {
-              console.error("Ошибка при изменении количества товара:", error);
-              // Показать сообщение об ошибке пользователю
-         }
+            // Если удаление на сервере успешно, обновляем локальное состояние
+            const updatedBasketItems = basketItems.filter(item => item.book?.id !== bookIdToDelete);
+            setBasketItems(updatedBasketItems);
+            calculateTotals(updatedBasketItems); // Пересчитываем итоги после удаления
+            // Возможно, здесь можно показать уведомление об успешном удалении
+        } catch (error) {
+            console.error("Ошибка при удалении товара из корзины:", error);
+            // Показать сообщение об ошибке пользователю, например, через NotificationModal
+        }
     };
 
+    // Функция для очистки всей корзины (возможно, после успешного оформления заказа)
+    const handleClearBasket = () => {
+        setBasketItems([]); // Очистка состояния корзины
+        calculateTotals([]); // Обнуляем итоги
+        // Можно также вызвать API для очистки корзины на сервере, если это требуется
+    };
+
+     // TODO: Добавить функцию для изменения количества товара
+   // --- ИСПРАВЛЕННАЯ ФУНКЦИЯ ИЗМЕНЕНИЯ КОЛИЧЕСТВА ---
+    const handleQuantityChange = async (bookIdToUpdate, newQuantity) => {
+        // Добавленная проверка на случай, если newQuantity почему-то станет 0 или меньше.
+        // Если вы хотите удалять товар при количестве 0, то логика здесь будет другая.
+        if (newQuantity < 1 || typeof newQuantity !== 'number' || !Number.isFinite(newQuantity)) {
+            console.warn("Некорректное или недопустимое количество:", newQuantity);
+            // Если newQuantity стало 0, и вы хотите удалить товар, вызовите handleDeleteItem
+            // if (newQuantity === 0) {
+            //     handleDeleteItem(bookIdToUpdate);
+            // }
+            return;
+        }
+
+        try {
+            // ИСПРАВЛЕНИЕ: Добавлен book_id в тело запроса!
+            const response = await FetchWithAuth("http://127.0.0.1:8000/catalog/cart/update/", {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ book_id: bookIdToUpdate, count_of_book: newQuantity }) // <-- Здесь ключевое изменение!
+            });
+
+            if (response === null) {
+                throw new Error("Не удалось обновить токен авторизации.");
+            }
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                const errorMessage = errorData?.detail || `Ошибка обновления количества: ${response.status}`;
+                throw new Error(errorMessage);
+            }
+
+            // Если обновление успешно, обновите локальное состояние
+            const updatedBasketItems = basketItems.map(item =>
+                item.book?.id === bookIdToUpdate
+                    ? { ...item, count_of_book: newQuantity, total_price: (item.book.discounted_price || item.book.price) * newQuantity }
+                    : item
+            );
+            setBasketItems(updatedBasketItems);
+            calculateTotals(updatedBasketItems);
+        } catch (error) {
+            console.error("Ошибка при изменении количества товара:", error);
+            // Здесь можно добавить отображение ошибки пользователю
+        }
+    };
 
     // --- Логика загрузки данных корзины (выполняется один раз при монтировании) ---
     useEffect(() => {
@@ -393,7 +431,9 @@ const BasketPage = () => {
                 const data = await response.json();
                 // Проверяем, что полученные данные - это массив
                 if (Array.isArray(data)) {
-                     setBasketItems(data); // Устанавливаем загруженные данные
+                    setBasketItems(data); // Устанавливаем загруженные данные
+                    calculateTotals(data.items || []); // Пересчитываем итоги после загрузки
+
                 } else {
                     // Если данные не массив, это может быть ошибкой или пустым ответом
                     console.warn("Получены данные корзины не в формате массива:", data);
@@ -571,6 +611,7 @@ const BasketPage = () => {
                             totalOriginalPrice={totalOriginalPrice}
                             totalDiscount={totalDiscount}
                             finalPrice={finalPrice}
+                            onClearBasket={handleClearBasket}
                         />
                     )}
                 </div>
@@ -581,3 +622,5 @@ const BasketPage = () => {
 };
 
 export default BasketPage;
+
+
