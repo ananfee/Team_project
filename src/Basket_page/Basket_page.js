@@ -728,12 +728,41 @@ const BasketPage = () => {
     };
 
     // Функция для очистки всей корзины (возможно, после успешного оформления заказа)
-    const handleClearBasket = () => {
-        setBasketItems([]); // Очистка состояния корзины
-        calculateTotals([]); // Обнуляем итоги
-        closeDeleteAllWindow();
-        // Можно также вызвать API для очистки корзины на сервере, если это требуется
-    };
+    // const handleClearBasket = () => {
+    //     setBasketItems([]); // Очистка состояния корзины
+    //     calculateTotals([]); // Обнуляем итоги
+    //     closeDeleteAllWindow();
+    //     // Можно также вызвать API для очистки корзины на сервере, если это требуется
+    // };
+    const handleClearBasket = async () => {
+    try {
+        const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/cart/clear/', {
+            method: 'DELETE',
+        });
+
+        if (response === null) {
+            throw new Error("Не удалось обновить токен авторизации.");
+        }
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            const errorMessage = errorData?.detail || `Ошибка очистки корзины: ${response.status}`;
+            throw new Error(errorMessage);
+        }
+
+        // Успешная очистка корзины на сервере
+        setBasketItems([]);
+        calculateTotals([]);
+        closeDeleteAllWindow(); // Закрываем окно подтверждения, если оно открыто
+        // Добавляем обновление страницы (перезагрузку) после успешной очистки
+        window.location.reload(); // Или используйте более подходящий метод обновления, если есть
+
+    } catch (error) {
+        console.error("Ошибка при очистке корзины:", error);
+        // Показать сообщение об ошибке пользователю
+    }
+};
+
 
      // TODO: Добавить функцию для изменения количества товара
    // --- ИСПРАВЛЕННАЯ ФУНКЦИЯ ИЗМЕНЕНИЯ КОЛИЧЕСТВА ---
@@ -941,7 +970,10 @@ const BasketPage = () => {
                     </div>
                     {/* Отображаем кнопку "Удалить все" только если корзина не пуста */}
                     {basketItems.length > 0 && (
-                        <DeleteAllBasketButton onOpenDeleteWindow={openDeleteAllWindow}  onClose={closeDeleteAllWindow} onClearBasket={handleClearBasket} />
+                    <div>
+                        <DeleteAllBasketButton onOpenDeleteWindow={openDeleteAllWindow}/>
+                        <DeleteProductWindow isOpen={isDeleteAllWindowOpen} onClose={closeDeleteAllWindow} onClearBasket={handleClearBasket} />
+                    </div>
                     )}
                 </div>
 
