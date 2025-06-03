@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'; // <-- Добавлен useCallback
+import React, { useState, useEffect } from 'react'; // <-- Добавлен useCallback
 import './ProductInBasket.css'
 import image1 from '../../images/image 1.png';
 import NumberProducts from '../NumberProducts/NumberProducts.jsx';
@@ -7,10 +7,20 @@ import DeleteProductWindow from '../DeleteProductWindow/DeleteProductWindow.jsx'
   
 const ProductInBasket = ({ book, count_of_book, onDelete, onQuantityChange }) => { 
     const [isDeleteWindowOpen, setIsDeleteWindowOpen] = useState(false);
+    const [quantity, setQuantity] = useState(count_of_book); // Новое состояние
 
-    const handleQuantityChange = useCallback((newQuantity) => {
-        onQuantityChange(book.id, newQuantity); // Вызываем переданную функцию onQuantityChange
-    }, [onQuantityChange, book.id]);
+    const handleQuantityChange = (newQuantity) => {
+        setQuantity(newQuantity); // Обновляем локальное состояние
+    };
+
+
+    const handleQuantityBlur = () => { // Новый обработчик onBlur
+        onQuantityChange(book.id, quantity); // Отправляем запрос на сервер
+    };
+
+    // const handleQuantityChange = useCallback((newQuantity) => {
+    //     onQuantityChange(book.id, newQuantity); // Вызываем переданную функцию onQuantityChange
+    // }, [onQuantityChange, book.id]);
 
     const handleOpenDeleteWindow = () => {
         setIsDeleteWindowOpen(true);
@@ -51,8 +61,10 @@ const ProductInBasket = ({ book, count_of_book, onDelete, onQuantityChange }) =>
                         {/* Отображаем отформатированную строку с авторами */}
                         <p style={{fontSize: 14, color: "#777777"}}>{authorsString}</p>
                 </div>
-                    <NumberProducts initialCount={count_of_book}
-                    onQuantityChange={handleQuantityChange}  />
+                    <NumberProducts           
+                        initialCount={quantity} // Передаем текущее quantity
+                        onQuantityChange={handleQuantityChange}
+                        onBlur={handleQuantityBlur} />
                 </div>
             </div>
             <div className='conteiner00'>

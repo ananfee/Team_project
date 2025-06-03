@@ -4,6 +4,7 @@ import "./NumberProducts.css";
 import ac from '../../images/add-circle.png';
 import mc from '../../images/minus-cirlce.png';
 
+
 // // Компонент теперь принимает initialCount как пропс
 // const NumberProducts = ({ initialCount = 1 }) => { // Устанавливаем значение по умолчанию 1, если initialCount не передан или undefined
 //     // Используем initialCount для установки начального состояния
@@ -127,7 +128,7 @@ import mc from '../../images/minus-cirlce.png';
 
 // export default NumberProducts;
 
-const NumberProducts = ({ initialCount, onQuantityChange }) => {
+const NumberProducts = ({ initialCount, onQuantityChange, onBlur }) => {
     // Инициализируем count из initialCount
     const [count, setCount] = useState(initialCount);
 
@@ -156,7 +157,7 @@ const NumberProducts = ({ initialCount, onQuantityChange }) => {
     };
 
     return (
-        <div className='rectangle0'>
+        <div className='rectangle0' onBlur={onBlur}>
             <button className='rectangleAdd' onClick={handleIncrement}>
                 <img src={ac} alt="Увеличить" />
             </button>
