@@ -111,7 +111,7 @@ function CatalogBook({product})
               className={product.number_of_copies == "0" ? styles.basketButtonDisabled : styles.BasketButton} 
               disabled={product.number_of_copies === "0" ? true : false}
               onClick={product.number_of_copies === "0" ? undefined : () => addToCart(product.id)}>
-                {product.number_of_copies === "0" ? "Нет на складе" : "В корзину"}
+                {product.number_of_copies == "0" ? "Нет на складе" : "В корзину"}
               </button> )
             :
             ( <>
@@ -119,7 +119,7 @@ function CatalogBook({product})
                   className={product.number_of_copies == "0" ? styles.basketButtonDisabled : styles.BasketButton} 
                   disabled={product.number_of_copies === "0" ? true : false} 
                   onClick={() => setWarningBasketModalOpen(true)}>
-                    {product.number_of_copies === "0" ? "Нет на складе" : "В корзину"}
+                    {product.number_of_copies == "0" ? "Нет на складе" : "В корзину"}
                   </button>
                 <WarningBasket isOpen={warningBasketModalOpen} onClose={() => {setWarningBasketModalOpen(false);}}/>
               </>
