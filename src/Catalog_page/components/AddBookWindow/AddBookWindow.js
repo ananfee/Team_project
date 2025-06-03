@@ -85,14 +85,15 @@ function AddBookWindow({isOpen, onClose, obj})
       if (!count) {
          newErrors.count = "Введите количество экземпляров";
          hasError = true;
-     } else if (
+      } else if (
          isNaN(Number(count)) ||
          count.toString().trim() === '' ||
-         !Number.isInteger(Number(count))
-     ) {
-         newErrors.count = "Введите корректное целое число";
+         !Number.isInteger(Number(count)) ||
+         Number(count) < 0
+      ) {
+         newErrors.count = "Введите корректное неотрицательное целое число";
          hasError = true;
-     }
+      }
 
       if (!selectedGenre) {
          newErrors.genre = "Выберите жанр книги";
@@ -127,11 +128,14 @@ function AddBookWindow({isOpen, onClose, obj})
        if (!price) {
          newErrors.price = "Введите цену книги";
          hasError = true;
-       } else if (isNaN(Number(price)) || price.toString().trim() === '')
-       {
-          newErrors.price = "Введите корректное число";
-          hasError = true;
-       }
+      } else if (
+         isNaN(Number(price)) ||
+         price.toString().trim() === '' ||
+         Number(price) < 0
+      ) {
+         newErrors.price = "Введите корректное неотрицательное число";
+         hasError = true;
+      }
 
        if (!description) {
          newErrors.description = "Введите описание книги";
@@ -223,7 +227,11 @@ function AddBookWindow({isOpen, onClose, obj})
          }
          if (obj) {
             setTitle(obj.title || '');
-            setCount(obj.number_of_copies || '');
+            setCount(
+               obj.number_of_copies !== undefined && obj.number_of_copies !== null
+                     ? obj.number_of_copies
+                     : ''
+            );
             setAuthors(
                obj.authors && Array.isArray(obj.authors) && obj.authors.length
                   ? obj.authors.map(a => ({
