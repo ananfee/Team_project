@@ -8,7 +8,7 @@ from catalog.serializers import *
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken, OutstandingToken
 from django.utils import timezone
-
+from rest_framework.exceptions import AuthenticationFailed
 class RegisterView(APIView):
     permission_classes = [AllowAny]
     def post(self, request):

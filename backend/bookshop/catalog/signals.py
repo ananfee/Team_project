@@ -71,10 +71,5 @@ def decrease_book_copies(sender, instance, created, **kwargs):
     if created:
         book = instance.book
         quantity_ordered = instance.count_of_book
-
-        if book.number_of_copies >= quantity_ordered:
-            book.number_of_copies = F('number_of_copies') - quantity_ordered
-            book.save(update_fields=['number_of_copies'])
-            print(f"Уменьшено количество книги '{book.title}' на {quantity_ordered}. Новое количество: {book.number_of_copies}")
-        else:
-            print(f"ВНИМАНИЕ: Недостаточно копий книги '{book.title}' (ID: {book.id}). Заказано: {quantity_ordered}, Доступно: {book.number_of_copies}")
+        book.number_of_copies = F('number_of_copies') - quantity_ordered
+        book.save(update_fields=['number_of_copies'])
