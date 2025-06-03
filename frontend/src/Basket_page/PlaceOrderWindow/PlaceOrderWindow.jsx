@@ -103,7 +103,7 @@ const PlaceOrderWindow = ({ onClose, isOpen, orderMessage, onConfirm }) => { // 
                 <div className='NameDeleteProductWindow'> {/* Класс сохранен */}
                     {/* Динамический заголовок: "Ошибка оформления заказа" или "Заказ успешно оформлен" */}
                     <p>{isErrorMessage ? 'Ошибка оформления заказа' : 'Заказ успешно оформлен'}</p>
-                    <button className='closeDeleteProductWindow' onClick={onClose}> {/* Класс сохранен */}
+                    <button className='closeDeleteProductWindow' onClick={handleConfirm}> {/* Класс сохранен */}
                         <img src={cp} alt="Закрыть" />
                     </button>
                 </div>

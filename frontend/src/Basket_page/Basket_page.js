@@ -373,7 +373,6 @@ const BasketPage = () => {
         // Успешная очистка корзины на сервере
         setBasketItems([]);
         calculateTotals([]);
-        closeDeleteAllWindow(); // Закрываем окно подтверждения, если оно открыто
         // Добавляем обновление страницы (перезагрузку) после успешной очистки
         window.location.reload(); // Или используйте более подходящий метод обновления, если есть
 
@@ -592,7 +591,7 @@ const BasketPage = () => {
                     {basketItems.length > 0 && (
                     <div>
                         <DeleteAllBasketButton onOpenDeleteWindow={openDeleteAllWindow}/>
-                        <DeleteProductWindow isOpen={isDeleteAllWindowOpen} onClose={closeDeleteAllWindow} onClearBasket={handleClearBasket} />
+                        <DeleteAllBasketWindow isOpen={isDeleteAllWindowOpen} onClose={closeDeleteAllWindow} onClearBasket={handleClearBasket} />
                     </div>
                     )}
                 </div>
