@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom"; 
+import { Link, useNavigate } from "react-router-dom"; 
 import styles from "../layout/Header.module.css";
 import NotificationButton from "./NotificationButton/NotificationButton.js";
 import OrdersButton from "./OrdersButton/OrdersButton.jsx";
@@ -8,6 +8,7 @@ import LoginWindow from "./LoginWindow/LoginWindow.js";
 import FetchWithAuth from "./LoginWindow/FetchWithAuth.js";
 
 function Header({onOpenModal}) {
+   const navigate = useNavigate();
    const [loginModalOpen, setLoginModalOpen] = useState(false);
    const [role, setRole] = useState("");
    const [isAuth, setIsAuth] = useState(!!localStorage.getItem('accessToken'));
@@ -33,7 +34,7 @@ function Header({onOpenModal}) {
          localStorage.removeItem('role');
          setIsAuth(false); 
          setRole("");   
-         window.location.reload(); 
+         navigate("/");
       } catch (error) {
       }
     };
@@ -72,9 +73,7 @@ function Header({onOpenModal}) {
                   )
                   : (
                      <>
-                        <NotificationButton onClick={onOpenModal} />
-                        <OrdersButton />
-                        <BasketButton />
+                        
                      </>
                   )
                }
