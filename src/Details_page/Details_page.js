@@ -5,11 +5,11 @@ import Header from '../layout/Header';
 import RelatedBooks from './components/RelatedBooks/RelatedBooks';
 import NotificationModal from '../NotificationModal/NotificationModal'; 
 
-// const data = 
+// const book = 
 //    {
 //       id: 1,
 //       cover_image: "Book7.svg",
-//       title: "Если все кошки исчезднут",
+//       title: "Если все кошки исчезнут",
 //       authors: [
 //             {
 //                 "author_last_name": "Роулинг",
@@ -22,10 +22,10 @@ import NotificationModal from '../NotificationModal/NotificationModal';
 //       ISBN: "978-5-04-181395-6",
 //       description: "Дни молодого почтальона сочтены. Оторванный от своей семьи и живущий один с со своим котом Капустой, он не был готов к страшному диагнозу: жить ему осталось всего несколько месяцев. Но прежде чем он сможет привести свои дела в порядок, появляется дьявол с очень необычным предложением. Темная сила обещает продлить умирающему жизнь, но в обмен за каждый дополнительный день одна вещь в мире будет исчезать бесследно... И вот начинается очень странная неделя, которая ставит молодого почтальона и его любимого кота на грань существования. С каждым исчезающим предметом почтальон размышляет о жизни, которую он прожил, о своих радостях и сожалениях, а также о людях, которых он любил и потерял.",
 //       year: "2025",
-//       copies: "3"
+//       number_of_copies: "0"
 //    };
 
-// const dataRelatedBooks = [
+// const relatedBooks = [
 //    {
 //       id_book: 1,
 //       cover_image: "Book1.svg",
@@ -39,6 +39,7 @@ import NotificationModal from '../NotificationModal/NotificationModal';
 //          }
 //      ],
 //       discounted_price: '300',
+//       number_of_copies: '0'
 //    },
 //    {
 //       id_book: 2,
@@ -226,7 +227,7 @@ function Details_page()
                <BookInfo Book={book}/>
                <RelatedBooks RelatedBooks={relatedBooks}/>
                </div>
-            )}        
+            )}
       </div>
    );
 }

@@ -17,7 +17,7 @@ const BasketButton = () => {
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
-            <img src="shopping-cart.svg" alt="корзина" />
+            <img src="/shopping-cart.svg" alt="корзина" />
         </button>
     );
 };

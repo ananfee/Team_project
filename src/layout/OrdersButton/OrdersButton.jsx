@@ -24,7 +24,7 @@ const OrdersButton = () => {
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
-            <img src="group.svg" alt="доставка" />
+            <img src="/group.svg" alt="доставка" />
         </button>
     );
 };
