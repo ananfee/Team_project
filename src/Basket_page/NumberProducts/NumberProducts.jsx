@@ -48,22 +48,111 @@ import mc from '../../images/minus-cirlce.png';
 // export default NumberProducts;
 
 
+// const NumberProducts = ({ initialCount, onQuantityChange }) => {
+//     const [count, setCount] = useState(Math.max(1, initialCount));
+
+
+//     useEffect(() => {
+//         setCount(Math.max(1, initialCount));
+//     }, [initialCount]);
+
+//     const handleIncrement = () => {
+//         setCount(count + 1);
+//         onQuantityChange(count + 1); // Вызов callback с новым количеством
+//     };
+
+//     const handleDecrement = () => {
+//         setCount(Math.max(1, count - 1));
+//         onQuantityChange(Math.max(1, count - 1)); // Вызов callback с новым количеством
+//     };
+
+//     return (
+//         <div className='rectangle0'>
+//             <button className='rectangleAdd' onClick={handleIncrement}>
+//                 <img src={ac} alt="Увеличить" />
+//             </button>
+//             <div className='NumberProducts'>
+//                 <p>{count}</p>
+//             </div>
+//             <button className='rectangleMinuss' onClick={handleDecrement}>
+//                 <img src={mc} alt="Уменьшить" />
+//             </button>
+//         </div>
+//     );
+// };
+
+// export default NumberProducts;
+
+
+// const NumberProducts = ({ initialCount, onQuantityChange }) => {
+//     const [count, setCount] = useState(initialCount);
+
+//     // Используем useEffect для синхронизации внутреннего состояния с внешним пропсом
+//     // Это важно, если initialCount может меняться извне (например, при загрузке корзины)
+//     useEffect(() => {
+//         setCount(initialCount);
+//     }, [initialCount]);
+
+//     const handleIncrement = () => {
+//         const newCount = count + 1;
+//         setCount(newCount); // Обновляем внутреннее состояние
+//         onQuantityChange(newCount); // Сообщаем родителю об изменении
+//     };
+
+//     const handleDecrement = () => {
+//         if (count > 1) { // Не позволяем количеству стать меньше 1
+//             const newCount = count - 1;
+//             setCount(newCount); // Обновляем внутреннее состояние
+//             onQuantityChange(newCount); // Сообщаем родителю об изменении
+//         }
+//         // Если count === 1, то при нажатии '-' не делаем ничего.
+//         // Если вы хотите, чтобы при уменьшении до 0 товар удалялся,
+//         // то нужно добавить дополнительную логику здесь, вызывающую функцию удаления.
+//     };
+
+//     return (
+//         <div className='rectangle0'>
+//             <button className='rectangleAdd' onClick={handleIncrement}>
+//                 <img src={ac} alt="Увеличить" />
+//             </button>
+//             <div className='NumberProducts'>
+//                 <p>{count}</p>
+//             </div>
+//             <button className='rectangleMinuss' onClick={handleDecrement}>
+//                 <img src={mc} alt="Уменьшить" />
+//             </button>
+//         </div>
+//     );
+// };
+
+// export default NumberProducts;
+
 const NumberProducts = ({ initialCount, onQuantityChange }) => {
-    const [count, setCount] = useState(Math.max(1, initialCount));
+    // Инициализируем count из initialCount
+    const [count, setCount] = useState(initialCount);
 
-
+    // Синхронизируем внутреннее состояние 'count' с внешним пропсом 'initialCount'
+    // Это важно, если initialCount может измениться (например, при перезагрузке корзины извне)
     useEffect(() => {
-        setCount(Math.max(1, initialCount));
-    }, [initialCount]);
+        setCount(initialCount);
+    }, [initialCount]); // Зависимость от initialCount
 
     const handleIncrement = () => {
-        setCount(count + 1);
-        onQuantityChange(count + 1); // Вызов callback с новым количеством
+        const newCount = count + 1;
+        setCount(newCount); // Обновляем внутреннее состояние UI
+        onQuantityChange(newCount); // Передаем НОВОЕ число родителю
     };
 
     const handleDecrement = () => {
-        setCount(Math.max(1, count - 1));
-        onQuantityChange(Math.max(1, count - 1)); // Вызов callback с новым количеством
+        if (count > 1) { // Не позволяем количеству стать меньше 1
+            const newCount = count - 1;
+            setCount(newCount); // Обновляем внутреннее состояние UI
+            onQuantityChange(newCount); // Передаем НОВОЕ число родителю
+        } else if (count === 1) {
+            // Опционально: если вы хотите удалять товар, когда количество становится 0
+            // onQuantityChange(0); // Или какой-то другой флаг для удаления
+            // Но в нашей текущей логике BasketPage, удаление происходит через отдельную кнопку
+        }
     };
 
     return (
