@@ -100,6 +100,22 @@ class CheckoutView(generics.CreateAPIView):
         if not items.exists():
             return Response({"error": "Корзина пуста"}, status=status.HTTP_400_BAD_REQUEST)
 
+        insufficient_books = []
+        for item in items:
+            if item.book.number_of_copies < item.count_of_book:
+                insufficient_books.append({
+                    "book_id": item.book.id,
+                    "title": item.book.title,
+                    "available": item.book.number_of_copies,
+                    "requested": item.count_of_book
+                })
+
+        if insufficient_books:
+            return Response({
+                "error": "Некоторые книги отсутствуют в нужном количестве",
+                "details": insufficient_books
+            }, status=status.HTTP_400_BAD_REQUEST)
+
         with transaction.atomic():
             total_price = sum(
                 item.count_of_book * (item.book.discounted_price or item.book.price)
