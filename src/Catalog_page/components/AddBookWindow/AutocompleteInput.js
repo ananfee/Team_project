@@ -6,7 +6,7 @@ function AutocompleteInput({ value, onChange, suggestions, placeholder }) {
    const inputRef = useRef(null);
 
    useEffect(() => {
-      if (value.length > 0) {
+      if ((value ?? '').length > 0) {
          setFilteredSuggestions(
             suggestions.filter(
                item => item?.toLowerCase().startsWith(value.toLowerCase())
@@ -33,7 +33,7 @@ function AutocompleteInput({ value, onChange, suggestions, placeholder }) {
 
    function handleFocus() {
       // Показывать подсказки только если value не пусто и фильтруется хоть что-то
-      setShowSuggestions(value.length > 0 && filteredSuggestions.length > 0);
+      setShowSuggestions((value ?? '').length > 0 && filteredSuggestions.length > 0);
    }
 
    return (

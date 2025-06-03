@@ -9,6 +9,203 @@ import NotificationModal from '../NotificationModal/NotificationModal';
 import styles from './Catalog_page.module.css';
 import AddBookWindow from './components/AddBookWindow/AddBookWindow.js'
 
+// const books = [
+//    {
+//       id_book: 1,
+//       cover_image: "Book1.svg",
+//       price: '321',
+//       title: 'Wayward son',
+//       authors: [
+//                 {
+//                     "author_last_name": "Шолохов",
+//                     "author_first_name": "Михаил",
+//                     "author_patronymic": "Александрович"
+//                 }
+//             ],
+//       discounted_price: '300',
+//       number_of_copies: '0'
+//    },
+//    {
+//       id_book: 2,
+//       cover_image: "Book2.svg",
+//       price: '456',
+//       title: 'Cinder',
+//       authors: [
+//                 {
+//                     "author_last_name": "Шолохов",
+//                     "author_first_name": "Михаил",
+//                     "author_patronymic": "Александрович"
+//                 }
+//             ],
+//       discounted_price: null,
+//       number_of_copies: '3'
+//    },
+//    {
+//       id_book: 3,
+//       cover_image: "Book3.svg",
+//       price: '257',
+//       title: 'Supernova',
+//       authors: [
+//                 {
+//                     "author_last_name": "Шолохов",
+//                     "author_first_name": "Михаил",
+//                     "author_patronymic": "Александрович"
+//                 }
+//             ],
+//       discounted_price: null,
+//       number_of_copies: '3'
+//    },
+//    {
+//       id_book: 4,
+//       cover_image: "Book4.svg",
+//       price: '127',
+//       title: 'The sunbearer trialssssssssss',
+//       authors: [
+//                 {
+//                     "author_last_name": "Шолохов",
+//                     "author_first_name": "Михаил",
+//                     "author_patronymic": "Александрович"
+//                 }
+//             ],
+//       discounted_price: null,
+//       number_of_copies: '3'
+//    },
+//    {
+//       id_book: 5,
+//       cover_image: "Book5.svg",
+//       price: '478',
+//       title: 'Legend born',
+//       authors: [
+//                 {
+//                     "author_last_name": "Шолохов",
+//                     "author_first_name": "Михаил",
+//                     "author_patronymic": "Александрович"
+//                 }
+//             ],
+//       discounted_price: null,
+//       number_of_copies: '3'
+//    },
+//    {
+//       id_book: 6,
+//       cover_image: "Book6.svg",
+//       price: '562',
+//       title: 'Deadly',
+//       authors: [
+//                 {
+//                     "author_last_name": "Шолохов",
+//                     "author_first_name": "Михаил",
+//                     "author_patronymic": "Александрович"
+//                 }
+//             ],
+//       discounted_price: '500',
+//       number_of_copies: '3'
+//    },
+//    {
+//       id_book: 7,
+//       cover_image: "Book1.svg",
+//       price: '321',
+//       title: 'Wayward son',
+//       authors: [
+//                 {
+//                     "author_last_name": "Кинг",
+//                     "author_first_name": "Стивен",
+//                     "author_patronymic": null
+//                 }
+//             ],
+//       discounted_price: null,
+//       number_of_copies: '3'
+//    },
+//    {
+//       id_book: 8,
+//       cover_image: "Book2.svg",
+//       price: '456',
+//       title: 'Cinder',
+//       authors: [
+//                 {
+//                     "author_last_name": "Кинг",
+//                     "author_first_name": "Стивен",
+//                     "author_patronymic": null
+//                 }
+//             ],
+//       discounted_price: null,
+//       number_of_copies: '3'
+//    },
+//    {
+//       id_book: 9,
+//       cover_image: "Book3.svg",
+//       price: '257',
+//       title: 'Supernova',
+//       authors: [
+//                 {
+//                     "author_last_name": "Шолохов",
+//                     "author_first_name": "Михаил",
+//                     "author_patronymic": "Александрович"
+//                 }
+//             ],
+//       discounted_price: null,
+//       number_of_copies: '3'
+//    },
+//    {
+//       id_book: 10,
+//       cover_image: "Book4.svg",
+//       price: '127',
+//       title: 'The sunbearer trials',
+//       authors: [
+//                 {
+//                     "author_last_name": "Кинг",
+//                     "author_first_name": "Стивен",
+//                     "author_patronymic": null
+//                 }
+//             ],
+//       discounted_price: null,
+//       number_of_copies: '3'
+//    },
+//    {
+//       id_book: 11,
+//       cover_image: "Book5.svg",
+//       price: '478',
+//       title: 'Legend born',
+//       authors: [
+//                 {
+//                     "author_last_name": "Кинг",
+//                     "author_first_name": "Стивен",
+//                     "author_patronymic": null
+//                 }
+//             ],
+//       discounted_price: null,
+//       number_of_copies: '3'
+//    },
+//    {
+//       id_book: 12,
+//       cover_image: "Book6.svg",
+//       price: '562',
+//       title: 'Deadly',
+//       authors: [
+//                 {
+//                     "author_last_name": "Кинг",
+//                     "author_first_name": "Стивен",
+//                     "author_patronymic": null
+//                 }
+//             ],
+//       discounted_price: null,
+//       number_of_copies: '3'
+//    },
+//    {
+//       id_book: 13,
+//       cover_image: "Book1.svg",
+//       price: '321',
+//       title: 'Wayward son',
+//       authors: [
+//                 {
+//                     "author_last_name": "Кинг",
+//                     "author_first_name": "Стивен",
+//                     "author_patronymic": null
+//                 }
+//             ],
+//       discounted_price: null,
+//       number_of_copies: '3'
+//    }
+// ];
 
 function Catalog_page()
 {
@@ -170,9 +367,9 @@ function Catalog_page()
                  books.length > 0 ?  
                     (
                       <Catalog data={books}/>
-                    ) : 
+                     ) : 
                     (<p style={{ fontSize: 20, color: 'lightgray' }}>Похоже, у нас такого нет</p>) 
-            )}
+            )} 
         </div>
         <Footer />
     </div>

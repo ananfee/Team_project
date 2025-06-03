@@ -157,7 +157,7 @@ function AddBookWindow({isOpen, onClose, obj})
       formData.append('discount', selectedDiscount.id);
       formData.append('number_of_copies', Number(count));
       formData.append('description', description);
-      formData.append('authors', JSON.stringify(authors));
+      formData.append('authors_data_json', JSON.stringify(authors));
 
       if (imgFile) {
          formData.append('cover_image', imgFile);
@@ -226,7 +226,11 @@ function AddBookWindow({isOpen, onClose, obj})
             setCount(obj.number_of_copies || '');
             setAuthors(
                obj.authors && Array.isArray(obj.authors) && obj.authors.length
-                  ? obj.authors
+                  ? obj.authors.map(a => ({
+                     author_last_name: a.author_last_name || '',
+                     author_first_name: a.author_first_name || '',
+                     author_patronymic: a.author_patronymic || ''
+                     }))
                   : [{
                      author_last_name: '',
                      author_first_name: '',
@@ -239,7 +243,9 @@ function AddBookWindow({isOpen, onClose, obj})
             setYear(obj.publishing_year || '');
             setISBN(obj.ISBN || '');
             setPrice(obj.price || '');
-            const foundDiscount = discount.find(item => item.id === obj.discount.id);
+            const foundDiscount = obj.discount
+            ? discount.find(item => item.id === obj.discount.id)
+            : null;
             setSelectedDiscount(foundDiscount || null);
             setDescription(obj.description || '');
             setImg(obj.cover_image || '');
@@ -405,6 +411,7 @@ function AddBookWindow({isOpen, onClose, obj})
                      ))}
                      <div style={{ display: "flex", width: 310, justifyContent: "center" }}>
                      <button
+                        type="button"
                         className={styles.AddAuthorButton}
                         onClick={() =>
                            setAuthors(prev => [...prev, { author_last_name: '', author_first_name: '', author_patronymic: '' }])
