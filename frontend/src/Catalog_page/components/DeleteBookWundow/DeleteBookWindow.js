@@ -29,6 +29,8 @@ function DeleteBookWindow ({isOpen, onClose, obj})
             <p className={styles.nameWindow}>Удаление книги</p>
             <button onClick={() => {onClose();}} className={styles.closeBtn}></button>
             <div className={styles.Content}>
+               {obj.number_of_copies == 0 ? (
+               <>
                <p>Вы уверены, что хотите удалить книгу “{obj.title}” - {
                   obj.authors
                      ? obj.authors.map(
@@ -40,6 +42,15 @@ function DeleteBookWindow ({isOpen, onClose, obj})
                   <button onClick={() => {onClose();}} style={{backgroundColor: "#efeeee", color: "#424245"}}>Отмена</button>
                   <button style={{backgroundColor: "#5D3C64", color: "white"}} onClick={handleDelete}>Удалить</button>
                </div>
+               </>
+               ): (
+               <>
+               <p>Невозможно удалить книгу “{obj.title}”, так как количество экземпляров не нулевое!</p>
+               <div className={styles.ButtonContainer1}>
+                  <button style={{backgroundColor: "#5D3C64", color: "white"}} onClick={() => {onClose();}}>Окей</button>
+               </div>
+               </>
+            )}
             </div>
          </div>
       </div>

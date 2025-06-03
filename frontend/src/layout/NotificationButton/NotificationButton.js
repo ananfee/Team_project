@@ -11,7 +11,7 @@ const NotificationButton = ({ onClick }) => {
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
-            <img src="messages-2.svg" alt="" />
+            <img src="/messages-2.svg" alt="" />
         </button>
     );
 };

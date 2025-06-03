@@ -1,23 +1,29 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import styles from "./CatalogBook.module.css";
 import AddBookWindow from "../AddBookWindow/AddBookWindow";
 import DeleteBookWindow from "../DeleteBookWundow/DeleteBookWindow";
 import FetchWithAuth from "../../../layout/LoginWindow/FetchWithAuth";
+import WarningBasket from "../WarningBasket/WarningBasket";
 
 
 function CatalogBook({product})
 {
    const [editBookModalOpen, setEditBookModalOpen] = useState(false);
    const [deleteBookModalOpen, setDeleteBookModalOpen] = useState(false);
+   const [warningBasketModalOpen, setWarningBasketModalOpen] = useState(false);
    const [editBookData, setEditBookData] = useState(null);
    const [deleteBookData, setDeleteBookData] = useState(null);
-   const role = localStorage.getItem('role');
-
+   const [role, setRole] = useState("");
+   useEffect(() => {
+    setRole(localStorage.getItem('role'));
+    }, []);
+ 
    const fetchBookForEdit = async (bookId) => {
       try {
-        const result = await FetchWithAuth(`http://127.0.0.1:8000/catalog/books/${bookId}/`);
-        if (result && result.book) {
-          setEditBookData(result.book);
+        const response = await FetchWithAuth(`http://127.0.0.1:8000/catalog/books/update/${bookId}/`);
+        if (response && response.ok) {
+          const data = await response.json();
+          setEditBookData(data.book);
           setEditBookModalOpen(true);
         }
       } catch (err) {
@@ -26,16 +32,39 @@ function CatalogBook({product})
       }
     };
 
-   const fetchBookForDelete = async (bookId) => {
+    const fetchBookForDelete = async (bookId) => {
       try {
-        const result = await FetchWithAuth(`http://127.0.0.1:8000/catalog/books/${bookId}/`);
-        if (result && result.book) {
-          setDeleteBookData(result.book);
+        const response = await FetchWithAuth(`http://127.0.0.1:8000/catalog/books/update/${bookId}/`);
+        if (response && response.ok) {
+          const data = await response.json();
+          setDeleteBookData(data.book);
           setDeleteBookModalOpen(true);
         }
       } catch (err) {
         alert('Ошибка при получении данных о книге');
         console.error(err);
+      }
+    };
+
+    const addToCart = async (bookId) => {
+      try {
+        const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/cart/', {
+          method: 'POST',
+          body: JSON.stringify({
+            book: bookId,
+            count_of_book: 1,
+          })
+        });
+        if (!response) {
+          alert('Ошибка авторизации!');
+          return;
+        }
+        const data = await response.json();
+        if (!response.ok) {
+          alert('Ошибка: ' + (data.detail || response.statusText));
+        }
+      } catch (e) {
+        alert('Ошибка отправки запроса');
       }
     };
 
@@ -76,8 +105,25 @@ function CatalogBook({product})
                 <button className={styles.Trash} onClick={() => fetchBookForDelete(product.id)}></button>
                 <DeleteBookWindow isOpen={deleteBookModalOpen} onClose={() => {setDeleteBookModalOpen(false); setDeleteBookData(null);}} obj={deleteBookData}/>
               </div>
-            </>)
-            : <button className={styles.BasketButton}>В корзину</button>
+            </>) 
+            : role == 'Клиент' ?
+            (<button 
+              className={product.number_of_copies == "0" ? styles.basketButtonDisabled : styles.BasketButton} 
+              disabled={product.number_of_copies === "0" ? true : false}
+              onClick={product.number_of_copies === "0" ? undefined : () => addToCart(product.id)}>
+                {product.number_of_copies === "0" ? "Нет на складе" : "В корзину"}
+              </button> )
+            :
+            ( <>
+                <button 
+                  className={product.number_of_copies == "0" ? styles.basketButtonDisabled : styles.BasketButton} 
+                  disabled={product.number_of_copies === "0" ? true : false} 
+                  onClick={() => setWarningBasketModalOpen(true)}>
+                    {product.number_of_copies === "0" ? "Нет на складе" : "В корзину"}
+                  </button>
+                <WarningBasket isOpen={warningBasketModalOpen} onClose={() => {setWarningBasketModalOpen(false);}}/>
+              </>
+            )
           }
         </div>
       </div>
