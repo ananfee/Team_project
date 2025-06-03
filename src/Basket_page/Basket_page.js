@@ -7,6 +7,7 @@ import "./Basket_page.css";
 import DeleteAllBasketButton from './DeleteAllBasketButton/DeleteAllBasketButton.jsx';
 import DeleteAllBasketWindow from './DeleteAllBasketWindow/DeleteAllBasketWindow.jsx'; // Изменено название компонента
 import {useEffect} from 'react';
+import {useCallback} from 'react';
 import ProductInBasket from './ProductInBasket/ProductInBasket.jsx';
 import FetchWithAuth from '../layout/LoginWindow/FetchWithAuth.js';
 import image1 from '../images/image 1.png';
@@ -753,7 +754,6 @@ const BasketPage = () => {
         // Успешная очистка корзины на сервере
         setBasketItems([]);
         calculateTotals([]);
-        closeDeleteAllWindow(); // Закрываем окно подтверждения, если оно открыто
         // Добавляем обновление страницы (перезагрузку) после успешной очистки
         window.location.reload(); // Или используйте более подходящий метод обновления, если есть
 
@@ -972,7 +972,7 @@ const BasketPage = () => {
                     {basketItems.length > 0 && (
                     <div>
                         <DeleteAllBasketButton onOpenDeleteWindow={openDeleteAllWindow}/>
-                        <DeleteProductWindow isOpen={isDeleteAllWindowOpen} onClose={closeDeleteAllWindow} onClearBasket={handleClearBasket} />
+                        <DeleteAllBasketWindow isOpen={isDeleteAllWindowOpen} onClose={closeDeleteAllWindow} onClearBasket={handleClearBasket} />
                     </div>
                     )}
                 </div>

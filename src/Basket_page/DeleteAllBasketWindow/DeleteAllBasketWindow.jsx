@@ -73,31 +73,31 @@ const DeleteAllBasketWindow = ({ onClose, isOpen, onClearBasket }) => {
         };
     }, [onClose]);
 
-    const handleClearBasket = async () => {
-        try {
-            const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/cart/clear/', {
-                method: 'DELETE',
-            });
+    // const handleClearBasket = async () => {
+    //     try {
+    //         const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/cart/clear/', {
+    //             method: 'DELETE',
+    //         });
 
-            if (response === null) {
-                throw new Error("Не удалось обновить токен авторизации.");
-            }
+    //         if (response === null) {
+    //             throw new Error("Не удалось обновить токен авторизации.");
+    //         }
 
-            if (!response.ok) {
-                const errorData = await response.json();
-                const errorMessage = errorData?.message || `Ошибка очистки корзины: ${response.status}`;
-                throw new Error(errorMessage);
-            }
+    //         if (!response.ok) {
+    //             const errorData = await response.json();
+    //             const errorMessage = errorData?.message || `Ошибка очистки корзины: ${response.status}`;
+    //             throw new Error(errorMessage);
+    //         }
 
-            const data = await response.json();
-            console.log(data.message); // Показываем сообщение в консоли
-            onClearBasket(); // Уведомляем родительский компонент, чтобы он обновил состояние корзины
-            onClose(); // Закрываем модальное окно
-        } catch (error) {
-            console.error("Ошибка при очистке корзины:", error);
-            // Здесь можно добавить отображение сообщения об ошибке для пользователя
-        }
-    };
+    //         const data = await response.json();
+    //         console.log(data.message); // Показываем сообщение в консоли
+    //         onClearBasket(); // Уведомляем родительский компонент, чтобы он обновил состояние корзины
+    //         onClose(); // Закрываем модальное окно
+    //     } catch (error) {
+    //         console.error("Ошибка при очистке корзины:", error);
+    //         // Здесь можно добавить отображение сообщения об ошибке для пользователя
+    //     }
+    // };
 
     return (
         <div className="deleteProductWindow-overlay" 
@@ -116,7 +116,7 @@ const DeleteAllBasketWindow = ({ onClose, isOpen, onClearBasket }) => {
                 </div>
                 <div className='conteiner_buttons'>
                     <CancelButton onClick={onClose} />
-                    <DeleteProductButton onClick={handleClearBasket} /> {/* При нажатии вызываем метод очистки */}
+                    <DeleteProductButton onClick={onClearBasket} /> {/* При нажатии вызываем метод очистки */}
                 </div>
             </div>
         </div>
