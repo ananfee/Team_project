@@ -128,7 +128,53 @@ import mc from '../../images/minus-cirlce.png';
 
 // export default NumberProducts;
 
-const NumberProducts = ({ initialCount, onQuantityChange, onBlur }) => {
+// const NumberProducts = ({ initialCount, onQuantityChange, onBlur, number_of_copies }) => {
+//     // Инициализируем count из initialCount
+//     const [count, setCount] = useState(initialCount);
+
+//     // Синхронизируем внутреннее состояние 'count' с внешним пропсом 'initialCount'
+//     // Это важно, если initialCount может измениться (например, при перезагрузке корзины извне)
+//     useEffect(() => {
+//         setCount(initialCount);
+//     }, [initialCount]); // Зависимость от initialCount
+
+//     const handleIncrement = () => {
+//         const newCount = count + 1;
+//         setCount(newCount); // Обновляем внутреннее состояние UI
+//         onQuantityChange(newCount); // Передаем НОВОЕ число родителю
+//     };
+
+//     const handleDecrement = () => {
+//         if (count > 1) { // Не позволяем количеству стать меньше 1
+//             const newCount = count - 1;
+//             setCount(newCount); // Обновляем внутреннее состояние UI
+//             onQuantityChange(newCount); // Передаем НОВОЕ число родителю
+//         } else if (count === 1) {
+//             // Опционально: если вы хотите удалять товар, когда количество становится 0
+//             // onQuantityChange(0); // Или какой-то другой флаг для удаления
+//             // Но в нашей текущей логике BasketPage, удаление происходит через отдельную кнопку
+//         }
+//     };
+
+//     return (
+//         <div className='rectangle0' onBlur={onBlur}>
+//             <button className='rectangleAdd' onClick={handleIncrement}>
+//                 <img src={ac} alt="Увеличить" />
+//             </button>
+//             <div className='NumberProducts'>
+//                 <p>{count}</p>
+//             </div>
+//             <button className='rectangleMinuss' onClick={handleDecrement}>
+//                 <img src={mc} alt="Уменьшить" />
+//             </button>
+//         </div>
+//     );
+// };
+
+// export default NumberProducts;
+
+
+const NumberProducts = ({ initialCount, onQuantityChange, onBlur, number_of_copies }) => {
     // Инициализируем count из initialCount
     const [count, setCount] = useState(initialCount);
 
@@ -139,9 +185,16 @@ const NumberProducts = ({ initialCount, onQuantityChange, onBlur }) => {
     }, [initialCount]); // Зависимость от initialCount
 
     const handleIncrement = () => {
-        const newCount = count + 1;
-        setCount(newCount); // Обновляем внутреннее состояние UI
-        onQuantityChange(newCount); // Передаем НОВОЕ число родителю
+        // Проверяем, не превышает ли увеличение лимит доступных копий
+        if (count < number_of_copies) {
+            const newCount = count + 1;
+            setCount(newCount); // Обновляем внутреннее состояние UI
+            onQuantityChange(newCount); // Передаем НОВОЕ число родителю
+        } else {
+            // Опционально: можно вывести сообщение об ошибке или предупреждение
+            console.log("Достигнуто максимальное количество копий для этого товара.");
+            // Можно даже обновить состояние, чтобы отобразить сообщение пользователю
+        }
     };
 
     const handleDecrement = () => {
@@ -158,7 +211,7 @@ const NumberProducts = ({ initialCount, onQuantityChange, onBlur }) => {
 
     return (
         <div className='rectangle0' onBlur={onBlur}>
-            <button className='rectangleAdd' onClick={handleIncrement}>
+            <button className='rectangleAdd' onClick={handleIncrement} disabled={count >= number_of_copies}>
                 <img src={ac} alt="Увеличить" />
             </button>
             <div className='NumberProducts'>
@@ -172,4 +225,5 @@ const NumberProducts = ({ initialCount, onQuantityChange, onBlur }) => {
 };
 
 export default NumberProducts;
+
 
