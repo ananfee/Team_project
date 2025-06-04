@@ -24,7 +24,7 @@ class OrderHistoryAdminView(APIView):
     permission_classes = [permissions.IsAuthenticated]
     def get(self, request):
         orders = OrderHistory.objects.all()
-        serializer = OrderHistoryAdminSerializer(orders, many=True)
+        serializer = OrderHistoryAdminSerializer(orders, many=True, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
