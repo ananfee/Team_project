@@ -1,3 +1,4 @@
+
 // PlaceOrderWindow.jsx
 import React, { useEffect } from 'react';
 import OKButton from "./OKButton/OKButton";
@@ -50,29 +51,121 @@ import cp from '../../images/add.png';
 
 // export default PlaceOrderWindow;
 
-const PlaceOrderWindow = ({ onClose, isOpen, orderMessage, onConfirm }) => { // onPlaceOrder удален из пропсов
-    // Обработчик закрытия по клику на оверлей
+// const PlaceOrderWindow = ({ onClose, isOpen, orderMessage, onConfirm }) => { // onPlaceOrder удален из пропсов
+//     // Обработчик закрытия по клику на оверлей
+//     const handleConfirm = () => {
+//         onConfirm(); // Вызываем переданную функцию onConfirm (onClearBasket)
+//         onClose();
+//     };
+//     const handleClose = (event) => {
+//         // Закрываем окно только если клик был непосредственно по фоновому оверлею,
+//         // а не по содержимому модального окна.
+//         if (event.target === event.currentTarget) {
+//             onClose();
+//         }
+//     };
+
+//     // Определяем, является ли сообщение об ошибке, для динамического отображения текста и стилей
+//     const isErrorMessage = orderMessage && (
+//         orderMessage.includes('Ошибка') ||
+//         orderMessage.includes('пуста') ||
+//         orderMessage.includes('не удалось') ||
+//         orderMessage.includes('отсутствуют') ||
+//         orderMessage.includes('Произошла ошибка') // Добавьте другие ключевые слова ошибок, если необходимо
+//     );
+
+//     // useEffect для обработки закрытия по нажатию клавиши Escape
+//     useEffect(() => {
+//         const handleEsc = (event) => {
+//             if (event.key === "Escape") {
+//                 onClose();
+//             }
+//         };
+
+//         // Добавляем слушатель события keydown только тогда, когда окно открыто
+//         if (isOpen) {
+//             window.addEventListener("keydown", handleEsc);
+//         }
+
+//         // Функция очистки: удаляем слушатель события при размонтировании компонента
+//         // или при изменении зависимостей isOpen или onClose.
+//         return () => {
+//             window.removeEventListener("keydown", handleEsc);
+//         };
+//     }, [isOpen, onClose]); // Зависимости: isOpen для условного добавления/удаления слушателя, onClose для стабильности.
+
+//     return (
+//         // Главный контейнер оверлея. Класс "deleteProductWindow-overlay" сохранен.
+//         // Стиль display управляет видимостью.
+//         <div className={"deleteProductWindow-overlay"}
+//             style={{ display: isOpen ? 'flex' : 'none' }}
+//             onClick={handleClose}>
+//             {/* Контейнер содержимого модального окна. Класс "deleteProductWindow-content" сохранен. */}
+//             <div className="deleteProductWindow-content">
+//                 <div className='NameDeleteProductWindow'> {/* Класс сохранен */}
+//                     {/* Динамический заголовок: "Ошибка оформления заказа" или "Заказ успешно оформлен" */}
+//                     <p>{isErrorMessage ? 'Ошибка оформления заказа' : 'Заказ успешно оформлен'}</p>
+//                     <button className='closeDeleteProductWindow' onClick={handleConfirm}> {/* Класс сохранен */}
+//                         <img src={cp} alt="Закрыть" />
+//                     </button>
+//                 </div>
+//                 <div className='DescriptionDeleteProductWindow'> {/* Класс сохранен */}
+//                     {/* Отображаем текущее сообщение о статусе заказа */}
+//                     {orderMessage && (
+//                         <p style={{
+//                             color: isErrorMessage ? 'red' : 'green', // Красный для ошибок, зеленый для успеха
+//                             fontWeight: 'bold',
+//                             marginBottom: '10px' // Отступ снизу для лучшего вида
+//                         }}>
+//                             {orderMessage}
+//                         </p>
+//                     )}
+//                     {/* Дополнительный текст, который отображается только при успешном заказе */}
+//                     {!isErrorMessage && (
+//                         <p>Для просмотра подробной информации о заказе вы можете перейти к истории заказов.</p>
+//                     )}
+//                 </div>
+//                 <div className='conteiner_buttons'> {/* Класс сохранен */}
+//                     {/* Кнопка "ОК", которая просто закрывает модальное окно */}
+//                     <OKButton onClick={handleConfirm} />
+//                 </div>
+//             </div>
+//         </div>
+//     );
+// };
+
+// export default PlaceOrderWindow;
+
+
+import React, { useEffect } from 'react';
+import OKButton from './OKButton'; // Предполагается, что это ваш компонент для кнопки
+import cp from '../images/close_purple.png'; // Предполагается, что это ваш импорт изображения
+
+const PlaceOrderWindow = ({ onClose, isOpen, orderMessage, onConfirm }) => {
+    const isOrderSuccessful = orderMessage === "Заказ успешно оформлен!";
+
+    // Обработчик подтверждения (закрытия)
     const handleConfirm = () => {
-        onConfirm(); // Вызываем переданную функцию onConfirm (onClearBasket)
-        onClose();
+        if (isOrderSuccessful) {
+            onConfirm(); // Очищаем корзину только при успешном заказе
+        }
+        onClose(); // Закрываем окно в любом случае
     };
+
     const handleClose = (event) => {
-        // Закрываем окно только если клик был непосредственно по фоновому оверлею,
-        // а не по содержимому модального окна.
         if (event.target === event.currentTarget) {
             onClose();
         }
     };
 
-    // Определяем, является ли сообщение об ошибке, для динамического отображения текста и стилей
     const isErrorMessage = orderMessage && (
         orderMessage.includes('Ошибка') ||
         orderMessage.includes('пуста') ||
         orderMessage.includes('не удалось') ||
-        orderMessage.includes('Произошла ошибка') // Добавьте другие ключевые слова ошибок, если необходимо
+        orderMessage.includes('отсутствуют') ||
+        orderMessage.includes('Произошла ошибка')
     );
 
-    // useEffect для обработки закрытия по нажатию клавиши Escape
     useEffect(() => {
         const handleEsc = (event) => {
             if (event.key === "Escape") {
@@ -80,51 +173,45 @@ const PlaceOrderWindow = ({ onClose, isOpen, orderMessage, onConfirm }) => { // 
             }
         };
 
-        // Добавляем слушатель события keydown только тогда, когда окно открыто
         if (isOpen) {
             window.addEventListener("keydown", handleEsc);
         }
 
-        // Функция очистки: удаляем слушатель события при размонтировании компонента
-        // или при изменении зависимостей isOpen или onClose.
         return () => {
             window.removeEventListener("keydown", handleEsc);
         };
-    }, [isOpen, onClose]); // Зависимости: isOpen для условного добавления/удаления слушателя, onClose для стабильности.
+    }, [isOpen, onClose]);
 
     return (
-        // Главный контейнер оверлея. Класс "deleteProductWindow-overlay" сохранен.
-        // Стиль display управляет видимостью.
-        <div className={"deleteProductWindow-overlay"}
+        <div
+            className="deleteProductWindow-overlay"
             style={{ display: isOpen ? 'flex' : 'none' }}
-            onClick={handleClose}>
-            {/* Контейнер содержимого модального окна. Класс "deleteProductWindow-content" сохранен. */}
+            onClick={handleClose}
+        >
             <div className="deleteProductWindow-content">
-                <div className='NameDeleteProductWindow'> {/* Класс сохранен */}
-                    {/* Динамический заголовок: "Ошибка оформления заказа" или "Заказ успешно оформлен" */}
+                <div className='NameDeleteProductWindow'>
                     <p>{isErrorMessage ? 'Ошибка оформления заказа' : 'Заказ успешно оформлен'}</p>
-                    <button className='closeDeleteProductWindow' onClick={handleConfirm}> {/* Класс сохранен */}
+                    <button className='closeDeleteProductWindow' onClick={onClose}>
                         <img src={cp} alt="Закрыть" />
                     </button>
                 </div>
-                <div className='DescriptionDeleteProductWindow'> {/* Класс сохранен */}
-                    {/* Отображаем текущее сообщение о статусе заказа */}
+                <div className='DescriptionDeleteProductWindow'>
                     {orderMessage && (
-                        <p style={{
-                            color: isErrorMessage ? 'red' : 'green', // Красный для ошибок, зеленый для успеха
-                            fontWeight: 'bold',
-                            marginBottom: '10px' // Отступ снизу для лучшего вида
-                        }}>
+                        <p
+                            style={{
+                                color: isErrorMessage ? 'red' : 'green',
+                                fontWeight: 'bold',
+                                marginBottom: '10px'
+                            }}
+                        >
                             {orderMessage}
                         </p>
                     )}
-                    {/* Дополнительный текст, который отображается только при успешном заказе */}
-                    {!isErrorMessage && (
+                    {isOrderSuccessful && (
                         <p>Для просмотра подробной информации о заказе вы можете перейти к истории заказов.</p>
                     )}
                 </div>
-                <div className='conteiner_buttons'> {/* Класс сохранен */}
-                    {/* Кнопка "ОК", которая просто закрывает модальное окно */}
+                <div className='conteiner_buttons'>
                     <OKButton onClick={handleConfirm} />
                 </div>
             </div>

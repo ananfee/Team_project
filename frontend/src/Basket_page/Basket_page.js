@@ -376,6 +376,7 @@ const BasketPage = () => {
 };
 
 
+
      // TODO: Добавить функцию для изменения количества товара
    // --- ИСПРАВЛЕННАЯ ФУНКЦИЯ ИЗМЕНЕНИЯ КОЛИЧЕСТВА ---
         const handleQuantityChange = useCallback(async (bookId, newQuantity) => {
@@ -417,7 +418,6 @@ const BasketPage = () => {
             // Например, можно сохранить предыдущее количество в состоянии NumberProducts и восстановить его здесь.
         }
     }, [basketItems, calculateTotals, openNotificationModal]);
-
 
     // --- Логика загрузки данных корзины (выполняется один раз при монтировании) ---
     useEffect(() => {
