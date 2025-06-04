@@ -4,6 +4,8 @@ import BookInfo from './components/BookInfo/BookInfo';
 import Header from '../layout/Header';
 import RelatedBooks from './components/RelatedBooks/RelatedBooks';
 import NotificationModal from '../NotificationModal/NotificationModal'; 
+import Footer from "../components/footer/footer.jsx";
+
 
 // const book = 
 //    {
@@ -228,6 +230,7 @@ function Details_page()
                <RelatedBooks RelatedBooks={relatedBooks}/>
                </div>
             )}
+         <Footer/>
       </div>
    );
 }
