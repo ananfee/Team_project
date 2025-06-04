@@ -5,37 +5,24 @@ import PlaceOrderWindow from '../PlaceOrderWindow/PlaceOrderWindow'; // Импо
 import FetchWithAuth from '../../layout/LoginWindow/FetchWithAuth.js';
 
 
-const ResultConteiner = ({ totalItems, totalOriginalPrice, totalDiscount, finalPrice, onClearBasket }) => {
+const ResultConteiner = ({
+    totalItems,
+    totalOriginalPrice,
+    totalDiscount,
+    finalPrice,
+    onClearBasket // Передаем функцию очистки корзины
+}) => {
     const [isPlaceOrderWindowOpen, setIsPlaceOrderWindowOpen] = useState(false);
-    const [orderMessage, setOrderMessage] = useState(''); // Состояние для сообщения о статусе заказа
+    const [orderMessage, setOrderMessage] = useState('');
 
     const openPlaceOrderWindow = () => {
-        setOrderMessage(''); // Очищаем сообщение при открытии нового окна, если оно было
+        setOrderMessage('');
         setIsPlaceOrderWindowOpen(true);
     };
 
     const closePlaceOrderWindow = () => {
         setIsPlaceOrderWindowOpen(false);
-        setOrderMessage(''); // Также очищаем сообщение при закрытии окна
-    };
-
-    const formatItemWord = (count) => {
-        // Исправлен оператор ||
-        if (typeof count !== 'number' || count < 0 || !Number.isFinite(count)) return 'товаров';
-        const lastDigit = count % 10;
-        const lastTwoDigits = count % 100;
-        if (lastTwoDigits >= 11 && lastTwoDigits <= 14) return 'товаров';
-        if (lastDigit === 1) return 'товар';
-        if (lastDigit >= 2 && lastDigit <= 4) return 'товара';
-        return 'товаров';
-    };
-
-    const formatPrice = (price) => {
-        // Исправлен оператор || и синтаксис строки
-        if (price == null || typeof price !== 'number' || !Number.isFinite(price)) {
-            return '--- ₽';
-        }
-        return `${Math.round(price)} ₽`;
+        setOrderMessage('');
     };
     const formatItemWord = (count) => {
         // Исправлен оператор ||
@@ -55,9 +42,7 @@ const ResultConteiner = ({ totalItems, totalOriginalPrice, totalDiscount, finalP
         return `${Math.round(price)} ₽`;
     };
     const handlePlaceOrder = async () => {
-        // 1. Открываем окно сразу, чтобы показать пользователю, что что-то происходит.
         openPlaceOrderWindow();
-        // 2. Устанавливаем начальное сообщение о процессе.
         setOrderMessage('Оформление заказа...');
 
         try {
@@ -66,38 +51,31 @@ const ResultConteiner = ({ totalItems, totalOriginalPrice, totalDiscount, finalP
             });
 
             if (response === null) {
-                // Это может произойти, если FetchWithAuth не смог обновить токен.
                 setOrderMessage("Ошибка авторизации. Попробуйте войти снова.");
-                // Возвращаемся, не пытаясь обработать ответ дальше
                 return;
             }
 
             if (!response.ok) {
                 const errorData = await response.json();
-                // Исправлен синтаксис строки и оператор ||
                 const errorMessage = errorData?.error || errorData?.detail || `Ошибка оформления заказа: ${response.statusText}`;
-                setOrderMessage(errorMessage); // Устанавливаем сообщение об ошибке
+                setOrderMessage(errorMessage);
                 console.error("Ошибка при оформлении заказа:", errorMessage);
-                return; // Возвращаемся после обработки ошибки
+                return;
             }
 
             const data = await response.json();
-            setOrderMessage(data.message); // Успешное сообщение: "Заказ успешно оформлен"
+            setOrderMessage(data.message || "Заказ успешно оформлен!");
 
-            // Если заказ успешно оформлен, очищаем корзину.
-            // PlaceOrderWindow остается открытым с этим сообщением, пока пользователь не нажмет "ОК".
-            onClearBasket(); // Вызывает loadBasket в BasketPage, которая обновит корзину
+            // НЕ вызываем onClearBasket здесь. Это будет сделано в PlaceOrderWindow.
 
         } catch (error) {
             console.error("Ошибка при оформлении заказа:", error);
-            // Исправлен синтаксис строки
             setOrderMessage(`Произошла ошибка при оформлении заказа. ${error.message || 'Пожалуйста, попробуйте снова.'}`);
         }
-        // Окно не закрывается здесь. Оно остается открытым с результатом, пока пользователь не нажмет "ОК"
     };
 
     return (
-        <div className='resultConteiner'>
+                <div className='resultConteiner'>
             <div className='conteinerDop'>
                  <p style={{ fontSize: 24 }}>К оплате</p>
                 <div className='infoText'>
@@ -120,7 +98,10 @@ const ResultConteiner = ({ totalItems, totalOriginalPrice, totalDiscount, finalP
                 <PlaceOrderWindow
                     onClose={closePlaceOrderWindow}
                     isOpen={isPlaceOrderWindowOpen}
-                    orderMessage={orderMessage} // Передаем сообщение о статусе
+
+
+orderMessage={orderMessage}
+                    onConfirm={onClearBasket} // Передаем onClearBasket в PlaceOrderWindow
                 />
             </div>
         </div>

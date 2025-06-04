@@ -1,10 +1,10 @@
-import React from 'react'; // Убрал useState
+import React,  { useEffect } from 'react'; // Убрал useState
 import CancelButton from "./CancelButton/CancelButton";
 import DeleteProductButton from "./DeleteProductButton/DeleteProductButton";
 import './DeleteProductWindow.css';
 import cp from '../../images/add.png';
 
-const DeleteProductWindow = ({ onClose, isOpen, onQuantityChange }) => {
+const DeleteProductWindow = ({ onClose, isOpen, onConfirmDelete }) => {
         const handleClose = () => {
         if (onClose) {
             onClose();
@@ -22,9 +22,12 @@ const DeleteProductWindow = ({ onClose, isOpen, onQuantityChange }) => {
                 window.removeEventListener("keydown", handleEsc);
             };
         }, [onClose]);
+
     return (
+        // Используем style для условного отображения. Для больших проектов лучше CSS-классы.
         <div className="deleteProductWindow-overlay" style={{ display: isOpen ? 'flex' : 'none' }}>
-            <div className="deleteProductWindow-content">
+            {/* Добавляем onClick на оверлей, чтобы закрывать по клику вне окна, но не на самом окне */}
+            <div className="deleteProductWindow-content" onClick={e => e.stopPropagation()}>
                 <div className='NameDeleteProductWindow'>
                     <p>Удаление товара</p>
                     <button className='closeDeleteProductWindow' onClick={onClose}>
@@ -36,7 +39,8 @@ const DeleteProductWindow = ({ onClose, isOpen, onQuantityChange }) => {
                 </div>
                 <div className='conteiner_buttons'>
                     <CancelButton onClick={onClose} />
-                    <DeleteProductButton onClick={onQuantityChange}/>
+                    {/* Передаем onConfirmDelete в DeleteProductButton */}
+                    <DeleteProductButton onClick={onConfirmDelete}/>
                 </div>
             </div>
         </div>
