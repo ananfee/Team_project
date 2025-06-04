@@ -61,7 +61,8 @@ const ProductInBasket = ({ book, count_of_book, onDelete, onQuantityChange }) =>
                         {/* Отображаем отформатированную строку с авторами */}
                         <p style={{fontSize: 14, color: "#777777"}}>{authorsString}</p>
                 </div>
-                    <NumberProducts           
+                    <NumberProducts  
+                        number_of_copies={book.number_of_copies}
                         initialCount={quantity} // Передаем текущее quantity
                         onQuantityChange={handleQuantityChange}
                         onBlur={handleQuantityBlur} />
