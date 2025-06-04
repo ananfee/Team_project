@@ -3,6 +3,8 @@ import { useEffect } from 'react';
 import "./NumberProducts.css";
 import ac from '../../images/add-circle.png';
 import mc from '../../images/minus-cirlce.png';
+import { useCallback } from 'react';
+import FetchWithAuth from '../../layout/LoginWindow/FetchWithAuth.js';
 
 
 // // Компонент теперь принимает initialCount как пропс
@@ -174,50 +176,132 @@ import mc from '../../images/minus-cirlce.png';
 // export default NumberProducts;
 
 
-const NumberProducts = ({ initialCount, onQuantityChange, onBlur, number_of_copies }) => {
-    // Инициализируем count из initialCount
-    const [count, setCount] = useState(initialCount);
+// const NumberProducts = ({ initialCount, onQuantityChange, onBlur, number_of_copies }) => {
+//     // Инициализируем count из initialCount
+//     const [count, setCount] = useState(initialCount);
 
-    // Синхронизируем внутреннее состояние 'count' с внешним пропсом 'initialCount'
-    // Это важно, если initialCount может измениться (например, при перезагрузке корзины извне)
+//     // Синхронизируем внутреннее состояние 'count' с внешним пропсом 'initialCount'
+//     // Это важно, если initialCount может измениться (например, при перезагрузке корзины извне)
+//     useEffect(() => {
+//         setCount(initialCount);
+//     }, [initialCount]); // Зависимость от initialCount
+
+//     const handleIncrement = () => {
+//         // Проверяем, не превышает ли увеличение лимит доступных копий
+//         if (count < number_of_copies) {
+//             const newCount = count + 1;
+//             setCount(newCount); // Обновляем внутреннее состояние UI
+//             onQuantityChange(newCount); // Передаем НОВОЕ число родителю
+//         } else {
+//             // Опционально: можно вывести сообщение об ошибке или предупреждение
+//             console.log("Достигнуто максимальное количество копий для этого товара.");
+//             // Можно даже обновить состояние, чтобы отобразить сообщение пользователю
+//         }
+//     };
+
+//     const handleDecrement = () => {
+//         if (count > 1) { // Не позволяем количеству стать меньше 1
+//             const newCount = count - 1;
+//             setCount(newCount); // Обновляем внутреннее состояние UI
+//             onQuantityChange(newCount); // Передаем НОВОЕ число родителю
+//         } else if (count === 1) {
+//             // Опционально: если вы хотите удалять товар, когда количество становится 0
+//             // onQuantityChange(0); // Или какой-то другой флаг для удаления
+//             // Но в нашей текущей логике BasketPage, удаление происходит через отдельную кнопку
+//         }
+//     };
+
+//     return (
+//         <div className='rectangle0' onBlur={onBlur}>
+//             <button className='rectangleAdd' onClick={handleIncrement} disabled={count >= number_of_copies}>
+//                 <img src={ac} alt="Увеличить" />
+//             </button>
+//             <div className='NumberProducts'>
+//                 <p>{count}</p>
+//             </div>
+//             <button className='rectangleMinuss' onClick={handleDecrement}>
+//                 <img src={mc} alt="Уменьшить" />
+//             </button>
+//         </div>
+//     );
+// };
+
+// export default NumberProducts;
+
+
+
+const NumberProducts = ({ initialCount, onQuantityChange, number_of_copies, bookId }) => {
+    const [count, setCount] = useState(initialCount);
+    const [isLoading, setIsLoading] = useState(false);
+
     useEffect(() => {
         setCount(initialCount);
-    }, [initialCount]); // Зависимость от initialCount
+    }, [initialCount]);
 
-    const handleIncrement = () => {
-        // Проверяем, не превышает ли увеличение лимит доступных копий
-        if (count < number_of_copies) {
-            const newCount = count + 1;
-            setCount(newCount); // Обновляем внутреннее состояние UI
-            onQuantityChange(newCount); // Передаем НОВОЕ число родителю
+    const updateQuantity = useCallback(async (newCount) => {
+        setIsLoading(true);
+        try {
+            const response = await FetchWithAuth("http://127.0.0.1:8000/catalog/cart/update/", {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ book_id: bookId, count_of_book: newCount }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                const errorMessage = errorData?.detail || `Ошибка обновления количества: ${response.status}`;
+                console.error("Ошибка при изменении количества товара:", errorMessage);
+                alert(errorMessage);
+                return false;
+            }
+
+            setCount(newCount);
+            onQuantityChange(newCount);
+            return true;
+        } catch (error) {
+            console.error("Ошибка при изменении количества товара:", error);
+            alert(`Произошла ошибка: ${error.message}`);
+            return false;
+        } finally {
+            setIsLoading(false);
+        }
+    }, [bookId, onQuantityChange]);
+
+    const handleIncrement = async () => {
+        const newCount = count + 1;
+        if (newCount <= number_of_copies) {
+            await updateQuantity(newCount);
         } else {
-            // Опционально: можно вывести сообщение об ошибке или предупреждение
             console.log("Достигнуто максимальное количество копий для этого товара.");
-            // Можно даже обновить состояние, чтобы отобразить сообщение пользователю
         }
     };
 
-    const handleDecrement = () => {
-        if (count > 1) { // Не позволяем количеству стать меньше 1
+    const handleDecrement = async () => {
+        if (count > 1) {
             const newCount = count - 1;
-            setCount(newCount); // Обновляем внутреннее состояние UI
-            onQuantityChange(newCount); // Передаем НОВОЕ число родителю
-        } else if (count === 1) {
-            // Опционально: если вы хотите удалять товар, когда количество становится 0
-            // onQuantityChange(0); // Или какой-то другой флаг для удаления
-            // Но в нашей текущей логике BasketPage, удаление происходит через отдельную кнопку
+            await updateQuantity(newCount);
         }
     };
 
     return (
-        <div className='rectangle0' onBlur={onBlur}>
-            <button className='rectangleAdd' onClick={handleIncrement} disabled={count >= number_of_copies}>
+        <div className='rectangle0'>
+            <button
+                className='rectangleAdd'
+                onClick={handleIncrement}
+                disabled={count >= number_of_copies || isLoading}
+            >
                 <img src={ac} alt="Увеличить" />
             </button>
             <div className='NumberProducts'>
                 <p>{count}</p>
             </div>
-            <button className='rectangleMinuss' onClick={handleDecrement}>
+            <button
+                className='rectangleMinuss'
+                onClick={handleDecrement}
+                disabled={isLoading}
+            >
                 <img src={mc} alt="Уменьшить" />
             </button>
         </div>
@@ -225,5 +309,3 @@ const NumberProducts = ({ initialCount, onQuantityChange, onBlur, number_of_copi
 };
 
 export default NumberProducts;
-
-
