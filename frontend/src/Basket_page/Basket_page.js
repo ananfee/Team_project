@@ -379,45 +379,45 @@ const BasketPage = () => {
 
      // TODO: Добавить функцию для изменения количества товара
    // --- ИСПРАВЛЕННАЯ ФУНКЦИЯ ИЗМЕНЕНИЯ КОЛИЧЕСТВА ---
-        const handleQuantityChange = useCallback(async (bookId, newQuantity) => {
-        try {
-            const response = await FetchWithAuth("http://127.0.0.1:8000/catalog/cart/update/", {
-                method: 'PATCH', // Или PUT, POST, в зависимости от вашего API
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ book_id: bookId, count_of_book: newQuantity }),
-            });
+    //     const handleQuantityChange = useCallback(async (bookId, newQuantity) => {
+    //     try {
+    //         const response = await FetchWithAuth("http://127.0.0.1:8000/catalog/cart/update/", {
+    //             method: 'PATCH', // Или PUT, POST, в зависимости от вашего API
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify({ book_id: bookId, count_of_book: newQuantity }),
+    //         });
 
-            if (response === null) {
-                openNotificationModal("Ошибка авторизации. Пожалуйста, попробуйте войти снова.");
-                return;
-            }
-
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                const errorMessage = errorData?.detail || `Ошибка обновления количества: ${response.status}`;
-                openNotificationModal(errorMessage);
-                throw new Error(errorMessage); // Кидаем ошибку, чтобы попасть в catch
-            }
+    //         if (response === null) {
+    //             openNotificationModal("Ошибка авторизации. Пожалуйста, попробуйте войти снова.");
+    //             return;
+    //         }
 
 
-            // После успешного обновления на сервере, обновляем локальное состояние
-            const updatedBasketItems = basketItems.map(item =>
-                item.book.id === bookId
-                    ? { ...item, count_of_book: newQuantity } // Обновляем count_of_book
-                    : item
-            );
-            setBasketItems(updatedBasketItems); // Обновляем состояние корзины
-            calculateTotals(updatedBasketItems); // Пересчитываем итоги
-        } catch (error) {
-            console.error("Ошибка при изменении количества товара:", error);
-            openNotificationModal(`Ошибка: ${error.message}`);
-            // Добавьте здесь логику для отката изменений в UI, если запрос не удался.
-            // Например, можно сохранить предыдущее количество в состоянии NumberProducts и восстановить его здесь.
-        }
-    }, [basketItems, calculateTotals, openNotificationModal]);
+    //         if (!response.ok) {
+    //             const errorData = await response.json();
+    //             const errorMessage = errorData?.detail || `Ошибка обновления количества: ${response.status}`;
+    //             openNotificationModal(errorMessage);
+    //             throw new Error(errorMessage); // Кидаем ошибку, чтобы попасть в catch
+    //         }
+
+
+    //         // После успешного обновления на сервере, обновляем локальное состояние
+    //         const updatedBasketItems = basketItems.map(item =>
+    //             item.book.id === bookId
+    //                 ? { ...item, count_of_book: newQuantity } // Обновляем count_of_book
+    //                 : item
+    //         );
+    //         setBasketItems(updatedBasketItems); // Обновляем состояние корзины
+    //         calculateTotals(updatedBasketItems); // Пересчитываем итоги
+    //     } catch (error) {
+    //         console.error("Ошибка при изменении количества товара:", error);
+    //         openNotificationModal(`Ошибка: ${error.message}`);
+    //         // Добавьте здесь логику для отката изменений в UI, если запрос не удался.
+    //         // Например, можно сохранить предыдущее количество в состоянии NumberProducts и восстановить его здесь.
+    //     }
+    // }, [basketItems, calculateTotals, openNotificationModal]);
 
 
     // const handleQuantityChange = useCallback(async (bookId, newQuantity) => {
@@ -656,7 +656,7 @@ const BasketPage = () => {
                                     total_price={item.total_price} // Передаем общую цену за эту позицию (из API - опционально, но может быть полезно)
                                     // TODO: Передать обработчики удаления и изменения количества
                                     onDelete={() => handleDeleteItem(item.book?.id)} // Передать функцию handleDeleteItem
-                                    onQuantityChange={(newQuantity) => handleQuantityChange(item.book?.id, newQuantity)} // Передать функцию handleQuantityChange
+                                    // onQuantityChange={(newQuantity) => handleQuantityChange(item.book?.id, newQuantity)} // Передать функцию handleQuantityChange
                                 />
                             ))
                         ) : (
