@@ -27,30 +27,35 @@ function RelatedBooks({ RelatedBooks }) {
       <p style={{ fontFamily: "Inter, sans-serif", fontWeight: 500, fontSize: 28 }}>
         Похожие книги
       </p>
-      <button 
-          onClick={handlePrev} 
-          className={styles.PrevButton} 
-          disabled={startIndex === 0}
-        >
-        </button>
-        <button 
-          onClick={handleNext} 
-          className={styles.NextButton} 
-          disabled={startIndex + itemsPerPage >= RelatedBooks.length}
-        >
-         </button>
-      <div className={styles.SliderWrapper}>
-        <div className={styles.ListRelatedBooks}
-            >
-          {visibleBooks.map((item, index) => (
-            <div key={item.id}
-                  onDoubleClick={() => navigate(`/new/${item.id}`)}
+      {RelatedBooks.length === 0 ? (
+        <p style={{marginTop: 30, fontFamily: "Inter, sans-serif", fontWeight: 400, fontSize: 24, color: 'lightgray'}}>Не нашлось похожих книг</p>
+      ) : (
+        <>
+          <button
+            onClick={handlePrev}
+            className={styles.PrevButton}
+            disabled={startIndex === 0}
+          >
+          </button>
+          <button
+            onClick={handleNext}
+            className={styles.NextButton}
+            disabled={startIndex + itemsPerPage >= RelatedBooks.length}
+          >
+          </button>
+          <div className={styles.SliderWrapper}>
+            <div className={styles.ListRelatedBooks}>
+              {visibleBooks.map(item => (
+                <div key={item.id}
+                  onDoubleClick={() => navigate(/new/${item.id})}
                   style={{ cursor: 'pointer' }}>
-              <CatalogBook product={item} />
+                  <CatalogBook product={item} />
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
