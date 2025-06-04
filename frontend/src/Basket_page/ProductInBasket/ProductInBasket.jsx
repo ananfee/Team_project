@@ -145,11 +145,11 @@ const ProductInBasket = ({ book, count_of_book, onDelete, onQuantityChange }) =>
                         <p style={{ color: "#777777", textDecoration: 'line-through', textDecorationColor: 'red' }}>
                             {book.price * count_of_book} ₽
                         </p>
-                        <p style={{ fontWeight: 500 }}>{book.discounted_price * count_of_book} ₽</p>
+                        <p style={{ fontWeight: 500 }}>{(book.discounted_price * count_of_book).toFixed(2)} ₽</p>
                     </div>
                 ) : (
                     <div className='priceProduct'>
-                        <p style={{ fontWeight: 500 }}>{book.price * count_of_book} ₽</p>
+                        <p style={{ fontWeight: 500 }}>{(book.price * count_of_book).toFixed(2)} ₽</p>
                     </div>
                 )}
                 <div>
