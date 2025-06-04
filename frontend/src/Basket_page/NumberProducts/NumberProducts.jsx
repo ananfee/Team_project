@@ -238,36 +238,36 @@ const NumberProducts = ({ initialCount, onQuantityChange, number_of_copies, book
         setCount(initialCount);
     }, [initialCount]);
 
-    // const updateQuantity = useCallback(async (newCount) => {
-    //     setIsLoading(true);
-    //     try {
-    //         const response = await FetchWithAuth("http://127.0.0.1:8000/catalog/cart/update/", {
-    //             method: 'PATCH',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify({ book_id: bookId, count_of_book: newCount }),
-    //         });
+    const updateQuantity = useCallback(async (newCount) => {
+        setIsLoading(true);
+        try {
+            const response = await FetchWithAuth("http://127.0.0.1:8000/catalog/cart/update/", {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ book_id: bookId, count_of_book: newCount }),
+            });
 
-    //         if (!response.ok) {
-    //             const errorData = await response.json();
-    //             const errorMessage = errorData?.detail || `Ошибка обновления количества: ${response.status}`;
-    //             console.error("Ошибка при изменении количества товара:", errorMessage);
-    //             alert(errorMessage);
-    //             return false;
-    //         }
+            if (!response.ok) {
+                const errorData = await response.json();
+                const errorMessage = errorData?.detail || `Ошибка обновления количества: ${response.status}`;
+                console.error("Ошибка при изменении количества товара:", errorMessage);
+                alert(errorMessage);
+                return false;
+            }
 
-    //         setCount(newCount);
-    //         onQuantityChange(newCount);
-    //         return true;
-    //     } catch (error) {
-    //         console.error("Ошибка при изменении количества товара:", error);
-    //         alert(`Произошла ошибка: ${error.message}`);
-    //         return false;
-    //     } finally {
-    //         setIsLoading(false);
-    //     }
-    // }, [bookId, onQuantityChange]);
+            setCount(newCount);
+            onQuantityChange(newCount);
+            return true;
+        } catch (error) {
+            console.error("Ошибка при изменении количества товара:", error);
+            alert(`Произошла ошибка: ${error.message}`);
+            return false;
+        } finally {
+            setIsLoading(false);
+        }
+    }, [bookId, onQuantityChange]);
 
     const handleIncrement = async () => {
         const newCount = count + 1;
