@@ -347,13 +347,6 @@ const BasketPage = () => {
         }
     };
 
-    // Функция для очистки всей корзины (возможно, после успешного оформления заказа)
-    // const handleClearBasket = () => {
-    //     setBasketItems([]); // Очистка состояния корзины
-    //     calculateTotals([]); // Обнуляем итоги
-    //     closeDeleteAllWindow();
-    //     // Можно также вызвать API для очистки корзины на сервере, если это требуется
-    // };
     const handleClearBasket = async () => {
     try {
         const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/cart/clear/', {
