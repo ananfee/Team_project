@@ -145,8 +145,8 @@ function BookInfo({Book})
                   </>
                )}
             </div>
-            <p className={styles.Stock} style={{ color: Book.number_of_copies === "0" ? 'red' : '#0F870A' }}>
-               {Book.number_of_copies === "0" ? 'Нет в наличии' : 'В наличии'}
+            <p className={styles.Stock} style={{ color: Book.number_of_copies == "0" ? 'red' : '#0F870A' }}>
+               {Book.number_of_copies == "0" ? 'Нет в наличии' : 'В наличии'}
             </p>
          </div>
       </div>
