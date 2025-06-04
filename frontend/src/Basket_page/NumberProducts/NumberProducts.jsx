@@ -273,6 +273,8 @@ const NumberProducts = ({ initialCount, onQuantityChange, number_of_copies, book
         const newCount = count + 1;
         if (newCount <= number_of_copies) {
             await updateQuantity(newCount);
+            window.location.reload(); // Обновляем страницу
+
         } else {
             console.log("Достигнуто максимальное количество копий для этого товара.");
         }
@@ -282,6 +284,8 @@ const NumberProducts = ({ initialCount, onQuantityChange, number_of_copies, book
         if (count > 1) {
             const newCount = count - 1;
             await updateQuantity(newCount);
+            window.location.reload(); // Обновляем страницу
+
         }
     };
 
