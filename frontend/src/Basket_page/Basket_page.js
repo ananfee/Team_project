@@ -420,102 +420,101 @@ const BasketPage = () => {
     // }, [basketItems, calculateTotals, openNotificationModal]);
 
 
-    const handleQuantityChange = useCallback(async (bookId, newQuantity) => {
-        try {
-            const response = await FetchWithAuth("http://127.0.0.1:8000/catalog/cart/update/", {
-                method: 'PATCH', // Или PUT, POST, в зависимости от вашего API
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ book_id: bookId, count_of_book: newQuantity }),
-            });
+    // const handleQuantityChange = useCallback(async (bookId, newQuantity) => {
+    //     try {
+    //         const response = await FetchWithAuth("http://127.0.0.1:8000/catalog/cart/update/", {
+    //             method: 'PATCH', // Или PUT, POST, в зависимости от вашего API
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify({ book_id: bookId, count_of_book: newQuantity }),
+    //         });
 
-            if (response === null) {
-                openNotificationModal("Ошибка авторизации. Пожалуйста, попробуйте войти снова.");
-                return;
-            }
-
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                const errorMessage = errorData?.detail || `Ошибка обновления количества: ${response.status}`;
-                openNotificationModal(errorMessage);
-                throw new Error(errorMessage); // Кидаем ошибку, чтобы попасть в catch
-            }
+    //         if (response === null) {
+    //             openNotificationModal("Ошибка авторизации. Пожалуйста, попробуйте войти снова.");
+    //             return;
+    //         }
 
 
-            // После успешного обновления на сервере, обновляем локальное состояние
-            const updatedBasketItems = basketItems.map(item =>
-                item.book.id === bookId
-                    ? { ...item, count_of_book: newQuantity } // Обновляем count_of_book
-                    : item
-            );
-            setBasketItems(updatedBasketItems); // Обновляем состояние корзины
-            calculateTotals(updatedBasketItems); // Пересчитываем итоги
-        } catch (error) {
-            console.error("Ошибка при изменении количества товара:", error);
-            openNotificationModal(`Ошибка: ${error.message}`);
-            // Добавьте здесь логику для отката изменений в UI, если запрос не удался.
-            // Например, можно сохранить предыдущее количество в состоянии NumberProducts и восстановить его здесь.
-        }
-    }, [basketItems, calculateTotals, openNotificationModal]);
+    //         if (!response.ok) {
+    //             const errorData = await response.json();
+    //             const errorMessage = errorData?.detail || `Ошибка обновления количества: ${response.status}`;
+    //             openNotificationModal(errorMessage);
+    //             throw new Error(errorMessage); // Кидаем ошибку, чтобы попасть в catch
+    //         }
+
+    //         // После успешного обновления на сервере, обновляем локальное состояние
+    //         const updatedBasketItems = basketItems.map(item =>
+    //             item.book.id === bookId
+    //                 ? { ...item, count_of_book: newQuantity } // Обновляем count_of_book
+    //                 : item
+    //         );
+    //         setBasketItems(updatedBasketItems); // Обновляем состояние корзины
+    //         calculateTotals(updatedBasketItems); // Пересчитываем итоги
+    //     } catch (error) {
+    //         console.error("Ошибка при изменении количества товара:", error);
+    //         openNotificationModal(`Ошибка: ${error.message}`);
+    //         // Добавьте здесь логику для отката изменений в UI, если запрос не удался.
+    //         // Например, можно сохранить предыдущее количество в состоянии NumberProducts и восстановить его здесь.
+    //     }
+    // }, [basketItems, calculateTotals, openNotificationModal]);
 
 
-    // --- Логика загрузки данных корзины (выполняется один раз при монтировании) ---
-    useEffect(() => {
-        const loadBasket = async () => {
-            try {
-                setLoading(true);
-                setError(null); // Сбрасываем ошибку перед новой попыткой
+    // // --- Логика загрузки данных корзины (выполняется один раз при монтировании) ---
+    // useEffect(() => {
+    //     const loadBasket = async () => {
+    //         try {
+    //             setLoading(true);
+    //             setError(null); // Сбрасываем ошибку перед новой попыткой
 
-                // Используем вашу функцию FetchWithAuth
-                const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/get_cart/', {
-                    method: 'GET', // Метод GET для получения данных
-                    // Заголовок Authorization будет добавлен автоматически в FetchWithAuth
-                    // 'Content-Type': 'application/json', // Обычно не нужен для GET-запросов, но не помешает
-                });
+    //             // Используем вашу функцию FetchWithAuth
+    //             const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/get_cart/', {
+    //                 method: 'GET', // Метод GET для получения данных
+    //                 // Заголовок Authorization будет добавлен автоматически в FetchWithAuth
+    //                 // 'Content-Type': 'application/json', // Обычно не нужен для GET-запросов, но не помешает
+    //             });
 
-                // FetchWithAuth вернет null, если не удалось обновить токен
-                if (response === null) {
-                     // Обработка ситуации, когда не удалось авторизоваться/обновить токен
-                    throw new Error("Не удалось загрузить корзину: ошибка авторизации.");
-                     // TODO: Возможно, перенаправить пользователя на страницу авторизации/логина
-                }
+    //             // FetchWithAuth вернет null, если не удалось обновить токен
+    //             if (response === null) {
+    //                  // Обработка ситуации, когда не удалось авторизоваться/обновить токен
+    //                 throw new Error("Не удалось загрузить корзину: ошибка авторизации.");
+    //                  // TODO: Возможно, перенаправить пользователя на страницу авторизации/логина
+    //             }
 
 
-                if (!response.ok) {
-                    // Если статус ответа не 2xx после возможного обновления токена, выбрасываем ошибку
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
+    //             if (!response.ok) {
+    //                 // Если статус ответа не 2xx после возможного обновления токена, выбрасываем ошибку
+    //                 throw new Error(`HTTP error! status: ${response.status}`);
+    //             }
 
-                const data = await response.json();
-                // Проверяем, что полученные данные - это массив
-                if (Array.isArray(data)) {
-                    setBasketItems(data); // Устанавливаем загруженные данные
-                    calculateTotals(data.items || []); // Пересчитываем итоги после загрузки
+    //             const data = await response.json();
+    //             // Проверяем, что полученные данные - это массив
+    //             if (Array.isArray(data)) {
+    //                 setBasketItems(data); // Устанавливаем загруженные данные
+    //                 calculateTotals(data.items || []); // Пересчитываем итоги после загрузки
 
-                } else {
-                    // Если данные не массив, это может быть ошибкой или пустым ответом
-                    console.warn("Получены данные корзины не в формате массива:", data);
-                     setBasketItems([]); // Устанавливаем пустой массив
-                }
+    //             } else {
+    //                 // Если данные не массив, это может быть ошибкой или пустым ответом
+    //                 console.warn("Получены данные корзины не в формате массива:", data);
+    //                  setBasketItems([]); // Устанавливаем пустой массив
+    //             }
 
-                setLoading(false);
+    //             setLoading(false);
 
-            } catch (err) {
-                console.error("Ошибка загрузки корзины:", err);
-                setError(err);
-                setLoading(false);
-                setBasketItems([]); // Очищаем товары при ошибке
-                 // TODO: Возможно, показать пользователю сообщение об ошибке
-            }
-        };
+    //         } catch (err) {
+    //             console.error("Ошибка загрузки корзины:", err);
+    //             setError(err);
+    //             setLoading(false);
+    //             setBasketItems([]); // Очищаем товары при ошибке
+    //              // TODO: Возможно, показать пользователю сообщение об ошибке
+    //         }
+    //     };
 
-        loadBasket();
-        // Пустой массив зависимостей: эффект выполняется только при первом рендере
-        // Если корзина может меняться без перезагрузки страницы (например, через WebSocket или ручное обновление),
-        // возможно, этот эффект должен зависеть от состояния пользователя или другого триггера.
-    }, []);
+    //     loadBasket();
+    //     // Пустой массив зависимостей: эффект выполняется только при первом рендере
+    //     // Если корзина может меняться без перезагрузки страницы (например, через WebSocket или ручное обновление),
+    //     // возможно, этот эффект должен зависеть от состояния пользователя или другого триггера.
+    // }, []);
 
 
     // --- Логика пересчета итогов (выполняется при изменении basketItems) ---
