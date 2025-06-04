@@ -179,27 +179,27 @@ function Details_page()
    const [error, setError] = useState(null);
    const [loading, setLoading] = useState(true);
 
-   async function loadData() {
-      setLoading(true);
-      try {
-        let url = `http://127.0.0.1:8000/catalog/books/${id}/`;
-        const response = await fetch(url);
-        const data = await response.json();
-        setBook(data.book); 
-        setRelatedBooks(data.similar_books); 
-      } 
-      catch (err) {
-        setError("Ошибка загрузки данных");
+   useEffect(() => {
+      async function loadData() {
+        setLoading(true);
+        try {
+          let url = `http://127.0.0.1:8000/catalog/books/${id}/`;
+          const response = await fetch(url);
+          const data = await response.json();
+          setBook(data.book); 
+          setRelatedBooks(data.similar_books); 
+          setError(null);
+        } 
+        catch (err) {
+          setError("Ошибка загрузки данных");
+          setBook(null);
+        }
+        finally {
+          setLoading(false);
+        }
       }
-      finally
-      {
-      setLoading(false);
-      }
-    }
-
-   useEffect (() => {
       loadData();
-    }, []);
+   }, [id]);
 
    if (loading)
    {
