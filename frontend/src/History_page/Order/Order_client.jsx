@@ -20,7 +20,7 @@ const OrderClient = ({ orderNumber, date, sale_price, status_name, books }) => {
             <div className="listProducts">
               <div className="imageBooks">
                 {books.map((book) => (
-                  <div className="imageBooks" key={book.book_id}>
+                  <div className="imageBook" key={book.book_id}>
                     <img src={book.cover_image} alt={`Обложка книги ${book.book_id}`} />
                   </div>
                 ))}
