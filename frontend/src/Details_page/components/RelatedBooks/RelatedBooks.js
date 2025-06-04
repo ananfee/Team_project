@@ -47,7 +47,7 @@ function RelatedBooks({ RelatedBooks }) {
             <div className={styles.ListRelatedBooks}>
               {visibleBooks.map(item => (
                 <div key={item.id}
-                  onDoubleClick={() => navigate(/new/${item.id})}
+                  onDoubleClick={() => navigate(`/new/${item.id}`)}
                   style={{ cursor: 'pointer' }}>
                   <CatalogBook product={item} />
                 </div>
