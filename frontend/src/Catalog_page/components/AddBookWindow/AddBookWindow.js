@@ -5,7 +5,7 @@ import FetchWithAuth from "../../../layout/LoginWindow/FetchWithAuth";
 
 function AddBookWindow({isOpen, onClose, obj})
 {
-   const baseUrl = /api/;
+   const baseUrl = process.env.REACT_APP_API_URL;
    //для хранения значений полей для ввода
    const [title, setTitle] = useState('');
    const [count, setCount] = useState('');

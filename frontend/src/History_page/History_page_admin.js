@@ -89,7 +89,7 @@ import book3 from '../images/image 3.png';
 
 
 const HistoryPageAdmin = () => {
-    const baseUrl = /api/;
+    const baseUrl = process.env.REACT_APP_API_URL;
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [ordersData, setOrdersData] = useState([]); // Состояние для хранения данных о заказах
     const [fetchError, setFetchError] = useState(null);

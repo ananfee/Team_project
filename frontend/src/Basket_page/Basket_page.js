@@ -249,7 +249,7 @@ import image2 from '../images/image 2.png';
 
 
 const BasketPage = () => {
-    const baseUrl = /api/;
+    const baseUrl = process.env.REACT_APP_API_URL;
     // Состояния для модальных окон
     const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false);
     const [isDeleteAllWindowOpen, setIsDeleteAllWindowOpen] = useState(false);

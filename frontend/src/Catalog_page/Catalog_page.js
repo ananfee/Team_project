@@ -209,7 +209,7 @@ import AddBookWindow from './components/AddBookWindow/AddBookWindow.js'
 
 function Catalog_page()
 {
-  const baseUrl = /api/;
+  const baseUrl = process.env.REACT_APP_API_URL;
   const [addBookModalOpen, setAddBookModalOpen] = useState(false);
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);

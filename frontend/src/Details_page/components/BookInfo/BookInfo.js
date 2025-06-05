@@ -7,7 +7,7 @@ import FetchWithAuth from "../../../layout/LoginWindow/FetchWithAuth";
 
 function BookInfo({Book})
 {
-   const baseUrl = /api/;
+   const baseUrl = process.env.REACT_APP_API_URL;
    const [warningBasketModalOpen, setWarningBasketModalOpen] = useState(false);
    const [role, setRole] = useState("");
    const [editBookModalOpen, setEditBookModalOpen] = useState(false);

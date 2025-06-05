@@ -3,7 +3,7 @@ import styles from './LoginWindow.module.css';
 
 function LoginWindow ({isOpen, onClose})
 {
-  const baseUrl = /api/;
+  const baseUrl = process.env.REACT_APP_API_URL;
   const [isRegistering, setIsRegistering] = useState(false);
   const [isOpenDropDown, setIsOpenDropDown] = useState(false);
   const [selectedRole, setSelectedRole] = useState('Выберите роль');

@@ -99,7 +99,7 @@ import Notific from '../Notific/Notific';
 import FetchWithAuth from '../../../layout/LoginWindow/FetchWithAuth';
 
 const ListNotification = () => {
-const baseUrl = /api/;
+const baseUrl = process.env.REACT_APP_API_URL;
   const [notifications, setNotifications] = useState([]);
   const frameLNRef = useRef(null);
 
