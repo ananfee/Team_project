@@ -25,6 +25,8 @@ services:
 #    volumes:
 #      - frontend_build:/app/build
 #      - frontend_build:/usr/share/nginx/html
+    ports:
+      - "80:80"
     depends_on:
       - backend
 
