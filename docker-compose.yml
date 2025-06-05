@@ -7,8 +7,8 @@ services:
     container_name: backend
 #    volumes:
 #      - ./backend:/app
-    ports:
-      - "8001:8000"
+#    ports:
+#      - "8001:8000"
     depends_on:
       - db
     command: >
@@ -20,6 +20,8 @@ services:
     build:
       context: ./frontend
     container_name: frontend
+    environment:
+      - REACT_APP_API_URL=/api/
     volumes:
       - frontend_build:/usr/share/nginx/html
     depends_on:
