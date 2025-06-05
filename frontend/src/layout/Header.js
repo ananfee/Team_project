@@ -8,7 +8,7 @@ import LoginWindow from "./LoginWindow/LoginWindow.js";
 import FetchWithAuth from "./LoginWindow/FetchWithAuth.js";
 
 function Header({onOpenModal}) {
-   const baseUrl = process.env.REACT_APP_API_URL;
+   const baseUrl = /api/;
    const navigate = useNavigate();
    const [loginModalOpen, setLoginModalOpen] = useState(false);
    const [role, setRole] = useState("");

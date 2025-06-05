@@ -174,7 +174,7 @@ import Footer from "../components/footer/footer.jsx";
 
 function Details_page()
 {
-   const baseUrl = process.env.REACT_APP_API_URL;
+   const baseUrl = /api/;
    const {id} = useParams();
    const [isModalOpen, setIsModalOpen] = useState(false);
    const [book, setBook] = useState(null);

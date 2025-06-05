@@ -1,7 +1,7 @@
 
 
 async function RefreshToken() {
-  const baseUrl = process.env.REACT_APP_API_URL;
+  const baseUrl = /api/;
    const refreshToken = localStorage.getItem('refreshToken');
    if (!refreshToken) return null;
  

@@ -8,7 +8,7 @@ import WarningBasket from "../WarningBasket/WarningBasket";
 
 function CatalogBook({product})
 {
-   const baseUrl = process.env.REACT_APP_API_URL;
+   const baseUrl = /api/;
    const [editBookModalOpen, setEditBookModalOpen] = useState(false);
    const [deleteBookModalOpen, setDeleteBookModalOpen] = useState(false);
    const [warningBasketModalOpen, setWarningBasketModalOpen] = useState(false);

@@ -4,7 +4,7 @@ import FetchWithAuth from "../../../layout/LoginWindow/FetchWithAuth";
 
 function DeleteBookWindow ({isOpen, onClose, obj})
 {
-   const baseUrl = process.env.REACT_APP_API_URL;
+   const baseUrl = /api/;
    if (!isOpen) return null;
 
    async function handleDelete() {

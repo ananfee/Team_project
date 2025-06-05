@@ -80,7 +80,7 @@ import book3 from '../images/image 3.png';
 // export default HistoryPage;
 
 const HistoryPage = () => {
-    const baseUrl = process.env.REACT_APP_API_URL;
+    const baseUrl = /api/;
     const [isModalOpen, setIsModalOpen] = useState(false);
     // Инициализируем ordersData как пустой массив
     const [ordersData, setOrdersData] = useState([]);
