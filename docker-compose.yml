@@ -22,9 +22,9 @@ services:
     container_name: frontend
     environment:
       - REACT_APP_API_URL=/api/
-    volumes:
+#    volumes:
 #      - frontend_build:/app/build
-      - frontend_build:/usr/share/nginx/html
+#      - frontend_build:/usr/share/nginx/html
     depends_on:
       - backend
 
@@ -41,17 +41,6 @@ services:
     ports:
       - "5433:5432"
 
-  nginx:
-    image: nginx:stable-alpine
-    container_name: nginx
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./certbot/www:/var/www/certbot
-      - ./certbot/conf:/etc/letsencrypt
-    restart: always
 
 #  nginx:
 #    image: nginx:alpine
