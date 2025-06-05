@@ -209,6 +209,7 @@ import AddBookWindow from './components/AddBookWindow/AddBookWindow.js'
 
 function Catalog_page()
 {
+  const baseUrl = process.env.REACT_APP_API_URL;
   const [addBookModalOpen, setAddBookModalOpen] = useState(false);
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -233,8 +234,8 @@ function Catalog_page()
     setLoading(true);
     try {
       const [response1, response2] = await Promise.all([
-        fetch("http://5.129.207.153:8001/catalog/books/"),
-        fetch("http://5.129.207.153:8001/catalog/categories/")
+        fetch(`${baseUrl}catalog/books/`),
+        fetch(`${baseUrl}catalog/categories/`)
       ]);
 
       const [data1, data2] = await Promise.all([
@@ -257,7 +258,7 @@ function Catalog_page()
   async function editBooks(filterOptions) {
     setLoading(true);
     try {
-      let url = "http://5.129.207.153:8001/catalog/books/sorted/";
+      let url = `${baseUrl}catalog/books/sorted/`;
       const params = new URLSearchParams();
   
       if (filterOptions.category) {
@@ -282,7 +283,7 @@ function Catalog_page()
   async function editBooksSearch(query)
   {
     try{
-      let url = `http://5.129.207.153:8001/catalog/books/search/?q=${query}`;
+      let url = `${baseUrl}catalog/books/search/?q=${query}`;
       const response = await fetch(url);
       const data = await response.json();
       setBooks(data);

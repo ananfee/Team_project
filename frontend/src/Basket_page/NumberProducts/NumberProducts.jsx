@@ -231,6 +231,7 @@ import FetchWithAuth from '../../layout/LoginWindow/FetchWithAuth.js';
 
 
 const NumberProducts = ({ initialCount, onQuantityChange, number_of_copies, bookId }) => {
+    const baseUrl = process.env.REACT_APP_API_URL;
     const [count, setCount] = useState(initialCount);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -241,7 +242,7 @@ const NumberProducts = ({ initialCount, onQuantityChange, number_of_copies, book
     const updateQuantity = useCallback(async (newCount) => {
         setIsLoading(true);
         try {
-            const response = await FetchWithAuth("http://127.0.0.1:8000/catalog/cart/update/", {
+            const response = await FetchWithAuth(`${baseUrl}catalog/cart/update/`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',

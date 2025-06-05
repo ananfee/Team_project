@@ -8,6 +8,7 @@ import WarningBasket from "../WarningBasket/WarningBasket";
 
 function CatalogBook({product})
 {
+   const baseUrl = process.env.REACT_APP_API_URL;
    const [editBookModalOpen, setEditBookModalOpen] = useState(false);
    const [deleteBookModalOpen, setDeleteBookModalOpen] = useState(false);
    const [warningBasketModalOpen, setWarningBasketModalOpen] = useState(false);
@@ -20,7 +21,7 @@ function CatalogBook({product})
  
    const fetchBookForEdit = async (bookId) => {
       try {
-        const response = await FetchWithAuth(`http://127.0.0.1:8000/catalog/books/update/${bookId}/`);
+        const response = await FetchWithAuth(`${baseUrl}catalog/books/update/${bookId}/`);
         if (response && response.ok) {
           const data = await response.json();
           setEditBookData(data.book);
@@ -34,7 +35,7 @@ function CatalogBook({product})
 
     const fetchBookForDelete = async (bookId) => {
       try {
-        const response = await FetchWithAuth(`http://127.0.0.1:8000/catalog/books/update/${bookId}/`);
+        const response = await FetchWithAuth(`${baseUrl}catalog/books/update/${bookId}/`);
         if (response && response.ok) {
           const data = await response.json();
           setDeleteBookData(data.book);
@@ -48,7 +49,7 @@ function CatalogBook({product})
 
     const addToCart = async (bookId) => {
       try {
-        const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/cart/', {
+        const response = await FetchWithAuth(`${baseUrl}catalog/cart/`, {
           method: 'POST',
           body: JSON.stringify({
             book: bookId,

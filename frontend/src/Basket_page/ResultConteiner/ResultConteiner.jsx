@@ -12,6 +12,7 @@ const ResultConteiner = ({
     finalPrice,
     onClearBasket // Передаем функцию очистки корзины
 }) => {
+    const baseUrl = process.env.REACT_APP_API_URL;
     const [isPlaceOrderWindowOpen, setIsPlaceOrderWindowOpen] = useState(false);
     const [orderMessage, setOrderMessage] = useState('');
 
@@ -46,7 +47,7 @@ const ResultConteiner = ({
         setOrderMessage('Оформление заказа...');
 
         try {
-            const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/cart/checkout/', {
+            const response = await FetchWithAuth(`${baseUrl}catalog/cart/checkout/`, {
                 method: 'POST',
             });
 

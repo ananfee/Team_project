@@ -32,7 +32,6 @@ function AutocompleteInput({ value, onChange, suggestions, placeholder }) {
    }
 
    function handleFocus() {
-      // Показывать подсказки только если value не пусто и фильтруется хоть что-то
       setShowSuggestions((value ?? '').length > 0 && filteredSuggestions.length > 0);
    }
 

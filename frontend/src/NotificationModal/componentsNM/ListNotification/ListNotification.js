@@ -99,13 +99,14 @@ import Notific from '../Notific/Notific';
 import FetchWithAuth from '../../../layout/LoginWindow/FetchWithAuth';
 
 const ListNotification = () => {
+const baseUrl = process.env.REACT_APP_API_URL;
   const [notifications, setNotifications] = useState([]);
   const frameLNRef = useRef(null);
 
     useEffect(() => {
         const fetchNotifications = async () => {
             try {
-                const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/notifications/');
+                const response = await FetchWithAuth(`${baseUrl}catalog/notifications/`);
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }

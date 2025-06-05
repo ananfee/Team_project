@@ -89,6 +89,7 @@ import book3 from '../images/image 3.png';
 
 
 const HistoryPageAdmin = () => {
+    const baseUrl = process.env.REACT_APP_API_URL;
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [ordersData, setOrdersData] = useState([]); // Состояние для хранения данных о заказах
     const [fetchError, setFetchError] = useState(null);
@@ -106,7 +107,7 @@ const HistoryPageAdmin = () => {
     const handleStatusUpdate = async (orderId, newStatus) => {
         try {
             // Предполагается, что FetchWithAuth сам добавит токен
-            const response = await FetchWithAuth(`http://127.0.0.1:8000/catalog/admin/orders/${orderId}/status/`, {
+            const response = await FetchWithAuth(`${baseUrl}catalog/admin/orders/${orderId}/status/`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -137,7 +138,7 @@ const HistoryPageAdmin = () => {
         const fetchData = async () => {
             try {
                 // Получаем данные о заказах
-                const response = await FetchWithAuth('http://5.129.207.153:8001/catalog/admin/orders/');
+                const response = await FetchWithAuth(`${baseUrl}catalog/admin/orders/`);
 
                 // Проверяем статус ответа
                 if (!response.ok) {

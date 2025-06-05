@@ -80,6 +80,7 @@ import book3 from '../images/image 3.png';
 // export default HistoryPage;
 
 const HistoryPage = () => {
+    const baseUrl = process.env.REACT_APP_API_URL;
     const [isModalOpen, setIsModalOpen] = useState(false);
     // Инициализируем ordersData как пустой массив
     const [ordersData, setOrdersData] = useState([]);
@@ -98,7 +99,7 @@ const HistoryPage = () => {
         const fetchData = async () => {
             try {
                 // 1. Используем FetchWithAuth для получения Response
-                const response = await FetchWithAuth('http://5.129.207.153:8001/catalog/order-history/');
+                const response = await FetchWithAuth(`${baseUrl}catalog/order-history/`);
 
                 // 2. Проверяем статус ответа
                 if (!response.ok) {

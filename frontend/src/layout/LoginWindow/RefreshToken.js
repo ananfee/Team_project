@@ -1,11 +1,12 @@
 
 
 async function RefreshToken() {
+  const baseUrl = process.env.REACT_APP_API_URL;
    const refreshToken = localStorage.getItem('refreshToken');
    if (!refreshToken) return null;
  
    try {
-     const response = await fetch('http:/5.129.207.153:8001/catalog/token/refresh/', {
+     const response = await fetch(`${baseUrl}catalog/token/refresh/`, {
        method: 'POST',
        headers: {
          'Content-Type': 'application/json'

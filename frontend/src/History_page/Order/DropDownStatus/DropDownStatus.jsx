@@ -207,6 +207,7 @@ import FetchWithAuth from '../../../layout/LoginWindow/FetchWithAuth.js';
 // export default DropDownStatus;
 
 const DropDownStatus = ({ currentStatus, onStatusChange, disabled }) => {
+   const baseUrl = process.env.REACT_APP_API_URL;
    const [isOpen, setIsOpen] = useState(false);
    const [statusData, setStatusData] = useState([]); // Состояние для хранения данных статусов
    const container = useRef();
@@ -214,7 +215,7 @@ const DropDownStatus = ({ currentStatus, onStatusChange, disabled }) => {
    useEffect(() => {
       const fetchStatusData = async () => {
          try {
-            const response = await FetchWithAuth("http://127.0.0.1:8000/catalog/status/");
+            const response = await FetchWithAuth(`${baseUrl}catalog/status/`);
             if (!response.ok) {
                  const errorText = await response.text();
                  throw new Error(`Ошибка загрузки статусов: ${response.status} ${errorText}`);

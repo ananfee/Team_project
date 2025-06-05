@@ -5,6 +5,7 @@ import FetchWithAuth from "../../../layout/LoginWindow/FetchWithAuth";
 
 function AddBookWindow({isOpen, onClose, obj})
 {
+   const baseUrl = process.env.REACT_APP_API_URL;
    //для хранения значений полей для ввода
    const [title, setTitle] = useState('');
    const [count, setCount] = useState('');
@@ -40,7 +41,7 @@ function AddBookWindow({isOpen, onClose, obj})
    const fetchDropdownData = async () => {
       // Авторы
       try {
-        const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/authors/');
+        const response = await FetchWithAuth(`${baseUrl}catalog/authors/`);
         const authors = await response.json();
         setLast_name(authors.last_names || []);
         setFirst_names(authors.first_names || []);
@@ -51,7 +52,7 @@ function AddBookWindow({isOpen, onClose, obj})
   
       // Скидки
       try {
-        const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/discounts/');
+        const response = await FetchWithAuth(`${baseUrl}catalog/discounts/`);
         const discounts = await response.json();
         setDiscount(discounts || []);
       } catch (error) {
@@ -60,7 +61,7 @@ function AddBookWindow({isOpen, onClose, obj})
   
       // Категории
       try {
-        const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/categories/');
+        const response = await FetchWithAuth(`${baseUrl}catalog/categories/`);
          const categories = await response.json();
         setGenre(categories || []);
       } catch (error) {
@@ -170,8 +171,8 @@ function AddBookWindow({isOpen, onClose, obj})
        const isEdit = !!obj; 
   
        const url = isEdit
-         ? `http://127.0.0.1:8000/catalog/books/update/${obj.id}/`
-         : 'http://127.0.0.1:8000/catalog/books/create/';
+         ? `${baseUrl}catalog/books/update/${obj.id}/`
+         : `${baseUrl}catalog/books/create/`;
        const method = isEdit ? 'PUT' : 'POST';
      
        try {

@@ -3,6 +3,7 @@ import styles from './LoginWindow.module.css';
 
 function LoginWindow ({isOpen, onClose})
 {
+  const baseUrl = process.env.REACT_APP_API_URL;
   const [isRegistering, setIsRegistering] = useState(false);
   const [isOpenDropDown, setIsOpenDropDown] = useState(false);
   const [selectedRole, setSelectedRole] = useState('Выберите роль');
@@ -56,7 +57,7 @@ function LoginWindow ({isOpen, onClose})
     setError(errors);
     if (valid) {
       try {
-        const response = await fetch('http://5.129.207.153:8001/catalog/token/', {
+        const response = await fetch(`${baseUrl}catalog/token/`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -144,7 +145,7 @@ function LoginWindow ({isOpen, onClose})
     }
     
     try {
-      const response = await fetch('http://5.129.207.153:8001/catalog/register/', {
+      const response = await fetch(`${baseUrl}catalog/register/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

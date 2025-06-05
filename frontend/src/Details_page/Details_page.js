@@ -174,6 +174,7 @@ import Footer from "../components/footer/footer.jsx";
 
 function Details_page()
 {
+   const baseUrl = process.env.REACT_APP_API_URL;
    const {id} = useParams();
    const [isModalOpen, setIsModalOpen] = useState(false);
    const [book, setBook] = useState(null);
@@ -185,7 +186,7 @@ function Details_page()
       async function loadData() {
         setLoading(true);
         try {
-          let url = `http://127.0.0.1:8000/catalog/books/${id}/`;
+          let url = `${baseUrl}catalog/books/${id}/`;
           const response = await fetch(url);
           const data = await response.json();
           setBook(data.book); 

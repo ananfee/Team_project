@@ -7,6 +7,7 @@ import FetchWithAuth from "../../../layout/LoginWindow/FetchWithAuth";
 
 function BookInfo({Book})
 {
+   const baseUrl = process.env.REACT_APP_API_URL;
    const [warningBasketModalOpen, setWarningBasketModalOpen] = useState(false);
    const [role, setRole] = useState("");
    const [editBookModalOpen, setEditBookModalOpen] = useState(false);
@@ -16,7 +17,7 @@ function BookInfo({Book})
 
    const fetchBookForEdit = async (bookId) => {
       try {
-        const response = await FetchWithAuth(`http://127.0.0.1:8000/catalog/books/update/${bookId}/`);
+        const response = await FetchWithAuth(`${baseUrl}catalog/books/update/${bookId}/`);
         if (response && response.ok) {
           const data = await response.json();
           setEditBookData(data.book);
@@ -30,7 +31,7 @@ function BookInfo({Book})
 
    const fetchBookForDelete = async (bookId) => {
       try {
-        const response = await FetchWithAuth(`http://127.0.0.1:8000/catalog/books/update/${bookId}/`);
+        const response = await FetchWithAuth(`${baseUrl}catalog/books/update/${bookId}/`);
         if (response && response.ok) {
           const data = await response.json();
           setDeleteBookData(data.book);
@@ -44,7 +45,7 @@ function BookInfo({Book})
 
     const addToCart = async (bookId) => {
       try {
-        const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/cart/', {
+        const response = await FetchWithAuth(`${baseUrl}catalog/cart/`, {
           method: 'POST',
           body: JSON.stringify({
             book: bookId,

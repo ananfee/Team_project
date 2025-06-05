@@ -8,6 +8,7 @@ import LoginWindow from "./LoginWindow/LoginWindow.js";
 import FetchWithAuth from "./LoginWindow/FetchWithAuth.js";
 
 function Header({onOpenModal}) {
+   const baseUrl = process.env.REACT_APP_API_URL;
    const navigate = useNavigate();
    const [loginModalOpen, setLoginModalOpen] = useState(false);
    const [role, setRole] = useState("");
@@ -21,7 +22,7 @@ function Header({onOpenModal}) {
     const handleLogout = async () => {
       const refreshToken = localStorage.getItem('refreshToken');
       try {
-         const response = await FetchWithAuth('http://5.129.207.153:8001/catalog/logout/', {
+         const response = await FetchWithAuth(`${baseUrl}catalog/logout/`, {
             method: 'POST',
             headers: {
                'Content-Type': 'application/json'

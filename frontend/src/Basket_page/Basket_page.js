@@ -249,6 +249,7 @@ import image2 from '../images/image 2.png';
 
 
 const BasketPage = () => {
+    const baseUrl = process.env.REACT_APP_API_URL;
     // Состояния для модальных окон
     const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false);
     const [isDeleteAllWindowOpen, setIsDeleteAllWindowOpen] = useState(false);
@@ -318,7 +319,7 @@ const BasketPage = () => {
     const handleDeleteItem = async (bookIdToDelete) => {
         try {
             // Уточните URL и метод: Предполагаем, что API ожидает book_id в теле запроса DELETE
-            const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/cart/remove/', {
+            const response = await FetchWithAuth(`${baseUrl}catalog/cart/remove/`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json', // Обязательно для отправки JSON-тела
@@ -349,7 +350,7 @@ const BasketPage = () => {
 
     const handleClearBasket = async () => {
     try {
-        const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/cart/clear/', {
+        const response = await FetchWithAuth(`${baseUrl}catalog/cart/clear/`, {
             method: 'DELETE',
         });
 
@@ -468,7 +469,7 @@ const BasketPage = () => {
                 setError(null); // Сбрасываем ошибку перед новой попыткой
 
                 // Используем вашу функцию FetchWithAuth
-                const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/get_cart/', {
+                const response = await FetchWithAuth(`${baseUrl}catalog/get_cart/`, {
                     method: 'GET', // Метод GET для получения данных
                     // Заголовок Authorization будет добавлен автоматически в FetchWithAuth
                     // 'Content-Type': 'application/json', // Обычно не нужен для GET-запросов, но не помешает

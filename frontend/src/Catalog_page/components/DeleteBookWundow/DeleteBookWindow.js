@@ -4,12 +4,13 @@ import FetchWithAuth from "../../../layout/LoginWindow/FetchWithAuth";
 
 function DeleteBookWindow ({isOpen, onClose, obj})
 {
+   const baseUrl = process.env.REACT_APP_API_URL;
    if (!isOpen) return null;
 
    async function handleDelete() {
     try {
       const response = await FetchWithAuth(
-        `http://127.0.0.1:8000/catalog/books/delete/${obj.id}/`,
+        `${baseUrl}catalog/books/delete/${obj.id}/`,
         { method: 'DELETE' }
       );
       if (response.ok) {
