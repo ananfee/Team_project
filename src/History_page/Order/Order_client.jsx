@@ -19,9 +19,9 @@ const OrderClient = ({ orderNumber, date, sale_price, status_name, books }) => {
             <p>Товары</p>
             <div className="listProducts">
               <div className="imageBooks">
-                {books.map((book, index) => (
-                  <div className="imageBook" key={book.book_id || index}>
-                    <img src={book.cover_image} alt={`Обложка книги ${index + 1}`} />
+                {books.map((book) => (
+                  <div className="imageBook" key={book.book_id}>
+                    <img src={book.cover_image} alt={`Обложка книги ${book.book_id}`} />
                   </div>
                 ))}
               </div>
@@ -33,4 +33,3 @@ const OrderClient = ({ orderNumber, date, sale_price, status_name, books }) => {
 };
 
 export default OrderClient;
-
