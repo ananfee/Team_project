@@ -1,6 +1,5 @@
 import React, {useState, useRef, useEffect} from "react";
 import styles from './LoginWindow.module.css';
-import FetchWithAuth from "./FetchWithAuth";
 
 function LoginWindow ({isOpen, onClose})
 {
@@ -9,10 +8,7 @@ function LoginWindow ({isOpen, onClose})
   const [isOpenDropDown, setIsOpenDropDown] = useState(false);
   const [selectedRole, setSelectedRole] = useState('Выберите роль');
   const container = useRef();
-  const [role, setRole] = useState("");
-   useEffect(() => {
-      setRole(localStorage.getItem('role'));
-    }, []);
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState("");
@@ -59,8 +55,8 @@ function LoginWindow ({isOpen, onClose})
       valid = false;
     }
 
-    if (password && (password.length < 8 || !/[a-zA-Z]/.test(password))) {
-      errors.password = "Пароль должен быть не менее 8 символов и содержать хотя бы одну букву";
+    if (password && password.length < 8) {
+      errors.password = "Пароль должен быть не менее 8 символов";
       valid = false;
     }
 
@@ -116,7 +112,7 @@ function LoginWindow ({isOpen, onClose})
       newErrors.phone = "Заполните поле";
       hasError = true;
     } else if (!/^(\+7|8)\d{10}$/.test(phone)) {
-      newErrors.phone = "Телефон должен быть в формате: +79999999999 или 89999999999";
+      newErrors.phone = "некорректный номер телефона";
       hasError = true;
     }
     
@@ -133,9 +129,9 @@ function LoginWindow ({isOpen, onClose})
       hasError = true;
     }
 
-    if (password && (password.length < 8 || !/[a-zA-Z]/.test(password))) {
-        newErrors.password = "Пароль должен быть не менее 8 символов и содержать хотя бы одну букву";
-        hasError = true;
+    if (password && password.length < 8) {
+      newErrors.password = "Пароль должен быть не менее 8 символов";
+      hasError = true;
     }
 
     if (!repeatPassword) {
@@ -177,13 +173,10 @@ function LoginWindow ({isOpen, onClose})
       const data = await response.json();
       if (!response.ok) {
         if (data.email) {
-          newErrors.email = "Пользователь с такой почтой уже существует";
+          newErrors.email = data.email[0];
         }
         if (data.phone_number) {
-          newErrors.phone = "Пользователь с таким телефоном уже существует";
-        }
-        if (data.password){
-          newErrors.password = "Данный пароль слишком простой";
+          newErrors.phone = data.phone_number[0];
         }
 
         setError(newErrors);
