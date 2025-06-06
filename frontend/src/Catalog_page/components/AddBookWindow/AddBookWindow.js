@@ -159,7 +159,7 @@ function AddBookWindow({isOpen, onClose, obj})
       formData.append('publishing_year', year);
       formData.append('ISBN', isbn);
       formData.append('price', Number(price));
-      formData.append('discount', selectedDiscount ? selectedDiscount.id : null);;
+      formData.append('discount', selectedDiscount ? selectedDiscount.id : null);
       formData.append('number_of_copies', Number(count));
       formData.append('description', description);
       formData.append('authors_data_json', JSON.stringify(authors));

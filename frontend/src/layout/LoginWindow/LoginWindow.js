@@ -54,6 +54,7 @@ function LoginWindow ({isOpen, onClose})
       errors.password = "Заполните поле";
       valid = false;
     }
+
     if (password && password.length < 8) {
       errors.password = "Пароль должен быть не менее 8 символов";
       valid = false;
@@ -126,10 +127,12 @@ function LoginWindow ({isOpen, onClose})
       newErrors.password = "Заполните поле";
       hasError = true;
     }
+
     if (password && password.length < 8) {
       newErrors.password = "Пароль должен быть не менее 8 символов";
       hasError = true;
     }
+
     if (!repeatPassword) {
       newErrors.repeatPassword = "Повторите пароль";
       hasError = true;
@@ -340,8 +343,11 @@ function LoginWindow ({isOpen, onClose})
                 </>
             )}
             {error.repeatPassword && <div className={styles.Error}>{error.repeatPassword}</div>}
-            {error.common && (<div className={styles.Error}>{error.common}</div>
-              )}
+            {isRegistering && error.common ? (
+              <div className={styles.Error}>{error.common}</div>
+            ) : (
+              <></>
+            )}
           </div>
           </div>
             
