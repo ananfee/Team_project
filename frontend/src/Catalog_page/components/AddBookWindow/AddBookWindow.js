@@ -26,7 +26,7 @@ function AddBookWindow({isOpen, onClose, obj})
    const [discount, setDiscount] = useState([]);
    const [genre, setGenre] = useState([]);
    //для ошибок в полях при отправлении формы
-   const [error, setError] = useState({title: "", count: "", genre: "", publisher: "",year: "",isbn: "",price: "", description: "", img: "", common: ""});
+   const [error, setError] = useState({title: "", count: "", genre: "", publisher: "",year: "",isbn: "",price: "", description: "", img: "", common: "", authors: ""});
    // для выпадающих списков
    const [isOpenDropDown, setIsOpenDropDown] = useState(false);
    const [isOpenDropDownDiscount, setIsOpenDropDownDiscount] = useState(false);
@@ -73,7 +73,7 @@ function AddBookWindow({isOpen, onClose, obj})
       e.preventDefault();
       let newErrors = {
          title: "", count: "", genre: "", publisher: "",year: "",isbn: "",price: "", 
-         description: "", img: "", common: ""
+         description: "", img: "", common: "", authors: ""
       };
       let hasError = false;
     
@@ -95,6 +95,17 @@ function AddBookWindow({isOpen, onClose, obj})
          hasError = true;
       }
 
+      authors.forEach((author, index) => {
+         if (!author.author_first_name || !author.author_last_name) {
+         newErrors.authors = "Имя и фамилия обязательны для каждого автора";
+         hasError = true;
+         }
+         if (!/^[a-zA-Zа-яА-Я]+$/.test(author.author_first_name) || !/^[a-zA-Zа-яА-Я]+$/.test(author.author_last_name) || !/^[a-zA-Zа-яА-Я]+$/.test(author.author_patronymic)) {
+         newErrors.authors = "Имя, фамилия и отчество должны содержать только буквы";
+         hasError = true;
+         }
+      });
+
       if (!selectedGenre) {
          newErrors.genre = "Выберите жанр книги";
          hasError = true;
@@ -105,16 +116,20 @@ function AddBookWindow({isOpen, onClose, obj})
          hasError = true;
       }
       
+      const currentYear = new Date().getFullYear();
+
       if (!year) {
          newErrors.year = "Введите год издания";
          hasError = true;
       } else if (
-            isNaN(Number(year)) ||
-            year.toString().trim() === '' ||
-            !Number.isInteger(Number(year))
+         isNaN(Number(year)) ||
+         year.toString().trim() === '' ||
+         !Number.isInteger(Number(year)) ||
+         Number(year) < 1457 ||
+         Number(year) > currentYear
       ) {
-            newErrors.year = "Введите корректный год";
-            hasError = true;
+         newErrors.year = "Введите корректный год в промежутке от 1457 до " + currentYear;
+         hasError = true;
       }
       
        if (!isbn) {
@@ -180,7 +195,15 @@ function AddBookWindow({isOpen, onClose, obj})
            body: formData,
          });
      
-         if (!response.ok) throw new Error('Ошибка');
+          if (!response.ok) {
+            const errorData = await response.json();
+            if (errorData.ISBN) {   
+                 newErrors.isbn = "Книга с таким ISBN уже существует";
+            }
+            
+            setError(newErrors);
+            return;
+         }
          onClose();
          window.location.reload();
        } catch {
@@ -194,7 +217,8 @@ function AddBookWindow({isOpen, onClose, obj})
            price: "",
            description: "",
            img: "",
-           common: isEdit ? "Ошибка при редактировании книги" : "Ошибка при добавлении книги"
+           common: isEdit ? "Ошибка при редактировании книги" : "Ошибка при добавлении книги",
+           authors: ""
          });
        }
     };
@@ -222,7 +246,7 @@ function AddBookWindow({isOpen, onClose, obj})
            setDescription('');
            setImg('');
            setImgFile(null);
-           setError({title: "", count: "", genre: "", publisher: "",year: "",isbn: "",price: "", description: "", img: "", common: ""});
+           setError({title: "", count: "", genre: "", publisher: "",year: "",isbn: "",price: "", description: "", img: "", common: "", authors: ""});
            return;
          }
          if (obj) {
@@ -322,7 +346,7 @@ function AddBookWindow({isOpen, onClose, obj})
         <div className={styles.modal}>
         <p className={styles.nameWindow}>{obj ? 'Редактирование книги' : 'Добавление книги'}</p>
             <button onClick={() => {onClose(); 
-               setError({title: "", count: "", genre: "", publisher: "",year: "",isbn: "",price: "", description: "", img: "", common: ""});
+               setError({title: "", count: "", genre: "", publisher: "",year: "",isbn: "",price: "", description: "", img: "", common: "", authors: ""});
                setSelectedGenre(null); setSelectedDiscount(null);}} className={styles.closeBtn}></button>
             <div className={styles.ContentContainer}>
                <div className={styles.FhotoContainer}>
@@ -382,11 +406,11 @@ function AddBookWindow({isOpen, onClose, obj})
                         <AutocompleteInput
                            value={author.author_last_name}
                            onChange={val =>
-                           setAuthors(prev =>
+                           {setAuthors(prev =>
                               prev.map((a, i) =>
                                  i === idx ? { ...a, author_last_name: val } : a
                               )
-                           )
+                           ); setError(prev => ({ ...prev, authors: ""})); }
                            }
                            suggestions={last_name}
                            placeholder="Фамилия"
@@ -394,11 +418,11 @@ function AddBookWindow({isOpen, onClose, obj})
                         <AutocompleteInput
                            value={author.author_first_name}
                            onChange={val =>
-                           setAuthors(prev =>
+                           {setAuthors(prev =>
                               prev.map((a, i) =>
                                  i === idx ? { ...a, author_first_name: val } : a
                               )
-                           )
+                           ); setError(prev => ({ ...prev, authors: ""}));}
                            }
                            suggestions={first_names}
                            placeholder="Имя"
@@ -406,17 +430,18 @@ function AddBookWindow({isOpen, onClose, obj})
                         <AutocompleteInput
                            value={author.author_patronymic}
                            onChange={val =>
-                           setAuthors(prev =>
+                           {setAuthors(prev =>
                               prev.map((a, i) =>
                                  i === idx ? { ...a, author_patronymic: val } : a
                               )
-                           )
+                           ); setError(prev => ({ ...prev, authors: ""}));}
                            }
                            suggestions={patronymics}
                            placeholder="Отчество"
                         />
                      </div>
                      ))}
+                     {error.authors && <div className={styles.Error}>{error.authors}</div>}
                      <div style={{ display: "flex", width: 310, justifyContent: "center" }}>
                      <button
                         type="button"
