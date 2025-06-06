@@ -55,8 +55,8 @@ function LoginWindow ({isOpen, onClose})
       valid = false;
     }
 
-    if (password && password.length < 8) {
-      errors.password = "Пароль должен быть не менее 8 символов";
+    if (password && (password.length < 8 || !/[a-zA-Z]/.test(password))) {
+      errors.password = "Пароль должен быть не менее 8 символов и содержать хотя бы одну букву";
       valid = false;
     }
 
@@ -129,9 +129,9 @@ function LoginWindow ({isOpen, onClose})
       hasError = true;
     }
 
-    if (password && password.length < 8) {
-      newErrors.password = "Пароль должен быть не менее 8 символов";
-      hasError = true;
+    if (password && (password.length < 8 || !/[a-zA-Z]/.test(password))) {
+        newErrors.password = "Пароль должен быть не менее 8 символов и содержать хотя бы одну букву";
+        hasError = true;
     }
 
     if (!repeatPassword) {
@@ -173,10 +173,13 @@ function LoginWindow ({isOpen, onClose})
       const data = await response.json();
       if (!response.ok) {
         if (data.email) {
-          newErrors.email = data.email[0];
+          newErrors.email = "Пользователь с такой почтой уже существует";
         }
         if (data.phone_number) {
-          newErrors.phone = data.phone_number[0];
+          newErrors.phone = "Пользователь с таким телефоном уже существует";
+        }
+        if (data.password){
+          newErrors.password = "Данный пароль слишком простой";
         }
 
         setError(newErrors);

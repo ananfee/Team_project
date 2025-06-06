@@ -83,7 +83,7 @@ function AddBookWindow({isOpen, onClose, obj})
         hasError = true;
       }
     
-      if (count === '') {
+      if (!count) {
          newErrors.count = "Введите количество экземпляров";
          hasError = true;
       } else if (
@@ -96,17 +96,14 @@ function AddBookWindow({isOpen, onClose, obj})
          hasError = true;
       }
 
-      authors.forEach((author) => {
+      authors.forEach((author, index) => {
          if (!author.author_first_name || !author.author_last_name) {
-            newErrors.authors = "Имя и фамилия обязательны для каждого автора";
-            hasError = true;
-         } else if (
-            !/^[a-zA-Zа-яА-Я\s]+$/.test(author.author_first_name) ||
-            !/^[a-zA-Zа-яА-Я\s]+$/.test(author.author_last_name) ||
-            (author.author_patronymic && !/^[a-zA-Zа-яА-Я\s]+$/.test(author.author_patronymic))
-         ) {
-            newErrors.authors = "Имя, фамилия и отчество должны содержать только буквы";
-            hasError = true;
+         newErrors.authors = "Имя и фамилия обязательны для каждого автора";
+         hasError = true;
+         }
+         if (!/^[a-zA-Zа-яА-Я]+$/.test(author.author_first_name) || !/^[a-zA-Zа-яА-Я]+$/.test(author.author_last_name) || !/^[a-zA-Zа-яА-Я]+$/.test(author.author_patronymic)) {
+         newErrors.authors = "Имя, фамилия и отчество должны содержать только буквы";
+         hasError = true;
          }
       });
 
@@ -120,8 +117,6 @@ function AddBookWindow({isOpen, onClose, obj})
          hasError = true;
       }
       
-      const currentYear = new Date().getFullYear();
-
       if (!year) {
          newErrors.year = "Введите год издания";
          hasError = true;
@@ -136,13 +131,13 @@ function AddBookWindow({isOpen, onClose, obj})
          hasError = true;
       }
       
-      if (!isbn) {
+       if (!isbn) {
          newErrors.isbn = "Введите ISBN";
          hasError = true;
-      } else if (!/^97[89]-[\d]+-[\d]+-[\d]+-[\d]+$/.test(isbn)) {
-         newErrors.isbn = "ISBN должен начинаться с 978- или с 979-, а также содержать ровно 4 дефиса";
+       } else if (!/^97[89]-\d-\d{2}-\d{6}-\d$/.test(isbn)) {
+         newErrors.isbn = "ISBN должен быть в формате: 978-5-05-000000-0";
          hasError = true;
-      } 
+       }
       
        if (!price) {
          newErrors.price = "Введите цену книги";
@@ -155,6 +150,12 @@ function AddBookWindow({isOpen, onClose, obj})
          newErrors.price = "Введите корректное неотрицательное число";
          hasError = true;
       }
+
+       if (!description) {
+         newErrors.description = "Введите описание книги";
+         hasError = true;
+       }
+
 
       if (hasError) {
         setError(newErrors);
@@ -175,11 +176,11 @@ function AddBookWindow({isOpen, onClose, obj})
       formData.append('number_of_copies', Number(count));
       formData.append('description', description);
       formData.append('authors_data_json', JSON.stringify(authors));
-      
+
       if (imgFile) {
          formData.append('cover_image', imgFile);
       }
-        
+      
        const isEdit = !!obj; 
   
        const url = isEdit
@@ -244,14 +245,14 @@ function AddBookWindow({isOpen, onClose, obj})
            setDescription('');
            setImg('');
            setImgFile(null);
-           setError({title: "", count: "", genre: "", publisher: "",year: "",isbn: "",price: "", description: "", img: "", common: "", authors: ""});
+           setError({title: "", count: "", genre: "", publisher: "",year: "",isbn: "",price: "", description: "", img: "", common: ""});
            return;
          }
          if (obj) {
             setTitle(obj.title || '');
             setCount(
                obj.number_of_copies !== undefined && obj.number_of_copies !== null
-                     ? obj.number_of_copies.toString()
+                     ? obj.number_of_copies
                      : ''
             );
             setAuthors(
@@ -400,14 +401,7 @@ function AddBookWindow({isOpen, onClose, obj})
                   {error.count && <div className={styles.Error}>{error.count}</div>}
                   {authors.map((author, idx) => (
                      <div key={idx} style={{ marginBottom: 14, borderBottom: "1px solid rgb(190, 189, 189)", width: 298 }}>
-                        <div className={styles.Author}>
-                           <p>Автор {idx + 1}</p>
-                           {authors.length > 1 && (
-                           <button type="button" className={styles.DeleteAuthorButton}
-                              onClick={() => setAuthors(prev => prev.filter((_, i) => i !== idx))}>
-                           </button>
-                           )}
-                        </div>
+                        <p>Автор {idx + 1}</p>
                         <AutocompleteInput
                            value={author.author_last_name}
                            onChange={val =>
