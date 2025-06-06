@@ -29,11 +29,8 @@ class BookSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'price', 'discounted_price', 'authors', 'cover_image', 'number_of_copies']
 
     def get_cover_image(self, obj):
-        request = self.context.get('request')
         if obj.cover_image:
-            return request.build_absolute_uri(obj.cover_image.url)
-        elif obj.cover_image:
-            return obj.cover_image.url
+            return f'{settings.SITE_DOMAIN}/api{obj.cover_image.url}'
         return None
 
 class DiscountSerializer(serializers.ModelSerializer):
@@ -56,11 +53,8 @@ class DetailBookSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'category_name', 'price', 'discount', 'discounted_price', 'authors', 'cover_image', 'ISBN', 'description', 'publishing', 'publishing_year', 'number_of_copies']
 
     def get_cover_image(self, obj):
-        request = self.context.get('request')
         if obj.cover_image:
-            return request.build_absolute_uri(obj.cover_image.url)
-        elif obj.cover_image:
-            return obj.cover_image.url
+            return f'{settings.SITE_DOMAIN}/api{obj.cover_image.url}'
         return None
 
 class ShortBookSerializer(serializers.ModelSerializer):
@@ -171,11 +165,8 @@ class BookInOrderSerializer(serializers.ModelSerializer):
         fields = ['book_id', 'title', 'count_of_book', 'cover_image']
 
     def get_cover_image(self, obj):
-        request = self.context.get('request')
-        if obj.book.cover_image:
-            if request:
-                return request.build_absolute_uri(obj.book.cover_image.url)
-            return obj.book.cover_image.url
+        if obj.cover_image:
+            return f'{settings.SITE_DOMAIN}/api{obj.cover_image.url}'
         return None
 
 class OrderHistorySerializer(serializers.ModelSerializer):

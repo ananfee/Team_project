@@ -117,7 +117,7 @@ class BooksView(APIView):
     def get(self, request, book_id):
         try:
             book = Book.objects.get(pk=book_id)
-            serializer = DetailBookSerializer(book, context={'request': request})
+            serializer = DetailBookSerializer(book)
 
             # Получаем авторов текущей книги
             authors = book.authors.all()
@@ -145,7 +145,7 @@ class BooksView(APIView):
 
             # Объединяем всё в один список
             similar_books = list(both_books) + list(category_books) + list(author_books)
-            similar_serializer = BookSerializer(similar_books, many=True, context={'request': request})
+            similar_serializer = BookSerializer(similar_books, many=True)
 
             return Response({
                 'book': serializer.data,

@@ -45,7 +45,7 @@ class BookDetailView(RetrieveAPIView):
 
         # Объединяем всё в один список
         similar_books = both_books + category_books + author_books
-        similar_serializer = BookSerializer(similar_books, many=True, context={'request': request})
+        similar_serializer = BookSerializer(similar_books, many=True)
 
         return Response({
             'book': serializer.data,
