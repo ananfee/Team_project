@@ -92,7 +92,7 @@ const ResultConteiner = ({
                     </div>
                 </div>
                 {/* Теперь PlaceOrderButton напрямую вызывает handlePlaceOrder */}
-                <PlaceOrderButtononOpenPlaceOrderWindow={handlePlaceOrder} />
+                <PlaceOrderButton onOpenPlaceOrderWindow={handlePlaceOrder} />
                 {/* PlaceOrderWindow теперь получает только orderMessage и управляется состоянием isOpen */}
                 <PlaceOrderWindow
                     onClose={closePlaceOrderWindow}
