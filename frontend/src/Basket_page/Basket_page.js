@@ -322,7 +322,7 @@ const BasketPage = () => {
                                 // Важно использовать уникальный key для каждого элемента списка.
                                 // Используем book.id из вложенного объекта книги.
                                 // Проверяем наличие book и id для надежности.
-                                <ProductInBasketkey={item.book?.id || `item-${item.id}`} // Если book.id недоступен, используем резервный ключ
+                                <ProductInBasket key={item.book?.id || `item-${item.id}`} // Если book.id недоступен, используем резервный ключ
                                     book={item.book} // Передаем объект книги
                                     count_of_book={item.count_of_book} // Передаем количество этой книги
                                     total_price={item.total_price} // Передаем общую цену за эту позицию (из API - опционально, но может быть полезно)
