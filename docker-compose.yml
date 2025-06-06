@@ -22,8 +22,8 @@ services:
     container_name: frontend
     environment:
       - REACT_APP_API_URL=/api/
-#    volumes:
-#      - frontend_build:/app/build
+    volumes:
+      - ./frontend/dist:/app/dist
 #      - frontend_build:/usr/share/nginx/html
     ports:
       - "8002:80"
