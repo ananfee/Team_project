@@ -165,8 +165,8 @@ class BookInOrderSerializer(serializers.ModelSerializer):
         fields = ['book_id', 'title', 'count_of_book', 'cover_image']
 
     def get_cover_image(self, obj):
-        if obj.cover_image:
-            return f'{settings.SITE_DOMAIN}/api{obj.cover_image.url}'
+        if obj.book.cover_image:
+            return f'{settings.SITE_DOMAIN}/api{obj.book.cover_image.url}'
         return None
 
 class OrderHistorySerializer(serializers.ModelSerializer):

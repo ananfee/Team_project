@@ -8,249 +8,8 @@ import DeleteAllBasketButton from './DeleteAllBasketButton/DeleteAllBasketButton
 import DeleteAllBasketWindow from './DeleteAllBasketWindow/DeleteAllBasketWindow.jsx'; // Изменено название компонента
 import ProductInBasket from './ProductInBasket/ProductInBasket.jsx';
 import FetchWithAuth from '../layout/LoginWindow/FetchWithAuth.js';
-import image1 from '../images/image 1.png';
-import image2 from '../images/image 2.png'; 
-
-// const BasketPage = () => {
-//     // Состояния для модальных окон
-//     const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false); // Переименовано для ясности
-//     const [isDeleteAllWindowOpen, setIsDeleteAllWindowOpen] = useState(false); // Переименовано для ясности
-
-//     // Состояния для данных корзины
-//     const [basketItems, setBasketItems] = useState([]);
-//     const [loading, setLoading] = useState(true);
-//     const [error, setError] = useState(null);
-
-//     // Состояния для рассчитанных итогов (для передачи в ResultConteiner)
-//     const [totalItems, setTotalItems] = useState(0);
-//     const [totalOriginalPrice, setTotalOriginalPrice] = useState(0);
-//     const [totalDiscount, setTotalDiscount] = useState(0);
-//     const [finalPrice, setFinalPrice] = useState(0);
-
-
-//     // --- Обработчики модальных окон ---
-//     const openNotificationModal = () => {
-//         setIsNotificationModalOpen(true);
-//     };
-
-//     const closeNotificationModal = () => {
-//         setIsNotificationModalOpen(false);
-//     };
-
-//     const openDeleteAllWindow = () => {
-//         setIsDeleteAllWindowOpen(true);
-//     };
-
-//     const closeDeleteAllWindow = () => {
-//         setIsDeleteAllWindowOpen(false);
-//     };
-
-//      // TODO: Добавить функцию для удаления отдельного товара, которая будет обновлять basketItems
-//      // const handleDeleteItem = (bookId) => { ... обновить состояние basketItems ... }
-
-//      // TODO: Добавить функцию для изменения количества товара, которая будет обновлять basketItems
-//      // const handleQuantityChange = (bookId, newQuantity) => { ... обновить состояние basketItems ... }
-
-//     // --- Логика загрузки данных корзины ---
-//     useEffect(() => {
-//         const loadBasket = async () => {
-//             try {
-//                 setLoading(true);
-//                 setError(null); // Сбрасываем ошибку перед новой попыткой
-
-//                 // Имитация загрузки данных из API (замените на ваш реальный вызов API)
-//                  const data = [
-//                      {
-//                          book: {
-//                              id: 1,
-//                              title: "1984",
-//                              price: 450.0, // Полная цена
-//                              discounted_price: null, // Нет скидки
-//                              authors: [{ author_last_name: "Оруэлл", author_first_name: "Джордж", author_patronymic: null }],
-//                              cover_image: image1 // Используйте реальный URL или логику загрузки
-//                          },
-//                          count_of_book: 3, // Количество
-//                          total_price: 1350.0 // Общая цена за позицию (450 * 3)
-//                      },
-//                       {
-//                          book: {
-//                              id: 2,
-//                              title: "Мастер и Маргарита",
-//                              price: 1250.0, // Полная цена
-//                              discounted_price: 1125.0, // Скидочная цена
-//                              authors: [{ author_last_name: "Булгаков", author_first_name: "Михаил", author_patronymic: "Афанасьевич" }],
-//                              cover_image: image2 // Используйте реальный URL или логику загрузки
-//                          },
-//                          count_of_book: 1, // Количество
-//                          total_price: 1125.0 // Общая цена за позицию (1125 * 1)
-//                      },
-//                       {
-//                          book: {
-//                              id: 3,
-//                              title: "Без скидки 2",
-//                              price: 800.0, // Полная цена
-//                              discounted_price: 800.0, // скидка 0
-//                              authors: [{ author_last_name: "Неизвестный", author_first_name: "Автор", author_patronymic: null }],
-//                              cover_image: image1 // Используйте реальный URL или логику загрузки
-//                          },
-//                          count_of_book: 2, // Количество
-//                          total_price: 1600.0 // Общая цена за позицию (800 * 2)
-//                      },
-//                       {
-//                          book: {
-//                              id: 4,
-//                              title: "Книга со скидкой",
-//                              price: 500.0, // Полная цена
-//                              discounted_price: 400.0, // скидка 100
-//                              authors: [{ author_last_name: "Тест", author_first_name: "Автор", author_patronymic: null }],
-//                              cover_image: image2 // Используйте реальный URL или логику загрузки
-//                          },
-//                          count_of_book: 2, // Количество
-//                          total_price: 800.0 // Общая цена за позицию (400 * 2)
-//                      }
-//                  ];
-
-//                 // Имитация задержки сети
-//                 // await new Promise(resolve => setTimeout(resolve, 500)); // Раскомментируйте для тестирования загрузки
-
-//                 setBasketItems(data); // Устанавливаем загруженные данные
-//                 setLoading(false);
-
-//             } catch (err) {
-//                 console.error("Ошибка загрузки корзины:", err);
-//                 setError(err);
-//                 setLoading(false);
-//                 setBasketItems([]); // Очищаем товары при ошибке
-//             }
-//         };
-
-//         loadBasket();
-//     }, []); // Пустой массив зависимостей означает, что эффект выполнится один раз при монтировании
-
-
-//     // --- Логика пересчета итогов при изменении basketItems ---
-//     useEffect(() => {
-//         // Пересчитываем итоги только если basketItems изменился
-//         if (!basketItems) return; // Не пересчитываем, если данных еще нет
-
-//         if (basketItems.length === 0) {
-//             // Если корзина пуста, обнуляем все итоги
-//             setTotalItems(0);
-//             setTotalOriginalPrice(0);
-//             setTotalDiscount(0);
-//             setFinalPrice(0);
-//             return;
-//         }
-
-//         let itemsCount = 0;
-//         let originalTotal = 0;
-//         let finalBasketTotal = 0;
-
-//         basketItems.forEach(item => {
-//             const count = item.count_of_book || 0;
-//             const originalPricePerItem = item.book?.price || 0;
-//             const discountedPricePerItem = item.book?.discounted_price;
-
-//             itemsCount += count;
-//             originalTotal += originalPricePerItem * count;
-//             finalBasketTotal += item.total_price || 0;
-
-//         });
-
-//         const totalDiscountAmount = originalTotal - finalBasketTotal;
-
-//         setTotalItems(itemsCount);
-//         setTotalOriginalPrice(originalTotal);
-//         setFinalPrice(finalBasketTotal);
-//         setTotalDiscount(totalDiscountAmount); // Сумма скидки = Полная цена - Итоговая цена
-
-//     }, [basketItems]); // Зависимость от basketItems - пересчитываем, когда товары в корзине меняются
-
-
-//     // --- Обработка состояний загрузки и ошибки ---
-//     if (loading) {
-//         return <div className="basket-page-container loading-state">Загрузка корзины...</div>;
-//     }
-
-//     if (error) {
-//         return <div className="basket-page-container error-state">Ошибка при загрузке корзины: {error.message}</div>;
-//     }
-
-//     // --- Отображение страницы корзины ---
-//     return (
-//         <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', alignItems: 'center' }}>
-//             <Header onOpenModal={openNotificationModal} />
-//             {isNotificationModalOpen && <NotificationModal onClose={closeNotificationModal} />}
-//             {/* TODO: Передать ID удаляемой книги в DeleteProductWindow */}
-//             {isDeleteAllWindowOpen && <DeleteAllBasketWindow onClose={closeDeleteAllWindow} isOpen={isDeleteAllWindowOpen} />}
-
-//             <div className='basket_container'>
-//                 <div className='basket_header'>
-//                     <div className='name_numberOfProducts'>
-//                         <p style={{ fontSize: 24, color: "#5D3C64" }}>КОРЗИНА</p>
-//                     </div>
-//                     {/* Отображаем кнопку "Удалить все" только если корзина не пуста */}
-//                     {basketItems.length > 0 && (
-//                         <DeleteAllBasketButton onOpenDeleteWindow={openDeleteAllWindow} />
-//                     )}
-//                 </div>
-
-//                 <div className='all_products'>
-//                      {/* Отображаем текст "Все товары" только если корзина не пуста */}
-//                     {basketItems.length > 0 && (
-//                         <p>Все товары</p>
-//                     )}
-//                 </div>
-
-//                 <div className='conteinerDown'>
-//                     <div className='ListProductsInBasketConteiner'>
-//                          {/*
-//                            Здесь мы рендерим список ProductInBasket напрямую.
-//                            Используем map на массиве basketItems.
-//                          */}
-//                         {basketItems.length > 0 ? (
-//                             basketItems.map(product => (
-//                                 // Важно использовать уникальный key, здесь product.book.id
-//                                 <ProductInBasket
-//                                     key={product.book?.id}
-//                                     book={product.book}
-//                                     count_of_book={product.count_of_book}
-//                                     total_price={product.total_price} // Это общая сумма за эту позицию (для ProductInBasket не сильно нужна, но передадим)
-//                                     // TODO: Передать обработчики удаления и изменения количества
-//                                     // onDelete={handleDeleteItem}
-//                                     // onQuantityChange={handleQuantityChange}
-//                                 />
-//                             ))
-//                         ) : (
-//                             // Сообщение, если корзина пуста после загрузки
-//                             !loading && <div className="empty-basket-message">Ваша корзина пуста.</div>
-//                         )}
-//                     </div>
-
-//                     {/* Передаем рассчитанные итоги в ResultConteiner */}
-//                     {/* Отображаем ResultConteiner только если корзина не пуста */}
-//                     {basketItems.length > 0 && (
-//                         <ResultConteiner
-//                             totalItems={totalItems}
-//                             totalOriginalPrice={totalOriginalPrice}
-//                             totalDiscount={totalDiscount}
-//                             finalPrice={finalPrice}
-//                         />
-//                     )}
-//                 </div>
-//             </div>
-//             <Footer />
-//         </div>
-//     );
-// };
-
-// export default BasketPage;
-
-
-
 const BasketPage = () => {
     const baseUrl = process.env.REACT_APP_API_URL;
-    // Состояния для модальных окон
     const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false);
     const [isDeleteAllWindowOpen, setIsDeleteAllWindowOpen] = useState(false);
 
@@ -264,7 +23,6 @@ const BasketPage = () => {
     const [totalOriginalPrice, setTotalOriginalPrice] = useState(0); // Полная стоимость всех товаров без скидки
     const [totalDiscount, setTotalDiscount] = useState(0);           // Общая сумма скидки
     const [finalPrice, setFinalPrice] = useState(0);             // Итоговая стоимость всех товаров со скидкой
-
 
     // --- Обработчики модальных окон ---
     const openNotificationModal = () => {
@@ -315,7 +73,6 @@ const BasketPage = () => {
         setFinalPrice(newFinalPrice);
     };
 
-        // --- ИСПРАВЛЕННАЯ ФУНКЦИЯ УДАЛЕНИЯ ОТДЕЛЬНОГО ТОВАРА ---
     const handleDeleteItem = async (bookIdToDelete) => {
         try {
             // Уточните URL и метод: Предполагаем, что API ожидает book_id в теле запроса DELETE
@@ -324,7 +81,10 @@ const BasketPage = () => {
                 headers: {
                     'Content-Type': 'application/json', // Обязательно для отправки JSON-тела
                 },
-                body: JSON.stringify({ book_id: bookIdToDelete }) // Отправляем ID книги в теле запроса
+                body: JSON.stringify({ book_id: bookIdToDelete })
+
+
+// Отправляем ID книги в теле запроса
             });
 
             if (response === null) {
@@ -375,92 +135,6 @@ const BasketPage = () => {
         // Показать сообщение об ошибке пользователю
     }
 };
-
-
-
-     // TODO: Добавить функцию для изменения количества товара
-   // --- ИСПРАВЛЕННАЯ ФУНКЦИЯ ИЗМЕНЕНИЯ КОЛИЧЕСТВА ---
-    //     const handleQuantityChange = useCallback(async (bookId, newQuantity) => {
-    //     try {
-    //         const response = await FetchWithAuth("http://127.0.0.1:8000/catalog/cart/update/", {
-    //             method: 'PATCH', // Или PUT, POST, в зависимости от вашего API
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify({ book_id: bookId, count_of_book: newQuantity }),
-    //         });
-
-    //         if (response === null) {
-    //             openNotificationModal("Ошибка авторизации. Пожалуйста, попробуйте войти снова.");
-    //             return;
-    //         }
-
-
-    //         if (!response.ok) {
-    //             const errorData = await response.json();
-    //             const errorMessage = errorData?.detail || `Ошибка обновления количества: ${response.status}`;
-    //             openNotificationModal(errorMessage);
-    //             throw new Error(errorMessage); // Кидаем ошибку, чтобы попасть в catch
-    //         }
-
-
-    //         // После успешного обновления на сервере, обновляем локальное состояние
-    //         const updatedBasketItems = basketItems.map(item =>
-    //             item.book.id === bookId
-    //                 ? { ...item, count_of_book: newQuantity } // Обновляем count_of_book
-    //                 : item
-    //         );
-    //         setBasketItems(updatedBasketItems); // Обновляем состояние корзины
-    //         calculateTotals(updatedBasketItems); // Пересчитываем итоги
-    //     } catch (error) {
-    //         console.error("Ошибка при изменении количества товара:", error);
-    //         openNotificationModal(`Ошибка: ${error.message}`);
-    //         // Добавьте здесь логику для отката изменений в UI, если запрос не удался.
-    //         // Например, можно сохранить предыдущее количество в состоянии NumberProducts и восстановить его здесь.
-    //     }
-    // }, [basketItems, calculateTotals, openNotificationModal]);
-
-
-    // const handleQuantityChange = useCallback(async (bookId, newQuantity) => {
-    //     try {
-    //         const response = await FetchWithAuth("http://127.0.0.1:8000/catalog/cart/update/", {
-    //             method: 'PATCH', // Или PUT, POST, в зависимости от вашего API
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify({ book_id: bookId, count_of_book: newQuantity }),
-    //         });
-
-    //         if (response === null) {
-    //             openNotificationModal("Ошибка авторизации. Пожалуйста, попробуйте войти снова.");
-    //             return;
-    //         }
-
-
-    //         if (!response.ok) {
-    //             const errorData = await response.json();
-    //             const errorMessage = errorData?.detail || `Ошибка обновления количества: ${response.status}`;
-    //             openNotificationModal(errorMessage);
-    //             throw new Error(errorMessage); // Кидаем ошибку, чтобы попасть в catch
-    //         }
-
-    //         // После успешного обновления на сервере, обновляем локальное состояние
-    //         const updatedBasketItems = basketItems.map(item =>
-    //             item.book.id === bookId
-    //                 ? { ...item, count_of_book: newQuantity } // Обновляем count_of_book
-    //                 : item
-    //         );
-    //         setBasketItems(updatedBasketItems); // Обновляем состояние корзины
-    //         calculateTotals(updatedBasketItems); // Пересчитываем итоги
-    //     } catch (error) {
-    //         console.error("Ошибка при изменении количества товара:", error);
-    //         openNotificationModal(`Ошибка: ${error.message}`);
-    //         // Добавьте здесь логику для отката изменений в UI, если запрос не удался.
-    //         // Например, можно сохранить предыдущее количество в состоянии NumberProducts и восстановить его здесь.
-    //     }
-    // }, [basketItems, calculateTotals, openNotificationModal]);
-
-
     // --- Логика загрузки данных корзины (выполняется один раз при монтировании) ---
     useEffect(() => {
         const loadBasket = async () => {
@@ -482,7 +156,6 @@ const BasketPage = () => {
                      // TODO: Возможно, перенаправить пользователя на страницу авторизации/логина
                 }
 
-
                 if (!response.ok) {
                     // Если статус ответа не 2xx после возможного обновления токена, выбрасываем ошибку
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -497,7 +170,9 @@ const BasketPage = () => {
                 } else {
                     // Если данные не массив, это может быть ошибкой или пустым ответом
                     console.warn("Получены данные корзины не в формате массива:", data);
-                     setBasketItems([]); // Устанавливаем пустой массив
+
+
+setBasketItems([]); // Устанавливаем пустой массив
                 }
 
                 setLoading(false);
@@ -516,7 +191,6 @@ const BasketPage = () => {
         // Если корзина может меняться без перезагрузки страницы (например, через WebSocket или ручное обновление),
         // возможно, этот эффект должен зависеть от состояния пользователя или другого триггера.
     }, []);
-
 
     // --- Логика пересчета итогов (выполняется при изменении basketItems) ---
     // ЭТА ЧАСТЬ НЕ ИЗМЕНИЛАСЬ, ОНА УЖЕ КОРРЕКТНО РАБОТАЕТ С ФОРМАТОМ ВАШЕГО API
@@ -577,10 +251,12 @@ const BasketPage = () => {
 
         });
 
-        // Сумма скидки = Полная цена всех товаров - Итоговая цена всех товаров со скидкой
+        // Сумма скидки = Полная цена всех товаров - Итоговая цена всех товаров со
+
+
+скидкой
         // Убеждаемся, что скидка не отрицательна (хотя при правильных данных API такого быть не должно)
         const totalDiscountAmount = Math.max(0, originalTotal - finalBasketTotal);
-
 
         // Обновляем состояния итогов
         setTotalItems(itemsCount);
@@ -651,7 +327,9 @@ const BasketPage = () => {
                                 // Используем book.id из вложенного объекта книги.
                                 // Проверяем наличие book и id для надежности.
                                 <ProductInBasket
-                                    key={item.book?.id || `item-${item.id}`} // Если book.id недоступен, используем резервный ключ
+
+
+key={item.book?.id || `item-${item.id}`} // Если book.id недоступен, используем резервный ключ
                                     book={item.book} // Передаем объект книги
                                     count_of_book={item.count_of_book} // Передаем количество этой книги
                                     total_price={item.total_price} // Передаем общую цену за эту позицию (из API - опционально, но может быть полезно)
@@ -685,4 +363,3 @@ const BasketPage = () => {
 };
 
 export default BasketPage;
-
