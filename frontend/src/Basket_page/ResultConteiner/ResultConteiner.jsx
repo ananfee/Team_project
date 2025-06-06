@@ -3,8 +3,6 @@ import './ResultConteiner.css';
 import PlaceOrderButton from '../PlaceOrderButton/PlaceOrderButton.jsx';
 import PlaceOrderWindow from '../PlaceOrderWindow/PlaceOrderWindow'; // Импортируем окно заказа
 import FetchWithAuth from '../../layout/LoginWindow/FetchWithAuth.js';
-
-
 const ResultConteiner = ({
     totalItems,
     totalOriginalPrice,
@@ -94,14 +92,12 @@ const ResultConteiner = ({
                     </div>
                 </div>
                 {/* Теперь PlaceOrderButton напрямую вызывает handlePlaceOrder */}
-                <PlaceOrderButton onOpenPlaceOrderWindow={handlePlaceOrder} />
+                <PlaceOrderButtononOpenPlaceOrderWindow={handlePlaceOrder} />
                 {/* PlaceOrderWindow теперь получает только orderMessage и управляется состоянием isOpen */}
                 <PlaceOrderWindow
                     onClose={closePlaceOrderWindow}
                     isOpen={isPlaceOrderWindowOpen}
-
-
-orderMessage={orderMessage}
+                    orderMessage={orderMessage}
                     onConfirm={onClearBasket} // Передаем onClearBasket в PlaceOrderWindow
                 />
             </div>
