@@ -43,13 +43,13 @@ function Header({onOpenModal}) {
    return (
       <div className={styles.headerContainer}>
          <div className={styles.content}>
-            <div className={styles.logoContainer}>
-               <p className={styles.logo} style={{fontWeight: 900}}>BOOK</p>
-               <p className={styles.logo} style={{fontSize: 20, marginLeft: 7, fontWeight: 500}}>house</p>
-            </div>
+            {/* Используем Link для создания ссылки на главную страницу */}
+            <Link to="/" className={styles.logoContainer}>
+               <p className={styles.logo} style={{ fontWeight: 900 }}>BOOK</p>
+               <p className={styles.logo} style={{ fontSize: 20, marginLeft: 7, fontWeight: 500 }}>house</p>
+            </Link>
             <div>
                <nav className={styles.navigation}>
-                  <Link to="/" className={styles.mainNav}>Главная</Link>
                   <Link to="/cp" className={styles.catalogNav}>Каталог</Link>
                </nav>
             </div>
