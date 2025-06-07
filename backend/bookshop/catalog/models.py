@@ -8,6 +8,7 @@ class Role(models.Model):
 
 
 class User(AbstractUser):
+    username = models.CharField(max_length=150, null=True, blank=True)
     phone_number = models.CharField(max_length=15, unique=True, null=True, blank=True)
     email = models.EmailField(unique=True)
     role = models.ForeignKey(Role, on_delete=models.CASCADE, null=True, blank=True)
