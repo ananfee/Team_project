@@ -206,9 +206,20 @@ import book3 from '../images/image 3.png';
 
 
 const HistoryPageClient = () => {
-    const baseUrl = process.env.REACT_APP_API_URL; 
+    const baseUrl = process.env.REACT_APP_API_URL
     const [isModalOpen, setIsModalOpen] = useState(false);
- const [ordersData, setOrdersData] = useState([]);
+    // Инициализируем ordersData как пустой массив
+    const [ordersData, setOrdersData] = useState([]);
+    const [fetchError, setFetchError] = useState(null);
+    const [fetchLoading, setFetchLoading] = useState(true);
+
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
     // Зададим маппинг желаемого порядка статусов. Задаем порядок как нам нужно
     const statusOrder = {
         "Обрабатывается": 1,
@@ -322,3 +333,4 @@ const HistoryPageClient = () => {
 };
 
 export default HistoryPageClient;
+
