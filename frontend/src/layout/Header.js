@@ -46,7 +46,7 @@ function Header({onOpenModal}) {
             {/* Используем Link для создания ссылки на главную страницу */}
             <Link to="/" className={styles.logoContainer}>
                <p className={styles.logo} style={{ fontWeight: 900 }}>BOOK</p>
-               <p className={styles.logo} style={{ fontSize: 20, marginLeft: 7, fontWeight: 500 }}>house</p>
+               <p className={styles.logo} style={{ fontSize: 20, marginLeft: 7, fontWeight: 500 }}>shop</p>
             </Link>
             <div>
                <nav className={styles.navigation}>
