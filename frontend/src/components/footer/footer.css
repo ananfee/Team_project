@@ -7,20 +7,9 @@
     padding-left: 22px;
     padding-top: 39px;
     margin: 0;
-} */
-.footer {
-    background-color: #5D3C64;
-    justify-content: space-between;
-    width: 100%;         /* Вместо фиксированной ширины 1920px */
-    max-width: 1920px;   /* При желании ограничить максимальную ширину */
-    height: 170px;
-    padding-right: 35px;
-    padding-left: 22px;
-    padding-top: 39px;
-    margin: 0 auto;      /* Центрируем при большой ширине */
-    box-sizing: border-box;
 }
-/* .sb__footer{
+
+.sb__footer{
     width: 1863px;
     height: 102px;
     justify-content: space-between;
@@ -29,24 +18,12 @@
     display: flex;
     gap: 234px;
     margin-bottom: 95px;
-} */
-.sb__footer {
-    width: 100%;
-    max-width: 1863px;
-    height: auto; /* Лучше авто, чтобы учитывал высоту при переносе */
-    display: flex;
-    justify-content: flex-start;
-    gap: 30px;
-    padding: 0 35px;
-    margin-bottom: 95px;
-    box-sizing: border-box;
-    flex-wrap: wrap;
 }
 
 .cont{
-    /* width: 297px; */
+    width: 297px;
     height: 102px;
-    /* text-align: center; */
+    text-align: center;
 }
 
 .cont p{
@@ -125,25 +102,16 @@
     height: 35;
     text-align: center;
     margin-left: 102px;
-}
-
-.cont,
-.contacts,
-.pay {
-    width: auto;               /* Убираем фиксированную ширину */
-    min-width: 150px;          /* Минимальная ширина для читаемости */
-    flex: 1 1 200px;           /* Позволяет расширяться и сжиматься */
-    text-align: left;
-}
+} */
 
 /* @media screen and (max-width: 850px) {
     .sb__footer-heading h1{
         font-size: 44px;
         line-height: 50px;
     }
-}
+} */
 
-@media screen and (max-width: 350px) {
+/* @media screen and (max-width: 350px) {
     .sb__footer-heading h1{
         font-size: 34px;
         line-height: 42px;
@@ -177,17 +145,123 @@
     
 } */
 
+
+.footer {
+    background-color: #5D3C64;
+    width: 100%;
+    max-width: 1920px;
+    height: auto; /* Изменили на auto для адаптивности по высоте */
+    padding: 39px 35px 0 22px; /* Убрали padding-bottom, чтобы контролировать отступы внутри .sb__footer */
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.sb__footer {
+    width: 100%;
+    max-width: 1863px;
+    height: auto;
+    display: flex;
+    justify-content: flex-start; /* Выравнивание элементов по левому краю */
+    gap: 20px;                  /* Уменьшили расстояние между элементами */
+    padding: 0 15px;            /* Уменьшили padding */
+    margin-bottom: 10px;       /* Уменьшили отступ снизу */
+    box-sizing: border-box;
+    flex-wrap: wrap;            /* Разрешаем перенос элементов на новую строку */
+}
+
+.cont,
+.contacts,
+.pay {
+    width: auto;
+    min-width: 150px;
+    flex: 1 1 200px; /* Позволяет элементам занимать равное пространство */
+    text-align: left;
+    margin-bottom: 20px; /* Добавили отступ снизу между элементами */
+}
+
+.cont p,
+.contacts p,
+.pay p,
+.label p {
+    font-family: "Inter", sans-serif;
+    font-size: 18px;  /* Немного уменьшили шрифт */
+    color: #F6F6F6;
+    text-align: left; /* Установили выравнивание текста слева */
+    margin: 0px;
+    margin-bottom: 10px; /* Уменьшили отступ снизу */
+    line-height: 1.4;
+}
+
+.contacts {
+    text-align: left;
+}
+
+.socialmedia {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;         /* Уменьшили расстояние между иконками */
+    margin-left: 0px;   /* Убрали отступ слева */
+}
+
+.socialmedia img {
+    width: 20px;       /* Уменьшили размер иконок */
+    height: 20px;
+}
+
+.cards {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;           /* Уменьшили расстояние между карточками */
+    width: auto;
+    height: auto;
+    text-align: center;
+    margin-left: auto;    /* Переместили вправо */
+}
+
+.cards img {
+    width: 40px;
+    height: auto;
+}
+
+.label {
+    text-align: left;
+}
+
+/* Медиа-запрос для маленьких экранов */
 @media (max-width: 850px) {
+    .footer {
+        padding: 20px; /* Уменьшили отступы для маленьких экранов */
+    }
+
     .sb__footer {
-        gap: 16px;
-        padding-left: 15px;
-        padding-right: 15px;
+        padding: 0 10px;  /* Уменьшили padding */
+        margin-bottom: 5px; /* Уменьшили отступ снизу */
     }
 
     .cont,
     .contacts,
     .pay {
-        flex: 1 1 100%;          /* Каждый блок занимает всю ширину */
-        margin-bottom: 20px;
+        flex: 1 1 100%;     /* Каждый блок занимает всю ширину на маленьких экранах */
+        min-width: auto;   /* Убрали минимальную ширину */
+        margin-bottom: 10px; /* Уменьшили отступ снизу */
+    }
+
+    .cards {
+        margin-left: 0; /* Убрали margin, чтобы иконки начинались с левого края */
+        justify-content: flex-start; /* Выровняли по левому краю */
+    }
+}
+
+/* Дополнительные стили для еще меньших экранов */
+@media (max-width: 480px) {
+    .cont p,
+    .contacts p,
+    .pay p,
+    .label p {
+        font-size: 16px; /* Еще немного уменьшили шрифт */
+    }
+
+    .cards img {
+        width: 30px; /* Уменьшили размер карточек */
     }
 }
