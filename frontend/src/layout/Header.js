@@ -14,25 +14,6 @@ function Header({onOpenModal}) {
    const [role, setRole] = useState("");
    const [isAuth, setIsAuth] = useState(!!localStorage.getItem('accessToken'));
 
-   const [totalItems, setTotalItems] = useState(() => {
-      const savedTotalItems = localStorage.getItem('totalItems');
-      return savedTotalItems ? parseInt(savedTotalItems, 10) : 0;
-   });
-
-   useEffect(() => {
-      const handleCartUpdate = () => {
-         const updatedTotalItems = localStorage.getItem('totalItems');
-         setTotalItems(updatedTotalItems ? parseInt(updatedTotalItems, 10) : 0);
-      };
-
-      window.addEventListener('cartUpdated', handleCartUpdate);
-
-      return () => {
-         window.removeEventListener('cartUpdated', handleCartUpdate);
-      };
-   }, []);
-
-
    useEffect(() => {
       setIsAuth(!!localStorage.getItem('accessToken'));
       setRole(localStorage.getItem('role'));
@@ -52,8 +33,6 @@ function Header({onOpenModal}) {
          localStorage.removeItem('accessToken');
          localStorage.removeItem('refreshToken');
          localStorage.removeItem('role');
-         localStorage.removeItem('totalItems');
-         window.dispatchEvent(new Event('cartUpdated'));
          setIsAuth(false); 
          setRole("");   
          navigate("/");
@@ -67,7 +46,7 @@ function Header({onOpenModal}) {
             {/* Используем Link для создания ссылки на главную страницу */}
             <Link to="/" className={styles.logoContainer}>
                <p className={styles.logo} style={{ fontWeight: 900 }}>BOOK</p>
-               <p className={styles.logo} style={{ fontSize: 20, marginLeft: 7, fontWeight: 500 }}>shop</p>
+               <p className={styles.logo} style={{ fontSize: 20, marginLeft: 7, fontWeight: 500 }}>house</p>
             </Link>
             <div>
                <nav className={styles.navigation}>
@@ -89,10 +68,7 @@ function Header({onOpenModal}) {
                      <>
                         <NotificationButton onClick={onOpenModal} />
                         <OrdersButton />
-                        <div className={styles.BasketButtonContainer}>
                         <BasketButton />
-                        <p className={styles.TotalItems}>{totalItems}</p>
-                        </div>
                         <button className={styles.Role}>Покупатель</button>
                      </>
                   )
