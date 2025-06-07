@@ -91,7 +91,7 @@ import book3 from '../images/image 3.png';
 const HistoryPageAdmin = () => {
     const baseUrl = process.env.REACT_APP_API_URL;
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [ordersData, setOrdersData] = useState([]); // Состояние для хранения данных о заказах
+    const [ordersData, setOrdersData] = useState([]);
     const [fetchError, setFetchError] = useState(null);
     const [fetchLoading, setFetchLoading] = useState(true);
 
@@ -115,53 +115,71 @@ const HistoryPageAdmin = () => {
             });
 
             if (!response.ok) {
-                const errorData = await response.json(); 
+                const errorData = await response.json();
                 throw new Error(`HTTP error! status: ${response.status}, message: ${errorData.message || 'Unknown error'}`);
             }
 
-            // Если успешно, обновляем состояние ordersData в родительском компоненте
-            setOrdersData(prevOrders => 
-                prevOrders.map(order => 
+            setOrdersData(prevOrders =>
+                prevOrders.map(order =>
                     order.id === orderId ? { ...order, status: newStatus } : order
                 )
             );
             console.log(`Статус заказа ${orderId} успешно обновлен на ${newStatus}`);
         } catch (error) {
             console.error("Ошибка при обновлении статуса заказа:", error);
-            // Перебрасываем ошибку, чтобы OrderAdmin мог ее поймать и показать пользователю
-            throw error; 
+            throw error;
         }
     };
 
     useEffect(() => {
-    const fetchData = async () => {
-        try {
-            const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/admin/orders/');
+        const fetchData = async () => {
+            try {
+                const response = await FetchWithAuth(`${baseUrl}catalog/admin/orders/`);
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                if (Array.isArray(data)) {
+                    // Сортировка по ID статуса заказа (возрастанию), затем по дате (убыванию)
+                    const sortedData = data.sort((a, b) => {
+                        // 1. Сортировка по ID (возрастанию)
+                        const idComparison = a.id - b.id;
+                        if (idComparison !== 0) {
+                            return idComparison;
+                        }
+
+                        // 2. Сортировка по статусу (возрастанию)
+                        const statusA = String(a.status).toUpperCase();
+                        const statusB = String(b.status).toUpperCase();
+                        const statusComparison = statusA.localeCompare(statusB);
+                        if (statusComparison !== 0) {
+                            return statusComparison;
+                        }
+
+                        // 3. Сортировка по дате (убыванию)
+                        const dateA = new Date(a.sale_date);
+                        const dateB = new Date(b.sale_date);
+                        return dateB.getTime() - dateA.getTime();
+                    });
+
+                    setOrdersData(sortedData);
+                    setFetchError(null);
+                } else {
+                    setFetchError(new Error("Получены данные неверного формата от сервера."));
+                }
+            } catch (error) {
+                setFetchError(error);
+                console.error("Ошибка при получении истории заказов:", error);
+            } finally {
+                setFetchLoading(false);
             }
+        };
 
-            const data = await response.json();
-
-            if (Array.isArray(data)) {
-                // Сортируем по убыванию даты
-                const sortedData = data.sort((a, b) => new Date(b.sale_date) - new Date(a.sale_date));
-                setOrdersData(sortedData);
-                setFetchError(null);
-            } else {
-                setFetchError(new Error("Получены данные неверного формата от сервера."));
-            }
-        } catch (error) {
-            setFetchError(error);
-            console.error("Ошибка при получении истории заказов:", error);
-        } finally {
-            setFetchLoading(false);
-        }
-    };
-
-    fetchData();
-}, []);
+        fetchData();
+    }, []);
 
 
 
@@ -178,7 +196,7 @@ const HistoryPageAdmin = () => {
 
                     {fetchError && (
                         <p style={{ color: 'red' }}>
-                            Ошибка при загрузке заказов: {fetchError.message}
+                            {fetchError.message}
                         </p>
                     )}
 
@@ -186,7 +204,7 @@ const HistoryPageAdmin = () => {
                     {!fetchLoading && !fetchError && ordersData.length > 0 ? (
                         ordersData.map((order) => (
                             <OrderAdmin
-                                key={order.id} // Используем id для key
+                                key={order.id}
                                 id={order.id}
                                 client_name={order.client_name}
                                 client_phone={order.client_phone}
