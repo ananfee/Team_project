@@ -1,4 +1,4 @@
-.footer{
+/* .footer{
     background-color: #5D3C64;
     justify-content: space-between;
     width: 1920px;
@@ -7,9 +7,20 @@
     padding-left: 22px;
     padding-top: 39px;
     margin: 0; 
+} */
+.footer {
+    background-color: #5D3C64;
+    justify-content: space-between;
+    width: 100%;         /* Вместо фиксированной ширины 1920px */
+    max-width: 1920px;   /* При желании ограничить максимальную ширину */
+    height: 170px;
+    padding-right: 35px;
+    padding-left: 22px;
+    padding-top: 39px;
+    margin: 0 auto;      /* Центрируем при большой ширине */
+    box-sizing: border-box;
 }
-
-.sb__footer{
+/* .sb__footer{
     width: 1863px;
     height: 102px;
     justify-content: space-between;
@@ -18,12 +29,24 @@
     display: flex;
     gap: 234px;
     margin-bottom: 95px;
+} */
+.sb__footer {
+    width: 100%;
+    max-width: 1863px;
+    height: auto; /* Лучше авто, чтобы учитывал высоту при переносе */
+    display: flex;
+    justify-content: flex-start;
+    gap: 30px;
+    padding: 0 35px;
+    margin-bottom: 95px;
+    box-sizing: border-box;
+    flex-wrap: wrap;
 }
 
 .cont{
-    width: 297px;
+    /* width: 297px; */
     height: 102px;
-    text-align: center;
+    /* text-align: center; */
 }
 
 .cont p{
@@ -104,14 +127,23 @@
     margin-left: 102px;
 }
 
+.cont,
+.contacts,
+.pay {
+    width: auto;               /* Убираем фиксированную ширину */
+    min-width: 150px;          /* Минимальная ширина для читаемости */
+    flex: 1 1 200px;           /* Позволяет расширяться и сжиматься */
+    text-align: left;
+}
+
 /* @media screen and (max-width: 850px) {
     .sb__footer-heading h1{
         font-size: 44px;
         line-height: 50px;
     }
-} */
+}
 
-/* @media screen and (max-width: 350px) {
+@media screen and (max-width: 350px) {
     .sb__footer-heading h1{
         font-size: 34px;
         line-height: 42px;
@@ -144,3 +176,18 @@
     }
     
 } */
+
+@media (max-width: 850px) {
+    .sb__footer {
+        gap: 16px;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .cont,
+    .contacts,
+    .pay {
+        flex: 1 1 100%;          /* Каждый блок занимает всю ширину */
+        margin-bottom: 20px;
+    }
+}

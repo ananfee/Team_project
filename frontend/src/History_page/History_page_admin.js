@@ -133,38 +133,70 @@ const HistoryPageAdmin = () => {
         }
     };
 
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             // Получаем данные о заказах
+    //             const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/admin/orders/');
+
+    //             // Проверяем статус ответа
+    //             if (!response.ok) {
+    //                 throw new Error(`HTTP error! status: ${response.status}`);
+    //             }
+
+    //             // Парсим ответ как JSON
+    //             const data = await response.json();
+
+    //             // Проверяем, являются ли полученные данные массивом
+    //             if (Array.isArray(data)) {
+    //                 // Устанавливаем данные о заказах
+    //                 setOrdersData(data);
+    //                 setFetchError(null); // Сбрасываем ошибку при успешной загрузке
+    //             } else {
+    //                 setFetchError(new Error("Получены данные неверного формата от сервера."));
+    //             }
+    //         } catch (error) {
+    //             setFetchError(error);
+    //             console.error("Ошибка при получении истории заказов:", error);
+    //         } finally {
+    //             setFetchLoading(false);
+    //         }
+    //     };
+
+    //     fetchData(); // Вызываем функцию загрузки данных
+    // }, []); // Завершаем эффект один раз после первого рендера
+
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                // Получаем данные о заказах
-                const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/admin/orders/');
+    const fetchData = async () => {
+        try {
+            const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/admin/orders/');
 
-                // Проверяем статус ответа
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                // Парсим ответ как JSON
-                const data = await response.json();
-
-                // Проверяем, являются ли полученные данные массивом
-                if (Array.isArray(data)) {
-                    // Устанавливаем данные о заказах
-                    setOrdersData(data);
-                    setFetchError(null); // Сбрасываем ошибку при успешной загрузке
-                } else {
-                    setFetchError(new Error("Получены данные неверного формата от сервера."));
-                }
-            } catch (error) {
-                setFetchError(error);
-                console.error("Ошибка при получении истории заказов:", error);
-            } finally {
-                setFetchLoading(false);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
-        };
 
-        fetchData(); // Вызываем функцию загрузки данных
-    }, []); // Завершаем эффект один раз после первого рендера
+            const data = await response.json();
+
+            if (Array.isArray(data)) {
+                // Сортируем по убыванию даты
+                const sortedData = data.sort((a, b) => new Date(b.sale_date) - new Date(a.sale_date));
+                setOrdersData(sortedData);
+                setFetchError(null);
+            } else {
+                setFetchError(new Error("Получены данные неверного формата от сервера."));
+            }
+        } catch (error) {
+            setFetchError(error);
+            console.error("Ошибка при получении истории заказов:", error);
+        } finally {
+            setFetchLoading(false);
+        }
+    };
+
+    fetchData();
+}, []);
+
+
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', alignItems: 'center' }}>
