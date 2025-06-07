@@ -164,14 +164,17 @@ class RemoveCartItemSerializer(serializers.Serializer):
 
 class BookInOrderSerializer(serializers.ModelSerializer):
     book_id = serializers.IntegerField(source='book.id', read_only=True)
-    cover_image = serializers.ImageField(source='book.cover_image', read_only=True)
+    cover_image = serializers.SerializerMethodField()
     title = serializers.CharField(source='book.title', read_only=True)
     class Meta:
         model = BookInOrder
         fields = ['book_id', 'title', 'count_of_book', 'cover_image']
 
     def get_cover_image(self, obj):
+        request = self.context.get('request')
         if obj.book.cover_image:
+            if request:
+                return request.build_absolute_uri(obj.book.cover_image.url)
             return obj.book.cover_image.url
         return None
 

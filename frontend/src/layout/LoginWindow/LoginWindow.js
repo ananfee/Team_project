@@ -53,6 +53,12 @@ function LoginWindow ({isOpen, onClose})
       errors.password = "Заполните поле";
       valid = false;
     }
+
+    if (password && (password.length < 8 || !/[a-zA-Z]/.test(password))) {
+      errors.password = "Пароль должен быть не менее 8 символов и содержать хотя бы одну букву";
+      valid = false;
+    }
+
     setError(errors);
     if (valid) {
       try {
@@ -121,6 +127,11 @@ function LoginWindow ({isOpen, onClose})
       hasError = true;
     }
 
+    if (password && (password.length < 8 || !/[a-zA-Z]/.test(password))) {
+        newErrors.password = "Пароль должен быть не менее 8 символов и содержать хотя бы одну букву";
+        hasError = true;
+    }
+
     if (!repeatPassword) {
       newErrors.repeatPassword = "Повторите пароль";
       hasError = true;
@@ -160,10 +171,13 @@ function LoginWindow ({isOpen, onClose})
       const data = await response.json();
       if (!response.ok) {
         if (data.email) {
-          newErrors.email = data.email[0];
+          newErrors.email = "Пользователь с такой почтой уже существует";
         }
         if (data.phone_number) {
-          newErrors.phone = data.phone_number[0];
+          newErrors.phone = "Пользователь с таким телефоном уже существует";
+        }
+        if (data.password){
+          newErrors.password = "Данный пароль слишком простой";
         }
 
         setError(newErrors);
@@ -331,8 +345,11 @@ function LoginWindow ({isOpen, onClose})
                 </>
             )}
             {error.repeatPassword && <div className={styles.Error}>{error.repeatPassword}</div>}
-            {error.common && (<div className={styles.Error}>{error.common}</div>
-              )}
+            {isRegistering && error.common ? (
+              <div className={styles.Error}>{error.common}</div>
+            ) : (
+              <></>
+            )}
           </div>
           </div>
             

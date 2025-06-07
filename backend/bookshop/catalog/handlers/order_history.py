@@ -19,5 +19,5 @@ class OrderHistoryView(APIView):
         # Проверка на наличие заказов
         if not orders.exists():
             return Response({"message": "У вас нет заказов."}, status=status.HTTP_404_NOT_FOUND)
-        serializer = OrderHistorySerializer(orders, many=True)
+        serializer = OrderHistorySerializer(orders, many=True, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
