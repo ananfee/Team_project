@@ -106,8 +106,7 @@ const HistoryPageAdmin = () => {
         // Функция для обновления статуса заказа через API
     const handleStatusUpdate = async (orderId, newStatus) => {
         try {
-            // Предполагается, что FetchWithAuth сам добавит токен
-            const response = await FetchWithAuth(`${baseUrl}catalog/admin/orders/${orderId}/status/`, {
+            const response = await FetchWithAuth(`http://127.0.0.1:8000/catalog/admin/orders/${orderId}/status/`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -116,55 +115,71 @@ const HistoryPageAdmin = () => {
             });
 
             if (!response.ok) {
-                const errorData = await response.json(); 
+                const errorData = await response.json();
                 throw new Error(`HTTP error! status: ${response.status}, message: ${errorData.message || 'Unknown error'}`);
             }
 
-            // Если успешно, обновляем состояние ordersData в родительском компоненте
-            setOrdersData(prevOrders => 
-                prevOrders.map(order => 
+            setOrdersData(prevOrders =>
+                prevOrders.map(order =>
                     order.id === orderId ? { ...order, status: newStatus } : order
                 )
             );
             console.log(`Статус заказа ${orderId} успешно обновлен на ${newStatus}`);
         } catch (error) {
             console.error("Ошибка при обновлении статуса заказа:", error);
-            // Перебрасываем ошибку, чтобы OrderAdmin мог ее поймать и показать пользователю
-            throw error; 
+            throw error;
         }
     };
 
     useEffect(() => {
-    const fetchData = async () => {
-        try {
-            const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/admin/orders/');
+        const fetchData = async () => {
+            try {
+                const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/admin/orders/');
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                if (Array.isArray(data)) {
+                    // Сортировка по ID статуса заказа (возрастанию), затем по дате (убыванию)
+                    const sortedData = data.sort((a, b) => {
+                        // 1. Сортировка по ID (возрастанию)
+                        const idComparison = a.id - b.id;
+                        if (idComparison !== 0) {
+                            return idComparison;
+                        }
+
+                        // 2. Сортировка по статусу (возрастанию)
+                        const statusA = String(a.status).toUpperCase();
+                        const statusB = String(b.status).toUpperCase();
+                        const statusComparison = statusA.localeCompare(statusB);
+                        if (statusComparison !== 0) {
+                            return statusComparison;
+                        }
+
+                        // 3. Сортировка по дате (убыванию)
+                        const dateA = new Date(a.sale_date);
+                        const dateB = new Date(b.sale_date);
+                        return dateB.getTime() - dateA.getTime();
+                    });
+
+                    setOrdersData(sortedData);
+                    setFetchError(null);
+                } else {
+                    setFetchError(new Error("Получены данные неверного формата от сервера."));
+                }
+            } catch (error) {
+                setFetchError(error);
+                console.error("Ошибка при получении истории заказов:", error);
+            } finally {
+                setFetchLoading(false);
             }
+        };
 
-            const data = await response.json();
-
-            if (Array.isArray(data)) {
-                // Сортируем по убыванию даты
-                const sortedData = data.sort((a, b) => new Date(b.sale_date) - new Date(a.sale_date));
-                setOrdersData(sortedData);
-                setFetchError(null);
-            } else {
-                setFetchError(new Error("Получены данные неверного формата от сервера."));
-            }
-        } catch (error) {
-            setFetchError(error);
-            console.error("Ошибка при получении истории заказов:", error);
-        } finally {
-            setFetchLoading(false);
-        }
-    };
-
-    fetchData();
-}, []);
-
-
+        fetchData();
+    }, []);
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', alignItems: 'center' }}>
@@ -179,15 +194,14 @@ const HistoryPageAdmin = () => {
 
                     {fetchError && (
                         <p style={{ color: 'red' }}>
-                            Ошибка при загрузке заказов: {fetchError.message}
+                            {fetchError.message}
                         </p>
                     )}
 
-                    {/* Рендерим компоненты Order, используя полученные данные */}
                     {!fetchLoading && !fetchError && ordersData.length > 0 ? (
                         ordersData.map((order) => (
                             <OrderAdmin
-                                key={order.id} // Используем id для key
+                                key={order.id}
                                 id={order.id}
                                 client_name={order.client_name}
                                 client_phone={order.client_phone}
@@ -209,4 +223,3 @@ const HistoryPageAdmin = () => {
 };
 
 export default HistoryPageAdmin;
-

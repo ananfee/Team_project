@@ -86,7 +86,6 @@ import book3 from '../images/image 3.png';
 const HistoryPageClient = () => {
     const baseUrl = process.env.REACT_APP_API_URL;
     const [isModalOpen, setIsModalOpen] = useState(false);
-    // Инициализируем ordersData как пустой массив
     const [ordersData, setOrdersData] = useState([]);
     const [fetchError, setFetchError] = useState(null);
     const [fetchLoading, setFetchLoading] = useState(true);
@@ -102,63 +101,71 @@ const HistoryPageClient = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // 1. Используем FetchWithAuth для получения Response
-                const response = await FetchWithAuth(`${baseUrl}catalog/order-history/`);
+                const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/order-history/');
 
-                // 2. Проверяем статус ответа
                 if (!response.ok) {
-                    // Если статус не 2xx, выбрасываем ошибку
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
 
-                // 3. Парсим ответ как JSON
                 const data = await response.json();
 
-                // 4. Проверяем, являются ли полученные данные массивом
                 if (Array.isArray(data)) {
-                    // 5. Обрабатываем данные, если необходимо (например, форматируем дату)
                     const processedOrders = data.map(order => {
-                         // Предполагаем, что sale_date - это строка, которую Date может распарсить
-                         // или уже объект Date. Если строка, toLocaleDateString() лучше.
-                         // Если формат даты другой, возможно, потребуется другая логика парсинга.
-                         const orderDate = new Date(order.sale_date);
-                         const formattedDate = orderDate.toLocaleDateString('ru-RU', {
-                             year: 'numeric',
-                             month: '2-digit',
-                             day: '2-digit',
-                         });
+                        const orderDate = new Date(order.sale_date);
+                        const formattedDate = orderDate.toLocaleDateString('ru-RU', {
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit',
+                        });
 
-                         return {
-                             ...order, // Копируем остальные свойства
-                             orderNumber: order.id, // Предполагаем, что id используется как orderNumber
-                             date: formattedDate, // Добавляем отформатированную дату
-                             // sale_price, status_name, books уже в order, если приходят с бэкенда
-                         };
+                        return {
+                            ...order,
+                            orderNumber: order.id,
+                            date: formattedDate,
+                        };
                     });
 
-                    // 6. Устанавливаем обработанные данные в состояние
-                    setOrdersData(processedOrders);
-                    setFetchError(null); // Сбрасываем ошибку при успешной загрузке
+                    // Сортируем данные
+                    const sortedOrders = processedOrders.sort((a, b) => {
+                        // 1. Сортировка по ID (возрастанию)
+                        const idComparison = a.id - b.id;
+                        if (idComparison !== 0) {
+                            return idComparison;
+                        }
+
+                        // 2. Сортировка по статусу (возрастанию)
+                        const statusA = String(a.status_name).toUpperCase();
+                        const statusB = String(b.status_name).toUpperCase();
+                        const statusComparison = statusA.localeCompare(statusB);
+                        if (statusComparison !== 0) {
+                            return statusComparison;
+                        }
+
+                        // 3. Сортировка по дате (убыванию)
+                        const dateA = new Date(a.sale_date);
+                        const dateB = new Date(b.sale_date);
+                        return dateB.getTime() - dateA.getTime();
+                    });
+
+                    setOrdersData(sortedOrders);
+                    setFetchError(null);
                 } else {
-                    // Если данные не массив, это ошибка формата
                     console.error("Полученные данные не являются массивом:", data);
                     setFetchError(new Error("Получены данные неверного формата от сервера."));
-                    setOrdersData([]); // Устанавливаем пустой массив, чтобы избежать ошибок рендеринга
+                    setOrdersData([]);
                 }
 
             } catch (error) {
-                // Обработка ошибок при запросе или парсинге
                 console.error("Ошибка при получении истории заказов:", error);
                 setFetchError(error);
-                setOrdersData([]); // Очищаем данные при ошибке
+                setOrdersData([]);
             } finally {
-                // Завершаем состояние загрузки независимо от результата
                 setFetchLoading(false);
             }
         };
 
-        fetchData(); // Вызываем функцию загрузки данных
-    }, []); // Пустой массив зависимостей означает, что эффект выполнится один раз после первого рендера
+        fetchData();
+    }, []);
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', alignItems: 'center' }}>
@@ -203,4 +210,3 @@ const HistoryPageClient = () => {
 };
 
 export default HistoryPageClient;
-
