@@ -181,7 +181,15 @@ import json
 
 class BookCreateUpdateSerializer(serializers.ModelSerializer):
     authors_data_json = serializers.CharField(write_only=True, required=False, allow_blank=True)
+    discount = serializers.CharField(allow_null=True, required=False)
 
+    def validate_discount(self, value):
+        if value == "null" or value is None:
+            return None
+        try:
+            return Discount.objects.get(pk=value)
+        except Discount.DoesNotExist:
+            raise serializers.ValidationError("Скидка не существует")
     class Meta:
         model = Book
         fields = '__all__'

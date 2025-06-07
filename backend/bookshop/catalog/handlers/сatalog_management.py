@@ -23,9 +23,9 @@ class DiscountListView(ListAPIView):
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
 class AuthorListView(ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
-
     queryset = Author.objects.all()
     serializer_class = AuthorSerializerForList
 
@@ -37,21 +37,18 @@ class AuthorListView(ListAPIView):
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        last_names = []
-        first_names = []
-        patronymics = []
-
         serializer = self.get_serializer(queryset, many=True)
-        for author_data in serializer.data:
-            last_names.append(author_data.get('last_name', ''))
-            first_names.append(author_data.get('first_name', ''))
-            patronymics.append(author_data.get('patronymic', ''))
+
+        last_names = sorted({author.get('last_name') for author in serializer.data if author.get('last_name')})
+        first_names = sorted({author.get('first_name') for author in serializer.data if author.get('first_name')})
+        patronymics = sorted({author.get('patronymic') for author in serializer.data if author.get('patronymic')})
 
         return Response({
             "last_names": last_names,
             "first_names": first_names,
             "patronymics": patronymics
         }, status=status.HTTP_200_OK)
+    
 
 class BooksView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -61,6 +58,8 @@ class BooksView(APIView):
             serializer = BookCreateUpdateSerializer(data=request.data)
             if serializer.is_valid():
                 discount_id = request.data.get('discount')
+                if discount_id == "null":
+                    discount_id = None
                 if discount_id:
                     try:
                         discount = Discount.objects.get(pk=discount_id)
@@ -83,6 +82,8 @@ class BooksView(APIView):
             serializer = BookCreateUpdateSerializer(instance=book, data=request.data, partial=True)
             if serializer.is_valid():
                 discount_id = request.data.get('discount')
+                if discount_id == "null":
+                    discount_id = None
                 if discount_id:
                     try:
                         discount = Discount.objects.get(pk=discount_id)
