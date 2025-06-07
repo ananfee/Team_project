@@ -206,8 +206,19 @@ import book3 from '../images/image 3.png';
 
 
 const HistoryPageClient = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
- const [ordersData, setOrdersData] = useState([]);
+     const [isModalOpen, setIsModalOpen] = useState(false);
+    // Инициализируем ordersData как пустой массив
+    const [ordersData, setOrdersData] = useState([]);
+    const [fetchError, setFetchError] = useState(null);
+    const [fetchLoading, setFetchLoading] = useState(true);
+
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
     // Зададим маппинг желаемого порядка статусов. Задаем порядок как нам нужно
     const statusOrder = {
         "Обрабатывается": 1,

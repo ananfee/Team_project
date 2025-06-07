@@ -14,7 +14,7 @@ const Contents = () => {
         <div className="contents">
             <div className="text">
                 <p style={{ fontWeight: 700, fontSize: '60px', lineHeight: '64px' }}>
-                    Book house - <br />
+                    Book shop - <br />
                     Больше, чем просто книги
                 </p>
                 <p style={{ fontWeight: 500, fontSize: '20px', lineHeight: '30px' }}>
