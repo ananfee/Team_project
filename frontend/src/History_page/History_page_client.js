@@ -205,22 +205,42 @@ import book3 from '../images/image 3.png';
 
 
 
+import React, { useState, useEffect } from 'react';
+import Header from './Header'; // Замените на реальный путь
+import NotificationModal from './NotificationModal'; // Замените на реальный путь
+import FetchWithAuth from './FetchWithAuth'; // Замените на реальный путь
+import './HistoryPageClient.css'; // Создайте этот файл, если его еще нет.  Содержит стили компонента
+
 const HistoryPageClient = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [ordersData, setOrdersData] = useState([]);
-    const [fetchError, setFetchError] = useState(null);
-    const [fetchLoading, setFetchLoading] = useState(true);
-
-    const openModal = () => {
-        setIsModalOpen(true);
+ const [ordersData, setOrdersData] = useState([]);
+    // Зададим маппинг желаемого порядка статусов. Задаем порядок как нам нужно
+    const statusOrder = {
+        "Обрабатывается": 1,
+        "Передается в доставку": 2,
+        "В пути": 3,
+        "Доставлен": 4,
+        "Получен": 5
     };
 
-    const closeModal = () => {
-        setIsModalOpen(false);
+    const orderSort = (a, b) => {
+        const statusPriorityA = statusOrder[a.status_name] || 6; // Если статус неизвестен, ставим в конец
+        const statusPriorityB = statusOrder[b.status_name] || 6;
+
+        //Сначала сортируем по приоритету статуса
+        if (statusPriorityA !== statusPriorityB) {
+            return statusPriorityA - statusPriorityB;
+        }
+
+        //Если статусы совпадают, сортируем по дате (сначала новые)
+        return new Date(b.sale_date) - new Date(a.sale_date);
     };
 
     useEffect(() => {
         const fetchData = async () => {
+            setFetchLoading(true);
+            setFetchError(null);
+
             try {
                 const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/order-history/');
 
@@ -246,30 +266,9 @@ const HistoryPageClient = () => {
                         };
                     });
 
-                    // Сортируем данные
-                    const sortedOrders = processedOrders.sort((a, b) => {
-                        // 1. Сортировка по ID (возрастанию)
-                        const idComparison = a.id - b.id;
-                        if (idComparison !== 0) {
-                            return idComparison;
-                        }
-
-                        // 2. Сортировка по статусу (возрастанию)
-                        const statusA = String(a.status_name).toUpperCase();
-                        const statusB = String(b.status_name).toUpperCase();
-                        const statusComparison = statusA.localeCompare(statusB);
-                        if (statusComparison !== 0) {
-                            return statusComparison;
-                        }
-
-                        // 3. Сортировка по дате (убыванию)
-                        const dateA = new Date(a.sale_date);
-                        const dateB = new Date(b.sale_date);
-                        return dateB.getTime() - dateA.getTime();
-                    });
+                    const sortedOrders = [...processedOrders].sort(orderSort);
 
                     setOrdersData(sortedOrders);
-                    setFetchError(null);
                 } else {
                     console.error("Полученные данные не являются массивом:", data);
                     setFetchError(new Error("Получены данные неверного формата от сервера."));
@@ -288,8 +287,20 @@ const HistoryPageClient = () => {
         fetchData();
     }, []);
 
+    if (fetchLoading) {
+        return <div className="loading-indicator">Загрузка истории заказов...</div>;
+    }
+
+    if (fetchError) {
+        return (
+            <div className="error-message">
+                Ошибка при загрузке заказов: {fetchError.message}
+            </div>
+        );
+    }
+
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', alignItems: 'center' }}>
+        <div className="history-page-container">
             <Header onOpenModal={openModal} />
             {isModalOpen && <NotificationModal onClose={closeModal} />}
 
@@ -297,37 +308,23 @@ const HistoryPageClient = () => {
                 <div className="historyHeader">
                     <p>ЗАКАЗЫ</p>
                 </div>
-                <div className='ListOrders'>
-                    {/* Отображение статуса загрузки, ошибки или данных */}
-                    {fetchLoading && <p>Загрузка истории заказов...</p>}
-
-                    {fetchError && (
-                        <p style={{ color: 'red' }}>
-                            Ошибка при загрузке заказов: {fetchError.message}
-                        </p>
-                    )}
-
-                    {/* Условный рендеринг списка заказов */}
-                    {!fetchLoading && !fetchError && Array.isArray(ordersData) && ordersData.length > 0 ? (
-                        ordersData.map((order) => (
-                            <OrderClient
-                                key={order.id} // Используем оригинальный id для key
-                                orderNumber={order.orderNumber} // Используем обработанный orderNumber
-                                date={order.date}         // Используем обработанную дату
-                                sale_price={order.sale_price} // Используем данные из API
-                                status_name={order.status_name} // Используем данные из API
-                                books={order.books}       // Используем данные из API
-                            />
-                        ))
+                <div className="ListOrders">
+                    {ordersData.length === 0 ? (
+                        <p>Нет данных об истории заказов.</p>
                     ) : (
-                        // Сообщение, если нет заказов после загрузки (и нет ошибки)
-                         !fetchLoading && !fetchError && <p>У вас пока нет заказов.</p>
+                        <ul>
+                            {ordersData.map(order => (
+                                <li key={order.id}>
+                                    Номер заказа: {order.orderNumber}, Дата: {order.date}, Статус: {order.status_name}
+                                </li>
+                            ))}
+                        </ul>
                     )}
                 </div>
             </div>
-            <Footer />
         </div>
     );
 };
 
 export default HistoryPageClient;
+
