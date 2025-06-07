@@ -361,4 +361,4 @@ const HistoryPageAdmin = () => {
         </div>
     );
 };
-
+export default  HistoryPageAdmin;

@@ -205,12 +205,6 @@ import book3 from '../images/image 3.png';
 
 
 
-import React, { useState, useEffect } from 'react';
-import Header from './Header'; // Замените на реальный путь
-import NotificationModal from './NotificationModal'; // Замените на реальный путь
-import FetchWithAuth from './FetchWithAuth'; // Замените на реальный путь
-import './HistoryPageClient.css'; // Создайте этот файл, если его еще нет.  Содержит стили компонента
-
 const HistoryPageClient = () => {
     const baseUrl = process.env.REACT_APP_API_URL; 
     const [isModalOpen, setIsModalOpen] = useState(false);
