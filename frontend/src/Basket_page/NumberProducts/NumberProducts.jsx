@@ -230,92 +230,6 @@ import FetchWithAuth from '../../layout/LoginWindow/FetchWithAuth.js';
 
 
 
-// const NumberProducts = ({ initialCount, onQuantityChange, number_of_copies, bookId }) => {
-//     const [count, setCount] = useState(initialCount);
-//     const [isLoading, setIsLoading] = useState(false);
-
-//     useEffect(() => {
-//         setCount(initialCount);
-//     }, [initialCount]);
-
-//     const updateQuantity = useCallback(async (newCount) => {
-//         setIsLoading(true);
-//         try {
-//             const response = await FetchWithAuth("http://127.0.0.1:8000/catalog/cart/update/", {
-//                 method: 'PATCH',
-//                 headers: {
-//                     'Content-Type': 'application/json',
-//                 },
-//                 body: JSON.stringify({ book_id: bookId, count_of_book: newCount }),
-//             });
-
-//             if (!response.ok) {
-//                 const errorData = await response.json();
-//                 const errorMessage = errorData?.detail || `Ошибка обновления количества: ${response.status}`;
-//                 console.error("Ошибка при изменении количества товара:", errorMessage);
-//                 alert(errorMessage);
-//                 return false;
-//             }
-
-//             setCount(newCount);
-//             onQuantityChange(newCount);
-//             return true;
-//         } catch (error) {
-//             console.error("Ошибка при изменении количества товара:", error);
-//             alert(`Произошла ошибка: ${error.message}`);
-//             return false;
-//         } finally {
-//             setIsLoading(false);
-//         }
-//     }, [bookId, onQuantityChange]);
-
-//     const handleIncrement = async () => {
-//         const newCount = count + 1;
-//         if (newCount <= number_of_copies) {
-//             await updateQuantity(newCount);
-//             window.location.reload(); // Обновляем страницу
-
-//         } else {
-//             console.log("Достигнуто максимальное количество копий для этого товара.");
-//         }
-//     };
-
-//     const handleDecrement = async () => {
-//         if (count > 1) {
-//             const newCount = count - 1;
-//             await updateQuantity(newCount);
-//             window.location.reload(); // Обновляем страницу
-
-//         }
-//     };
-
-//     return (
-//         <div className='rectangle0'>
-//             <button
-//                 className='rectangleAdd'
-//                 onClick={handleIncrement}
-//                 disabled={count >= number_of_copies || isLoading}
-//             >
-//                 <img src={ac} alt="Увеличить" />
-//             </button>
-//             <div className='NumberProducts'>
-//                 <p>{count}</p>
-//             </div>
-//             <button
-//                 className='rectangleMinuss'
-//                 onClick={handleDecrement}
-//                 disabled={isLoading}
-//             >
-//                 <img src={mc} alt="Уменьшить" />
-//             </button>
-//         </div>
-//     );
-// };
-
-// export default NumberProducts;
-
-
-
 const NumberProducts = ({ initialCount, onQuantityChange, number_of_copies, bookId }) => {
     const baseUrl = process.env.REACT_APP_API_URL;
     const [count, setCount] = useState(initialCount);
@@ -365,9 +279,6 @@ const NumberProducts = ({ initialCount, onQuantityChange, number_of_copies, book
         const newCount = count + 1;
         if (newCount <= number_of_copies) {
             const success = await updateQuantity(newCount);
-            const newTotal = localStorage.getItem('totalItems');
-            localStorage.setItem('totalItems', parseInt(newTotal, 10) + 1);
-            window.dispatchEvent(new Event('cartUpdated'));
             if (success) {
                 window.location.reload(); // Обновляем страницу
             }
@@ -380,9 +291,6 @@ const NumberProducts = ({ initialCount, onQuantityChange, number_of_copies, book
         if (count > 1) {
             const newCount = count - 1;
             const success = await updateQuantity(newCount);
-            const newTotal = localStorage.getItem('totalItems');
-            localStorage.setItem('totalItems', newTotal - 1);
-            window.dispatchEvent(new Event('cartUpdated'));
             if (success) {
                 window.location.reload(); // Обновляем страницу
             }
@@ -413,4 +321,3 @@ const NumberProducts = ({ initialCount, onQuantityChange, number_of_copies, book
 };
 
 export default NumberProducts;
-
