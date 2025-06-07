@@ -11,6 +11,7 @@ import BasketPage from './Basket_page/Basket_page';
 function App(){
   
   return(
+    <div style={{ minWidth: '1160px' }}>
     <Router>
       <Routes>
         <Route path="/" element={<Main_page />} />
@@ -21,6 +22,7 @@ function App(){
         <Route path="/basket" element={<BasketPage />} />
       </Routes>
     </Router>
+    </div>
   );
 };
 
