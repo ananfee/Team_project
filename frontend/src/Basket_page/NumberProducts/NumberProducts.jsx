@@ -364,8 +364,6 @@ const NumberProducts = ({ initialCount, onQuantityChange, number_of_copies, book
     const handleIncrement = async () => {
         const newCount = count + 1;
         if (newCount <= number_of_copies) {
-            const success = await updateQuantity(newCount);
-            localStorage.setItem('totalItems', totalItems);
             window.dispatchEvent(new Event('cartUpdated'));
             if (success) {
                 window.location.reload(); // Обновляем страницу
@@ -379,8 +377,6 @@ const NumberProducts = ({ initialCount, onQuantityChange, number_of_copies, book
         if (count > 1) {
             const newCount = count - 1;
             const success = await updateQuantity(newCount);
-            localStorage.setItem('totalItems', totalItems);
-            window.dispatchEvent(new Event('cartUpdated'));
             if (success) {
                 window.location.reload(); // Обновляем страницу
             }
