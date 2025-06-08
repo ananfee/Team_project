@@ -177,13 +177,8 @@ function AddBookWindow({isOpen, onClose, obj})
       if (imgFile) {
          formData.append('cover_image', imgFile);
       }
-      
-      
+        
        const isEdit = !!obj; 
-       
-      if (isEdit) {
-         formData.append('cover_image', imgFile);
-      }
   
        const url = isEdit
          ? `${baseUrl}catalog/books/update/${obj.id}/`
