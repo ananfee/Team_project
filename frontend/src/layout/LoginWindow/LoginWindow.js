@@ -9,7 +9,10 @@ function LoginWindow ({isOpen, onClose})
   const [isOpenDropDown, setIsOpenDropDown] = useState(false);
   const [selectedRole, setSelectedRole] = useState('Выберите роль');
   const container = useRef();
-
+  const [role, setRole] = useState("");
+   useEffect(() => {
+      setRole(localStorage.getItem('role'));
+    }, []);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState("");
@@ -76,7 +79,8 @@ function LoginWindow ({isOpen, onClose})
         localStorage.setItem('accessToken', data.access);
         localStorage.setItem('role', data.role);
         localStorage.setItem('refreshToken', data.refresh);
-        getCart();
+        if (role == 'Клиент') {
+        getCart();}
         onClose();
       } catch {
         setError({ email: "", password: "", common: "Неверный email или пароль" });
