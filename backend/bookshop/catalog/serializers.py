@@ -194,6 +194,11 @@ class BookCreateUpdateSerializer(serializers.ModelSerializer):
             return Discount.objects.get(pk=value)
         except Discount.DoesNotExist:
             raise serializers.ValidationError("Скидка не существует")
+        
+    def validate_cover_image(self, value):
+        if value in (None, "", "null", 'null'): 
+            return None 
+        return value
     class Meta:
         model = Book
         fields = '__all__'
@@ -223,7 +228,7 @@ class BookCreateUpdateSerializer(serializers.ModelSerializer):
                 author, created = Author.objects.get_or_create(
                     author_last_name=author_data['author_last_name'],
                     author_first_name=author_data['author_first_name'],
-                    defaults={'author_patronymic': author_data.get('author_patronymic')})
+                    author_patronymic=author_data['author_patronymic'])
                 AuthorsOfBook.objects.create(book=book, author=author)
         return book
 
