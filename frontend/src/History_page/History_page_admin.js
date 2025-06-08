@@ -228,7 +228,7 @@ const HistoryPageAdmin = () => {
 
     const handleStatusUpdate = async (orderId, newStatus) => {
         try {
-            const response = await FetchWithAuth(`${baseUrl}/catalog/admin/orders/${orderId}/status/`, {
+            const response = await FetchWithAuth(`${baseUrl}catalog/admin/orders/${orderId}/status/`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -263,7 +263,7 @@ const HistoryPageAdmin = () => {
             setFetchError(null); // Очистка предыдущих ошибок
 
             try {
-                const response = await FetchWithAuth(`${baseUrl}/catalog/admin/orders/`);
+                const response = await FetchWithAuth(`${baseUrl}catalog/admin/orders/`);
 
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
