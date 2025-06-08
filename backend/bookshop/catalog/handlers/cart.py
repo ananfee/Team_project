@@ -18,7 +18,7 @@ class CartView(generics.ListAPIView):
         except Client.DoesNotExist:
             raise NotFound("Клиент не найден.")
 
-        return BookInCart.objects.filter(client=client).select_related('book')
+        return BookInCart.objects.filter(client=client).select_related('book').order_by('book__title')
 
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
@@ -52,7 +52,7 @@ class UpdateCartItemView(generics.UpdateAPIView):
         except BookInCart.DoesNotExist:
             return Response({"error": "Книга не найдена в корзине"}, status=status.HTTP_404_NOT_FOUND)
 
-        updated_items = BookInCart.objects.filter(client=client)
+        updated_items = BookInCart.objects.filter(client=client).order_by('book__title')
         output_serializer = CartBookSerializer(updated_items, many=True, context={'request': request})
         return Response(output_serializer.data)
 
@@ -76,7 +76,7 @@ class RemoveCartItemView(generics.DestroyAPIView):
 
         cart_item.delete()
 
-        updated_items = BookInCart.objects.filter(client=client)
+        updated_items = BookInCart.objects.filter(client=client).order_by('book__title')
         output_serializer = CartBookSerializer(updated_items, many=True, context={'request': request})
         return Response(output_serializer.data)
 
@@ -95,7 +95,7 @@ class CheckoutView(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         client = Client.objects.get(user=request.user)
-        items = BookInCart.objects.filter(client=client).select_related('book')
+        items = BookInCart.objects.filter(client=client).select_related('book').order_by('book__title')
 
         if not items.exists():
             return Response({"error": "Корзина пуста"}, status=status.HTTP_400_BAD_REQUEST)
