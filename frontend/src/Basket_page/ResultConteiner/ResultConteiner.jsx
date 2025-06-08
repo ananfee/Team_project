@@ -3,6 +3,273 @@ import './ResultConteiner.css';
 import PlaceOrderButton from '../PlaceOrderButton/PlaceOrderButton.jsx';
 import PlaceOrderWindow from '../PlaceOrderWindow/PlaceOrderWindow'; // Импортируем окно заказа
 import FetchWithAuth from '../../layout/LoginWindow/FetchWithAuth.js';
+
+// const ResultConteiner = ({ totalItems, totalOriginalPrice, totalDiscount, finalPrice }) => {
+
+//     // Состояние для окна заказа
+//     const [isPlaceOrderWindowOpen, setIsPlaceOrderWindowOpen] = useState(false);
+
+//     const openPlaceOrderWindow = () => {
+//         setIsPlaceOrderWindowOpen(true);
+
+//     };
+
+//     const closePlaceOrderWindow = () => {
+//         setIsPlaceOrderWindowOpen(false);
+//         // TODO: Возможно, нужно очистить данные о заказе
+//     };
+
+//      // Вспомогательная функция для правильного склонения слова "товар"
+//     const formatItemWord = (count) => {
+//          // Возвращаем пустую строку или дефолтное значение, если count некорректен
+//         if (typeof count !== 'number' || count < 0 || !Number.isFinite(count)) return 'товаров';
+//         if (count === 1) return 'товар';
+
+//         const lastDigit = count % 10;
+//         const lastTwoDigits = count % 100;
+
+//         if (lastTwoDigits >= 11 && lastTwoDigits <= 14) return 'товаров'; // 11-14 товаров
+//         if (lastDigit === 1) return 'товар'; // 1 товар (исключая 11)
+//         if (lastDigit >= 2 && lastDigit <= 4) return 'товара'; // 2-4 товара (исключая 12-14)
+//         return 'товаров'; // 0, 5-9, 10, 15-19, 20, 25-29...
+//     };
+
+//     // Функция для безопасного отображения цены (с форматированием)
+//     const displayPrice = (price) => {
+//         return price != null && typeof price === 'number' ? `${price.toFixed(2)} ₽` : '---';
+//     };
+
+//     return (
+//         <div className='resultConteiner'>
+//             <div className='conteinerDop'>
+//                 <p style={{ fontSize: 24 }}>К оплате</p>
+//                 <div className='infoText'>
+
+//                     {/* Общее количество товаров */}
+//                     <div className='resultProductPrice'>
+//                         <p style={{ fontSize: 16 }}>{totalItems != null ? totalItems : 0} {formatItemWord(totalItems != null ? totalItems : 0)}</p>
+//                         <p style={{ fontSize: 16 }}>{displayPrice(totalOriginalPrice)} </p>
+//                     </div>
+
+//                     {/* Сумма скидки */}
+//                     <div className='resultProductPrice'>
+//                         <p style={{ fontSize: 16 }}>Скидка</p>
+//                         <p style={{ fontSize: 16, color: "#ED0006" }}>
+//                              {totalDiscount != null && typeof totalDiscount === 'number' ? `-${totalDiscount.toFixed(2)} ₽` : '---'} {/* Отображаем как отрицательное число */}
+//                         </p>
+//                     </div>
+
+//                     {/* Итоговая цена со скидкой */}
+//                     <div className='resultProductPrice'>
+//                         <p style={{ fontSize: 16 }}>Итого</p>
+//                         <p style={{ fontSize: 16 }}>{displayPrice(finalPrice)}</p>
+//                     </div>
+//                 </div>
+//                 <PlaceOrderButton onOpenPlaceOrderWindow={openPlaceOrderWindow} />
+//             </div>
+//             <PlaceOrderWindow onClose={closePlaceOrderWindow} isOpen={isPlaceOrderWindowOpen} />
+//         </div>
+//     );
+// };
+
+// export default ResultConteiner;
+
+// const ResultConteiner = ({ totalItems, totalOriginalPrice, totalDiscount, finalPrice, onClearBasket }) => {
+//     const [isPlaceOrderWindowOpen, setIsPlaceOrderWindowOpen] = useState(false);
+//     // const [orderMessage, setOrderMessage] = useState('');
+
+//     const openPlaceOrderWindow = () => setIsPlaceOrderWindowOpen(true);
+//     const closePlaceOrderWindow = () => {
+//         setIsPlaceOrderWindowOpen(false);
+//     };
+
+//     const formatItemWord = (count) => {
+//         if (typeof count !== 'number' || count < 0 || !Number.isFinite(count)) return 'товаров';
+//         const lastDigit = count % 10;
+//         const lastTwoDigits = count % 100;
+//         if (lastTwoDigits >= 11 && lastTwoDigits <= 14) return 'товаров';
+//         if (lastDigit === 1) return 'товар';
+//         if (lastDigit >= 2 && lastDigit <= 4) return 'товара';
+//         return 'товаров';
+//     };
+
+//     const formatPrice = (price) => {
+//         if (price == null || typeof price !== 'number' || !Number.isFinite(price)) {
+//             return '---';
+//         }
+//         // Округляем до ближайшего целого числа
+//         return `${Math.round(price)} ₽`;
+//     };
+
+
+//     const handlePlaceOrder = async () => {
+//         try {
+//             const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/cart/checkout/', {
+//                 method: 'POST',
+//             });
+
+//             if (response === null) {
+//                 throw new Error("Не удалось обновить токен авторизации.");
+//             }
+
+//             if (!response.ok) {
+//                 const errorData = await response.json();
+//                 const errorMessage = errorData?.error || 'Ошибка оформления заказа.';
+//                 setOrderMessage(errorMessage);
+//                 return;
+//             }
+
+//             const data = await response.json();
+//             setOrderMessage(data.message); // "Заказ успешно оформлен"
+//             onClearBasket(); // Очистить корзину, если заказ успешен
+//             closePlaceOrderWindow(); // Закрыть окно оформления заказа
+//         } catch (error) {
+//             console.error("Ошибка при оформлении заказа:", error);
+//             setOrderMessage("Произошла ошибка при оформлении заказа. Пожалуйста, попробуйте снова.");
+//         }
+//     };
+
+//     return (
+//         <div className='resultConteiner'>
+//             <div className='conteinerDop'>
+//                  <p style={{ fontSize: 24 }}>К оплате</p>
+//                 <div className='infoText'>
+//                     <div className='resultProductPrice'>
+//                         <p style={{ fontSize: 16 }}>{totalItems ?? 0} {formatItemWord(totalItems)}</p>
+//                         <p style={{ fontSize: 16 }}>{formatPrice(totalOriginalPrice)} </p>
+//                     </div>
+//                     <div className='resultProductPrice'>
+//                         <p style={{ fontSize: 16 }}>Скидка</p>
+//                         <p style={{ fontSize: 16, color: "#ED0006" }}>{formatPrice(totalDiscount ? -totalDiscount : 0)}</p>
+//                     </div>
+//                     <div className='resultProductPrice'>
+//                         <p style={{ fontSize: 16 }}>Итого</p>
+//                         <p style={{ fontSize: 16 }}>{formatPrice(finalPrice)}</p>
+//                     </div>
+//                 </div>
+//                 <PlaceOrderButton onOpenPlaceOrderWindow={openPlaceOrderWindow} />
+//                 <PlaceOrderWindow onClose={closePlaceOrderWindow} isOpen={isPlaceOrderWindowOpen} onPlaceOrder={handlePlaceOrder} orderMessage={orderMessage} />
+//             </div>
+//         </div>
+//     );
+// };
+
+// export default ResultConteiner;
+
+
+
+// const ResultConteiner = ({ totalItems, totalOriginalPrice, totalDiscount, finalPrice, onClearBasket }) => {
+//     const [isPlaceOrderWindowOpen, setIsPlaceOrderWindowOpen] = useState(false);
+//     const [orderMessage, setOrderMessage] = useState(''); // Состояние для сообщения о статусе заказа
+
+//     const openPlaceOrderWindow = () => {
+//         setOrderMessage(''); // Очищаем сообщение при открытии нового окна, если оно было
+//         setIsPlaceOrderWindowOpen(true);
+//     };
+
+//     const closePlaceOrderWindow = () => {
+//         setIsPlaceOrderWindowOpen(false);
+//         setOrderMessage(''); // Также очищаем сообщение при закрытии окна
+//     };
+
+//     const formatItemWord = (count) => {
+//         // Исправлен оператор ||
+//         if (typeof count !== 'number' || count < 0 || !Number.isFinite(count)) return 'товаров';
+//         const lastDigit = count % 10;
+//         const lastTwoDigits = count % 100;
+//         if (lastTwoDigits >= 11 && lastTwoDigits <= 14) return 'товаров';
+//         if (lastDigit === 1) return 'товар';
+//         if (lastDigit >= 2 && lastDigit <= 4) return 'товара';
+//         return 'товаров';
+//     };
+
+//     const formatPrice = (price) => {
+//         // Исправлен оператор || и синтаксис строки
+//         if (price == null || typeof price !== 'number' || !Number.isFinite(price)) {
+//             return '--- ₽';
+//         }
+//         return `${Math.round(price)} ₽`;
+//     };
+
+//     const handlePlaceOrder = async () => {
+//         // 1. Открываем окно сразу, чтобы показать пользователю, что что-то происходит.
+//         openPlaceOrderWindow();
+//         // 2. Устанавливаем начальное сообщение о процессе.
+//         setOrderMessage('Оформление заказа...');
+
+//         try {
+//             const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/cart/checkout/', {
+//                 method: 'POST',
+//             });
+
+//             if (response === null) {
+//                 // Это может произойти, если FetchWithAuth не смог обновить токен.
+//                 setOrderMessage("Ошибка авторизации. Попробуйте войти снова.");
+//                 // Возвращаемся, не пытаясь обработать ответ дальше
+//                 return;
+//             }
+
+//             if (!response.ok) {
+//                 const errorData = await response.json();
+//                 // Исправлен синтаксис строки и оператор ||
+//                 const errorMessage = errorData?.error || errorData?.detail || `Ошибка оформления заказа: ${response.statusText}`;
+//                 setOrderMessage(errorMessage); // Устанавливаем сообщение об ошибке
+//                 console.error("Ошибка при оформлении заказа:", errorMessage);
+//                 return; // Возвращаемся после обработки ошибки
+//             }
+
+//             const data = await response.json();
+//             setOrderMessage(data.message); // Успешное сообщение: "Заказ успешно оформлен"
+
+//             // Если заказ успешно оформлен, очищаем корзину.
+//             // PlaceOrderWindow остается открытым с этим сообщением, пока пользователь не нажмет "ОК".
+//             onClearBasket(); // Вызывает loadBasket в BasketPage, которая обновит корзину
+
+//         } catch (error) {
+//             console.error("Ошибка при оформлении заказа:", error);
+//             // Исправлен синтаксис строки
+//             setOrderMessage(`Произошла ошибка при оформлении заказа. ${error.message || 'Пожалуйста, попробуйте снова.'}`);
+//         }
+//         // Окно не закрывается здесь. Оно остается открытым с результатом, пока пользователь не нажмет "ОК"
+//     };
+
+//     return (
+//         <div className='resultConteiner'>
+//             <div className='conteinerDop'>
+//                  <p style={{ fontSize: 24 }}>К оплате</p>
+//                 <div className='infoText'>
+//                     <div className='resultProductPrice'>
+//                         <p style={{ fontSize: 16 }}>{totalItems ?? 0} {formatItemWord(totalItems)}</p>
+//                         <p style={{ fontSize: 16 }}>{formatPrice(totalOriginalPrice)} </p>
+//                     </div>
+//                     <div className='resultProductPrice'>
+//                         <p style={{ fontSize: 16 }}>Скидка</p>
+//                         <p style={{ fontSize: 16, color: "#ED0006" }}>{formatPrice(totalDiscount ? -Math.abs(totalDiscount) : 0)}</p>
+//                     </div>
+//                     <div className='resultProductPrice'>
+//                         <p style={{ fontSize: 16 }}>Итого</p>
+//                         <p style={{ fontSize: 16 }}>{formatPrice(finalPrice)}</p>
+//                     </div>
+//                 </div>
+//                 {/* Теперь PlaceOrderButton напрямую вызывает handlePlaceOrder */}
+//                 <PlaceOrderButton onOpenPlaceOrderWindow={handlePlaceOrder} />
+//                 {/* PlaceOrderWindow теперь получает только orderMessage и управляется состоянием isOpen */}
+//                 <PlaceOrderWindow
+//                     onClose={closePlaceOrderWindow}
+//                     isOpen={isPlaceOrderWindowOpen}
+//                     orderMessage={orderMessage} // Передаем сообщение о статусе
+//                 />
+//             </div>
+//         </div>
+//     );
+// };
+
+// export default ResultConteiner;
+
+
+
+// ... (вспомогательные функции formatPrice и formatItemWord - без изменений) ...
+
 const ResultConteiner = ({
     totalItems,
     totalOriginalPrice,
@@ -65,7 +332,7 @@ const ResultConteiner = ({
             const data = await response.json();
             
             setOrderMessage(data.message || "Заказ успешно оформлен!");
-            localStorage.setItem('totalItems', 0);
+            localStorage.setItem('totalItems', totalItems);
             window.dispatchEvent(new Event('cartUpdated'));
             // НЕ вызываем onClearBasket здесь. Это будет сделано в PlaceOrderWindow.
 
