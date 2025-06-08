@@ -305,7 +305,7 @@ const HistoryPageClient = () => {
     }
 
     return (
-        <div className="history-page-container">
+        <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', alignItems: 'center' }}>
             <Header onOpenModal={openModal} />
             {isModalOpen && <NotificationModal onClose={closeModal} />}
 
@@ -319,9 +319,14 @@ const HistoryPageClient = () => {
                     ) : (
                         <ul>
                             {ordersData.map(order => (
-                                <li key={order.id}>
-                                    Номер заказа: {order.orderNumber}, Дата: {order.date}, Статус: {order.status_name}
-                                </li>
+                            <OrderClient
+                                key={order.id} // Используем оригинальный id для key
+                                orderNumber={order.orderNumber} // Используем обработанный orderNumber
+                                date={order.date}         // Используем обработанную дату
+                                sale_price={order.sale_price} // Используем данные из API
+                                status_name={order.status_name} // Используем данные из API
+                                books={order.books}       // Используем данные из API
+                            />
                             ))}
                         </ul>
                     )}
@@ -332,6 +337,7 @@ const HistoryPageClient = () => {
 };
 
 export default HistoryPageClient;
+
 
 
 
