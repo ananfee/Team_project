@@ -1,5 +1,6 @@
 import React, {useState, useRef, useEffect} from "react";
 import styles from './LoginWindow.module.css';
+import FetchWithAuth from "./FetchWithAuth";
 
 function LoginWindow ({isOpen, onClose})
 {
@@ -74,7 +75,7 @@ function LoginWindow ({isOpen, onClose})
         localStorage.setItem('accessToken', data.access);
         localStorage.setItem('role', data.role);
         localStorage.setItem('refreshToken', data.refresh);
-        window.location.reload(); 
+        getCart();
         onClose();
       } catch {
         setError({ email: "", password: "", common: "Неверный email или пароль" });
@@ -208,6 +209,8 @@ function LoginWindow ({isOpen, onClose})
           const totalItems = data.reduce((sum, item) => sum + parseInt(item.count_of_book, 10), 0);
           localStorage.setItem('totalItems', totalItems);
           window.dispatchEvent(new Event('cartUpdated'));
+          window.location.reload(); 
+
         }
       } catch (e) {
         alert('Ошибка отправки запроса');
@@ -248,7 +251,7 @@ function LoginWindow ({isOpen, onClose})
         <p className={styles.pEntrance}>
           {isRegistering ? "Регистрация" : "Вход"}
         </p>
-        <form onSubmit={isRegistering ? handleRegistering : () => { handleLogin(); getCart(); }}>
+        <form onSubmit={isRegistering ? handleRegistering : handleLogin}>
           <div className={styles.InputContainer}>
           <div className={styles.InputContainerInner}>
             
