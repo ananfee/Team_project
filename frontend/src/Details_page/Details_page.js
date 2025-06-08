@@ -172,6 +172,7 @@ import NotificationModal from '../NotificationModal/NotificationModal';
 
 function Details_page()
 {
+   const baseUrl = process.env.REACT_APP_API_URL;
    const {id} = useParams();
    const [isModalOpen, setIsModalOpen] = useState(false);
    const [book, setBook] = useState(null);
@@ -228,7 +229,6 @@ function Details_page()
                <RelatedBooks RelatedBooks={relatedBooks}/>
                </div>
             )}
-         <Footer/>
       </div>
    );
 }
