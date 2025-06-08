@@ -211,7 +211,6 @@ function LoginWindow ({isOpen, onClose})
           localStorage.setItem('totalItems', totalItems);
           window.dispatchEvent(new Event('cartUpdated'));
           window.location.reload(); 
-
         }
       } catch (e) {
         alert('Ошибка отправки запроса');
@@ -252,7 +251,7 @@ function LoginWindow ({isOpen, onClose})
         <p className={styles.pEntrance}>
           {isRegistering ? "Регистрация" : "Вход"}
         </p>
-        <form onSubmit={isRegistering ? handleRegistering : handleLogin}>
+        <form onSubmit={isRegistering ? handleRegistering : handleLogin()}>
           <div className={styles.InputContainer}>
           <div className={styles.InputContainerInner}>
             
