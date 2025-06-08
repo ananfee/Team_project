@@ -2,8 +2,19 @@ import { useState } from "react";
 import styles from "./RelatedBooks.module.css";
 import CatalogBook from "../../../Catalog_page/components/CatalogBook/CatalogBook";
 import { useNavigate } from 'react-router-dom';
+import Messages from "../../../Catalog_page/components/CatalogBook/Messages";
 
 function RelatedBooks({ RelatedBooks }) {
+    const [alerts, setAlerts] = useState([]);
+
+    const addAlert = (message) => {
+      setAlerts((prev) => [...prev, message]);
+    };
+
+    const removeAlert = (index) => {
+      setAlerts((prev) => prev.filter((_, i) => i !== index));
+    };
+
   const navigate = useNavigate();
   const itemsPerPage = 6; 
   const [startIndex, setStartIndex] = useState(0); 
@@ -45,11 +56,12 @@ function RelatedBooks({ RelatedBooks }) {
           </button>
           <div className={styles.SliderWrapper}>
             <div className={styles.ListRelatedBooks}>
+              <Messages alerts={alerts} removeAlert={removeAlert} />
               {visibleBooks.map(item => (
                 <div key={item.id}
                   onDoubleClick={() => navigate(`/new/${item.id}`)}
                   style={{ cursor: 'pointer' }}>
-                  <CatalogBook product={item} />
+                  <CatalogBook product={item} addAlert={addAlert} />
                 </div>
               ))}
             </div>

@@ -214,6 +214,26 @@
    transform: translateY(-50%) rotate(0deg);
  }
 
+ .DeleteAuthorButton{
+   cursor: pointer;
+   width: 26px;
+   height: 24px;
+   border: none;
+   position: relative;
+   background-color: white;
+ }
+
+ .DeleteAuthorButton::before {
+   content: '';
+   background-image: url('delete.svg');
+   width: 24px;
+   height: 24px;
+   background-repeat: no-repeat;
+   position: absolute;
+   right: 1px;
+   transform: translateY(-50%) rotate(0deg);
+ }
+
  .DropDownSortContainer {
    position: relative;
    display: block;
@@ -315,4 +335,11 @@
 
 .Error:last-child{
   margin-bottom: 0;
+}
+
+.Author{
+  display: flex;
+  height: 24px;
+  gap: 10px;
+  margin-bottom: 10px;
 }

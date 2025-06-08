@@ -2,9 +2,20 @@ import React, { useState } from "react";
 import CatalogBook from "../CatalogBook/CatalogBook.js";
 import styles from "./Catalog.module.css";
 import { useNavigate } from 'react-router-dom';
+import Messages from "../CatalogBook/Messages.js";
 
 function Catalog({data})
 {
+    const [alerts, setAlerts] = useState([]);
+
+    const addAlert = (message) => {
+      setAlerts((prev) => [...prev, message]);
+    };
+
+    const removeAlert = (index) => {
+      setAlerts((prev) => prev.filter((_, i) => i !== index));
+    };
+
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const booksPerPage = 18;
@@ -30,14 +41,21 @@ function Catalog({data})
     setCurrentPage((prevPage) => Math.min(prevPage + 1, pageNumbers.length));
   };
 
+  function handleDoubleClick(e, id) {
+  if (!e.target.closest(".prevent-navigation")) {
+    navigate(`/new/${id}`);
+  }
+  }
+
   return (
    <div>
     <div className={styles.CatalogContainer}>
+      <Messages alerts={alerts} removeAlert={removeAlert} />
       {currentBooks.map(item => (
         <div key={item.id}
-        onDoubleClick={() => navigate(`/new/${item.id}`)}
+        onDoubleClick={(e) => handleDoubleClick(e, item.id)}
         style={{cursor: 'pointer'}}>
-            <CatalogBook product={item}/>
+            <CatalogBook product={item} addAlert={addAlert}/>
         </div>
       ))}
     </div>
