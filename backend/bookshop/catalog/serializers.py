@@ -183,6 +183,10 @@ class BookCreateUpdateSerializer(serializers.ModelSerializer):
     authors_data_json = serializers.CharField(write_only=True, required=False, allow_blank=True)
     discount = serializers.CharField(allow_null=True, required=False)
 
+    def validate_price(self, value):
+        if value is not None:
+            return round(float(value), 2)
+        return value
     def validate_discount(self, value):
         if value == "null" or value is None:
             return None
@@ -247,7 +251,8 @@ class BookCreateUpdateSerializer(serializers.ModelSerializer):
                     author, created = Author.objects.get_or_create(
                         author_last_name=author_data['author_last_name'],
                         author_first_name=author_data['author_first_name'],
-                        defaults={'author_patronymic': author_data.get('author_patronymic')})
+                        author_patronymic=author_data['author_patronymic'],
+                        )
                     AuthorsOfBook.objects.create(book=instance, author=author)
 
         for attr, value in validated_data.items():
