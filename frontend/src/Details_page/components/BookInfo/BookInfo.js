@@ -4,6 +4,7 @@ import WarningBasket from "../../../Catalog_page/components/WarningBasket/Warnin
 import AddBookWindow from "../../../Catalog_page/components/AddBookWindow/AddBookWindow";
 import DeleteBookWindow from "../../../Catalog_page/components/DeleteBookWundow/DeleteBookWindow";
 import FetchWithAuth from "../../../layout/LoginWindow/FetchWithAuth";
+import Messages from "../../../Catalog_page/components/CatalogBook/Messages";
 
 function BookInfo({Book})
 {
@@ -14,6 +15,15 @@ function BookInfo({Book})
    const [deleteBookModalOpen, setDeleteBookModalOpen] = useState(false);
    const [editBookData, setEditBookData] = useState(null);
    const [deleteBookData, setDeleteBookData] = useState(null);
+   const [alerts, setAlerts] = useState([]);
+
+    const addAlert = (message) => {
+      setAlerts((prev) => [...prev, message]);
+    };
+
+    const removeAlert = (index) => {
+      setAlerts((prev) => prev.filter((_, i) => i !== index));
+    };
 
    const fetchBookForEdit = async (bookId) => {
       try {
@@ -59,6 +69,11 @@ function BookInfo({Book})
         const data = await response.json();
         if (!response.ok) {
           alert('Ошибка: ' + (data.detail || response.statusText));
+        } else {
+         addAlert(`Товар добавлен в корзину`);
+          const totalItems = data.reduce((sum, item) => sum + parseInt(item.count_of_book, 10), 0);
+          localStorage.setItem('totalItems', totalItems);
+          window.dispatchEvent(new Event('cartUpdated'));
         }
       } catch (e) {
         alert('Ошибка отправки запроса');
@@ -68,6 +83,7 @@ function BookInfo({Book})
    useEffect(() => {
       setRole(localStorage.getItem('role'));
     }, []);
+
 
    return(
       <div className={styles.InfoContainer}>
@@ -133,9 +149,10 @@ function BookInfo({Book})
                </>) : 
                role == 'Клиент' ? (
                   <>
+                  <Messages alerts={alerts} removeAlert={removeAlert} />
                   <button className={Book.number_of_copies == "0" ? styles.basketButtonDisabled : styles.basketButton} 
                   disabled={Book.number_of_copies == "0" ? true : false} 
-                  onClick={Book.number_of_copies == "0" ? undefined : () => addToCart(Book.id)}>В корзину</button>
+                  onClick={Book.number_of_copies == "0" ? undefined : () => {addToCart(Book.id);}}>В корзину</button>
                   </>
                ) : ( 
                   <>

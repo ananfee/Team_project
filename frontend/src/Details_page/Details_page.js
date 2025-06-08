@@ -4,8 +4,6 @@ import BookInfo from './components/BookInfo/BookInfo';
 import Header from '../layout/Header';
 import RelatedBooks from './components/RelatedBooks/RelatedBooks';
 import NotificationModal from '../NotificationModal/NotificationModal'; 
-import Footer from "../components/footer/footer.jsx";
-
 
 // const book = 
 //    {
@@ -174,7 +172,6 @@ import Footer from "../components/footer/footer.jsx";
 
 function Details_page()
 {
-   const baseUrl = process.env.REACT_APP_API_URL;
    const {id} = useParams();
    const [isModalOpen, setIsModalOpen] = useState(false);
    const [book, setBook] = useState(null);
