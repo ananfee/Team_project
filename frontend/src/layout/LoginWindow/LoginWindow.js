@@ -112,7 +112,7 @@ function LoginWindow ({isOpen, onClose})
       newErrors.phone = "Заполните поле";
       hasError = true;
     } else if (!/^(\+7|8)\d{10}$/.test(phone)) {
-      newErrors.phone = "некорректный номер телефона";
+      newErrors.phone = "Телефон должен быть в формате: +79999999999 или 89999999999";
       hasError = true;
     }
     
