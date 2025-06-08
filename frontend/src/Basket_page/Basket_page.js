@@ -340,6 +340,8 @@ const BasketPage = () => {
             const updatedBasketItems = basketItems.filter(item => item.book?.id !== bookIdToDelete);
             setBasketItems(updatedBasketItems);
             calculateTotals(updatedBasketItems); // Пересчитываем итоги после удаления
+            localStorage.setItem('totalItems', totalItems);
+            window.dispatchEvent(new Event('cartUpdated'));
             // Возможно, здесь можно показать уведомление об успешном удалении
         } catch (error) {
             console.error("Ошибка при удалении товара из корзины:", error);
@@ -366,6 +368,8 @@ const BasketPage = () => {
         // Успешная очистка корзины на сервере
         setBasketItems([]);
         calculateTotals([]);
+        localStorage.setItem('totalItems', totalItems);
+        window.dispatchEvent(new Event('cartUpdated'));
         // Добавляем обновление страницы (перезагрузку) после успешной очистки
         window.location.reload(); // Или используйте более подходящий метод обновления, если есть
 
@@ -374,90 +378,6 @@ const BasketPage = () => {
         // Показать сообщение об ошибке пользователю
     }
 };
-
-
-
-     // TODO: Добавить функцию для изменения количества товара
-   // --- ИСПРАВЛЕННАЯ ФУНКЦИЯ ИЗМЕНЕНИЯ КОЛИЧЕСТВА ---
-    //     const handleQuantityChange = useCallback(async (bookId, newQuantity) => {
-    //     try {
-    //         const response = await FetchWithAuth("http://127.0.0.1:8000/catalog/cart/update/", {
-    //             method: 'PATCH', // Или PUT, POST, в зависимости от вашего API
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify({ book_id: bookId, count_of_book: newQuantity }),
-    //         });
-
-    //         if (response === null) {
-    //             openNotificationModal("Ошибка авторизации. Пожалуйста, попробуйте войти снова.");
-    //             return;
-    //         }
-
-
-    //         if (!response.ok) {
-    //             const errorData = await response.json();
-    //             const errorMessage = errorData?.detail || `Ошибка обновления количества: ${response.status}`;
-    //             openNotificationModal(errorMessage);
-    //             throw new Error(errorMessage); // Кидаем ошибку, чтобы попасть в catch
-    //         }
-
-
-    //         // После успешного обновления на сервере, обновляем локальное состояние
-    //         const updatedBasketItems = basketItems.map(item =>
-    //             item.book.id === bookId
-    //                 ? { ...item, count_of_book: newQuantity } // Обновляем count_of_book
-    //                 : item
-    //         );
-    //         setBasketItems(updatedBasketItems); // Обновляем состояние корзины
-    //         calculateTotals(updatedBasketItems); // Пересчитываем итоги
-    //     } catch (error) {
-    //         console.error("Ошибка при изменении количества товара:", error);
-    //         openNotificationModal(`Ошибка: ${error.message}`);
-    //         // Добавьте здесь логику для отката изменений в UI, если запрос не удался.
-    //         // Например, можно сохранить предыдущее количество в состоянии NumberProducts и восстановить его здесь.
-    //     }
-    // }, [basketItems, calculateTotals, openNotificationModal]);
-
-
-    // const handleQuantityChange = useCallback(async (bookId, newQuantity) => {
-    //     try {
-    //         const response = await FetchWithAuth("http://127.0.0.1:8000/catalog/cart/update/", {
-    //             method: 'PATCH', // Или PUT, POST, в зависимости от вашего API
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify({ book_id: bookId, count_of_book: newQuantity }),
-    //         });
-
-    //         if (response === null) {
-    //             openNotificationModal("Ошибка авторизации. Пожалуйста, попробуйте войти снова.");
-    //             return;
-    //         }
-
-
-    //         if (!response.ok) {
-    //             const errorData = await response.json();
-    //             const errorMessage = errorData?.detail || `Ошибка обновления количества: ${response.status}`;
-    //             openNotificationModal(errorMessage);
-    //             throw new Error(errorMessage); // Кидаем ошибку, чтобы попасть в catch
-    //         }
-
-    //         // После успешного обновления на сервере, обновляем локальное состояние
-    //         const updatedBasketItems = basketItems.map(item =>
-    //             item.book.id === bookId
-    //                 ? { ...item, count_of_book: newQuantity } // Обновляем count_of_book
-    //                 : item
-    //         );
-    //         setBasketItems(updatedBasketItems); // Обновляем состояние корзины
-    //         calculateTotals(updatedBasketItems); // Пересчитываем итоги
-    //     } catch (error) {
-    //         console.error("Ошибка при изменении количества товара:", error);
-    //         openNotificationModal(`Ошибка: ${error.message}`);
-    //         // Добавьте здесь логику для отката изменений в UI, если запрос не удался.
-    //         // Например, можно сохранить предыдущее количество в состоянии NumberProducts и восстановить его здесь.
-    //     }
-    // }, [basketItems, calculateTotals, openNotificationModal]);
 
 
     // --- Логика загрузки данных корзины (выполняется один раз при монтировании) ---
@@ -492,6 +412,8 @@ const BasketPage = () => {
                 if (Array.isArray(data)) {
                     setBasketItems(data); // Устанавливаем загруженные данные
                     calculateTotals(data.items || []); // Пересчитываем итоги после загрузки
+                    localStorage.setItem('totalItems', totalItems);
+                    window.dispatchEvent(new Event('cartUpdated'));
 
                 } else {
                     // Если данные не массив, это может быть ошибкой или пустым ответом
