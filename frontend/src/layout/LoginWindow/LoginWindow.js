@@ -209,8 +209,7 @@ function LoginWindow ({isOpen, onClose})
           const totalItems = data.reduce((sum, item) => sum + parseInt(item.count_of_book, 10), 0);
           localStorage.setItem('totalItems', totalItems);
           window.dispatchEvent(new Event('cartUpdated'));
-          window.location.reload(); 
-
+          window.location.reload();
         }
       } catch (e) {
         alert('Ошибка отправки запроса');
