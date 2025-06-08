@@ -79,7 +79,7 @@ function LoginWindow ({isOpen, onClose})
         localStorage.setItem('accessToken', data.access);
         localStorage.setItem('role', data.role);
         localStorage.setItem('refreshToken', data.refresh);
-        if (role == 'Клиент') {
+        if (role == 'Клиент'){
         getCart();}
         onClose();
       } catch {
