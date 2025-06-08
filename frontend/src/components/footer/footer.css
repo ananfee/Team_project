@@ -1,159 +1,10 @@
-/* .footer{
-    background-color: #5D3C64;
-    justify-content: space-between;
-    width: 1920px;
-    height: 170px;
-    padding-right: 35px;
-    padding-left: 22px;
-    padding-top: 39px;
-    margin: 0;
-}
-
-.sb__footer{
-    width: 1863px;
-    height: 102px;
-    justify-content: space-between;
-    padding-right: 35px;
-    padding-left: 35px;     
-    display: flex;
-    gap: 234px;
-    margin-bottom: 95px;
-}
-
-.cont{
-    width: 297px;
-    height: 102px;
-    text-align: center;
-}
-
-.cont p{
-    font-family: "Inter", sans-serif;
-    font-size: 20px;  
-    color: #F6F6F6;
-    text-align: left;
-    margin: 0px;
-    margin-bottom: 17px;
-}
-
-.contacts{
-    font-family: "Inter", sans-serif;
-    font-size: 20px; 
-    color: #F6F6F6;
-    text-align: left;
-}
-
-.contacts p{
-    font-family: "Inter", sans-serif;
-    font-size: 20px;  
-    color: #F6F6F6;
-    text-align: left;
-    margin: 0px;
-    margin-bottom: 22px;
-}
-
-.pay{
-    font-family: "Inter", sans-serif;
-    font-size: 20px; 
-    color: #F6F6F6;
-    text-align: left;
-}
-
-.pay p{
-    font-family: "Inter", sans-serif;
-    font-size: 20px;  
-    color: #F6F6F6;
-    text-align: center;
-    margin: 0px;
-    margin-bottom: 18px;
-}
-
-.label{
-    font-family: "Inter", sans-serif;
-    font-size: 20px; 
-    color: #F6F6F6;
-    text-align: left;
-}
-
-.label p{
-    font-family: "Inter", sans-serif;
-    font-size: 20px;  
-    color: #F6F6F6;
-    text-align: center;
-    margin: 0px;
-}
-
-.socialmedia{
-    display: flex;
-    flex-direction: row;
-    gap: 16px;
-    margin-left: 35px;
-}
-
-.socialmedia img{
-    width: 24;
-    height: 24;
-}
-
-.cards{
-    display: flex;
-    flex-direction: row;
-    gap: 13px;
-    width: 86;
-    height: 35;
-    text-align: center;
-    margin-left: 102px;
-} */
-
-/* @media screen and (max-width: 850px) {
-    .sb__footer-heading h1{
-        font-size: 44px;
-        line-height: 50px;
-    }
-} */
-
-/* @media screen and (max-width: 350px) {
-    .sb__footer-heading h1{
-        font-size: 34px;
-        line-height: 42px;
-    }
-
-    .sb__footer-links div{
-        margin: 1rem 0;
-    }
-
-    .sb__footer-btn p{
-        font-size: 14px;
-        line-height: 20px;
-    }
-
-    .sb__footer-below{
-        flex-direction: column;
-        justify-content: left;
-    }
-
-    .sb__footer-below p{
-        margin-left: 0rem;
-        margin-top: 1rem;
-    }
-}
-
-@media screen and (max-width: 400px) {
-    .sb__footer-heading h1{
-        font-size: 27px;
-        line-height: 38px;
-    }
-    
-} */
-
-
 .footer {
     background-color: #5D3C64;
-    width: 100%;
-    max-width: 1920px;
+    width: 1170px;
     height: auto; /* Изменили на auto для адаптивности по высоте */
     padding: 39px 35px 0 22px; /* Убрали padding-bottom, чтобы контролировать отступы внутри .sb__footer */
-    margin: 0 auto;
-    box-sizing: border-box;
+    margin: 0;
+    /* box-sizing: border-box; */
 }
 
 .sb__footer {
@@ -193,14 +44,16 @@
 }
 
 .contacts {
-    text-align: left;
-}
+    font-family: "Inter", sans-serif;
+    font-size: 20px;
+    color: #F6F6F6;
+    text-align: left;}
 
 .socialmedia {
     display: flex;
     flex-direction: row;
-    gap: 10px;         /* Уменьшили расстояние между иконками */
-    margin-left: 0px;   /* Убрали отступ слева */
+    gap: 16px;
+    margin-left: 35px; /* Убрали отступ слева */
 }
 
 .socialmedia img {
@@ -211,11 +64,11 @@
 .cards {
     display: flex;
     flex-direction: row;
-    gap: 8px;           /* Уменьшили расстояние между карточками */
-    width: auto;
-    height: auto;
+    gap: 13px;
+    width: 86;
+    height: 35;
     text-align: center;
-    margin-left: auto;    /* Переместили вправо */
+    margin-left: 102px;   /* Переместили вправо */
 }
 
 .cards img {

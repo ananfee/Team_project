@@ -259,10 +259,7 @@ const BasketPage = () => {
     const [error, setError] = useState(null);
 
     // Состояния для рассчитанных итогов (для передачи в ResultConteiner)
-    const [totalItems, setTotalItems] = useState(() => {
-      const savedTotalItems = localStorage.getItem('totalItems');
-      return savedTotalItems ? parseInt(savedTotalItems, 10) : 0;
-   });
+    const [totalItems, setTotalItems] = useState(0);
     const [totalOriginalPrice, setTotalOriginalPrice] = useState(0); // Полная стоимость всех товаров без скидки
     const [totalDiscount, setTotalDiscount] = useState(0);           // Общая сумма скидки
     const [finalPrice, setFinalPrice] = useState(0);             // Итоговая стоимость всех товаров со скидкой
@@ -290,14 +287,14 @@ const BasketPage = () => {
 
     // Вспомогательная функция для пересчета итогов
     const calculateTotals = (items) => {
-        // let newTotalItems = 0;
+        let newTotalItems = 0;
         let newTotalOriginalPrice = 0;
         let newTotalDiscount = 0;
         let newFinalPrice = 0;
 
         items.forEach(item => {
             const itemQuantity = item.count_of_book;
-            // newTotalItems += itemQuantity;
+            newTotalItems += itemQuantity;
 
             // Предполагаем, что 'price' - это оригинальная цена, 'discounted_price' - цена со скидкой
             const originalItemPrice = item.book.price || 0;
@@ -311,7 +308,7 @@ const BasketPage = () => {
 
         newTotalDiscount = newTotalOriginalPrice - newFinalPrice;
 
-        // setTotalItems(newTotalItems);
+        setTotalItems(newTotalItems);
         setTotalOriginalPrice(newTotalOriginalPrice);
         setTotalDiscount(newTotalDiscount);
         setFinalPrice(newFinalPrice);
@@ -343,8 +340,7 @@ const BasketPage = () => {
             const updatedBasketItems = basketItems.filter(item => item.book?.id !== bookIdToDelete);
             setBasketItems(updatedBasketItems);
             calculateTotals(updatedBasketItems); // Пересчитываем итоги после удаления
-            const newTotalItem = localStorage.getItem('totalItems');
-            localStorage.setItem('totalItems', newTotalItem - 1);
+            localStorage.setItem('totalItems', totalItems);
             window.dispatchEvent(new Event('cartUpdated'));
             // Возможно, здесь можно показать уведомление об успешном удалении
         } catch (error) {
@@ -372,11 +368,10 @@ const BasketPage = () => {
         // Успешная очистка корзины на сервере
         setBasketItems([]);
         calculateTotals([]);
-        window.location.reload();
-        localStorage.setItem('totalItems', 0);
+        localStorage.setItem('totalItems', totalItems);
         window.dispatchEvent(new Event('cartUpdated'));
         // Добавляем обновление страницы (перезагрузку) после успешной очистки
-         // Или используйте более подходящий метод обновления, если есть
+        window.location.reload(); // Или используйте более подходящий метод обновления, если есть
 
     } catch (error) {
         console.error("Ошибка при очистке корзины:", error);
@@ -416,7 +411,9 @@ const BasketPage = () => {
                 // Проверяем, что полученные данные - это массив
                 if (Array.isArray(data)) {
                     setBasketItems(data); // Устанавливаем загруженные данные
-                    calculateTotals(data.items || []);
+                    calculateTotals(data.items || []); // Пересчитываем итоги после загрузки
+                    localStorage.setItem('totalItems', totalItems);
+                    window.dispatchEvent(new Event('cartUpdated'));
 
                 } else {
                     // Если данные не массив, это может быть ошибкой или пустым ответом
@@ -436,7 +433,6 @@ const BasketPage = () => {
         };
 
         loadBasket();
-        window.dispatchEvent(new Event('cartUpdated'));
         // Пустой массив зависимостей: эффект выполняется только при первом рендере
         // Если корзина может меняться без перезагрузки страницы (например, через WebSocket или ручное обновление),
         // возможно, этот эффект должен зависеть от состояния пользователя или другого триггера.
