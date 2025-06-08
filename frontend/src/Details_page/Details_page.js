@@ -229,12 +229,8 @@ function Details_page()
                <BookInfo Book={book}/>
                <RelatedBooks RelatedBooks={relatedBooks}/>
                </div>
-<<<<<<< HEAD:frontend/src/Details_page/Details_page.js
             )}
          <Footer/>
-=======
-            )} 
->>>>>>> Front:src/Details_page/Details_page.js
       </div>
    );
 }
