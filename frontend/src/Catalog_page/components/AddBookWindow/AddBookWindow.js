@@ -175,9 +175,17 @@ function AddBookWindow({isOpen, onClose, obj})
       formData.append('number_of_copies', Number(count));
       formData.append('description', description);
       formData.append('authors_data_json', JSON.stringify(authors));
-      formData.append('cover_image', imgFile);
+      
+      if (imgFile) {
+         formData.append('cover_image', imgFile);
+      }
+      
       
        const isEdit = !!obj; 
+       
+      if (isEdit) {
+         formData.append('cover_image', imgFile);
+      }
   
        const url = isEdit
          ? `${baseUrl}catalog/books/update/${obj.id}/`
