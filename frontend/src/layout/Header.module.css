@@ -96,3 +96,20 @@
    font-family: "Inter", sans-serif;
    font-size: 16px;
 }
+
+.BasketButtonContainer{
+   display: flex;
+   width: 40px;
+}
+
+.TotalItems{
+   font-size: 12px;
+   height: 14px;
+   width: 20px;
+   border-radius: 50%;
+   border: 1px solid #5D3C64;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   padding: 1px;
+}

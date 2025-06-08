@@ -13,6 +13,25 @@ function Header({onOpenModal}) {
    const [role, setRole] = useState("");
    const [isAuth, setIsAuth] = useState(!!localStorage.getItem('accessToken'));
 
+   const [totalItems, setTotalItems] = useState(() => {
+      const savedTotalItems = localStorage.getItem('totalItems');
+      return savedTotalItems ? parseInt(savedTotalItems, 10) : 0;
+   });
+
+   useEffect(() => {
+      const handleCartUpdate = () => {
+         const updatedTotalItems = localStorage.getItem('totalItems');
+         setTotalItems(updatedTotalItems ? parseInt(updatedTotalItems, 10) : 0);
+      };
+
+      window.addEventListener('cartUpdated', handleCartUpdate);
+
+      return () => {
+         window.removeEventListener('cartUpdated', handleCartUpdate);
+      };
+   }, []);
+
+
    useEffect(() => {
       setIsAuth(!!localStorage.getItem('accessToken'));
       setRole(localStorage.getItem('role'));
@@ -32,6 +51,8 @@ function Header({onOpenModal}) {
          localStorage.removeItem('accessToken');
          localStorage.removeItem('refreshToken');
          localStorage.removeItem('role');
+         localStorage.removeItem('totalItems');
+         window.dispatchEvent(new Event('cartUpdated'));
          setIsAuth(false); 
          setRole("");   
          navigate("/");
@@ -67,7 +88,10 @@ function Header({onOpenModal}) {
                      <>
                         <NotificationButton onClick={onOpenModal} />
                         <OrdersButton />
+                        <div className={styles.BasketButtonContainer}>
                         <BasketButton />
+                        <p className={styles.TotalItems}>{totalItems}</p>
+                        </div>
                         <button className={styles.Role}>Покупатель</button>
                      </>
                   )

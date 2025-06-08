@@ -206,6 +206,7 @@ import AddBookWindow from './components/AddBookWindow/AddBookWindow.js'
 //       number_of_copies: '3'
 //    }
 // ];
+// const role = 'Сотрудник';
 
 function Catalog_page()
 {
@@ -369,7 +370,7 @@ function Catalog_page()
                       <Catalog data={books}/>
                      ) : 
                     (<p style={{ fontSize: 20, color: 'lightgray' }}>Похоже, у нас такого нет</p>) 
-            )} 
+            )}  
         </div>
         <Footer />
     </div>

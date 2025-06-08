@@ -1,0 +1,33 @@
+.messageAlertsContainer {
+ position: fixed;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  flex-direction: column-reverse; /* Ставим уведомления друг на друга */
+  z-index: 1000;
+  max-width: 300px;
+}
+
+.messageAlert {
+  background-color: #67af69;
+  color: white;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  font-size: 16px;
+  font-family: "Inter", sans-serif;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  opacity: 1;
+  animation: fadeOut 4s forwards;
+  transition: opacity 0.8s;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(0); 
+}}

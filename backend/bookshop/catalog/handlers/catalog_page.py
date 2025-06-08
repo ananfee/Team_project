@@ -91,9 +91,9 @@ class AddToCartView(generics.CreateAPIView):
                 )
                 if not created:
                     cart_item.count_of_book += count_of_book
-                    if hasattr(book, 'stock') and book.stock < cart_item.count_of_book:
+                    if hasattr(book, 'number_of_copies') and book.number_of_copies < cart_item.count_of_book:
                         return Response(
-                            {"message": f"Недостаточно книг в наличии: доступно {book.stock}"},
+                            {"message": f"Недостаточно книг в наличии: доступно {book.number_of_copies}"},
                             status=status.HTTP_400_BAD_REQUEST
                         )
                     cart_item.save()
