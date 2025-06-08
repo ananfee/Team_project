@@ -9,7 +9,10 @@ function LoginWindow ({isOpen, onClose})
   const [isOpenDropDown, setIsOpenDropDown] = useState(false);
   const [selectedRole, setSelectedRole] = useState('Выберите роль');
   const container = useRef();
-
+  const [role, setRole] = useState("");
+   useEffect(() => {
+      setRole(localStorage.getItem('role'));
+    }, []);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState("");
