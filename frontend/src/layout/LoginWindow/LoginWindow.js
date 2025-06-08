@@ -197,7 +197,7 @@ function LoginWindow ({isOpen, onClose})
 
   const getCart = async () => {
       try {
-        const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/get_cart/')
+        const response = await FetchWithAuth(`${baseUrl}catalog/get_cart/`)
         ;
         if (!response) {
           alert('Ошибка авторизации!');

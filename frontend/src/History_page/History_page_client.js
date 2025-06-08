@@ -248,7 +248,7 @@ const HistoryPageClient = () => {
             setFetchError(null);
 
             try {
-                const response = await FetchWithAuth(`${baseUrl}/catalog/order-history/`);
+                const response = await FetchWithAuth(`${baseUrl}catalog/order-history/`);
 
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
