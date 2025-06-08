@@ -365,9 +365,14 @@ const NumberProducts = ({ initialCount, onQuantityChange, number_of_copies, book
         const newCount = count + 1;
         if (newCount <= number_of_copies) {
             const success = await updateQuantity(newCount);
-            if (success) {
-                window.location.reload(); // Обновляем страницу
-            }
+            const updatedBasketItems = basketItems.filter(item => item.book?.id !== bookIdToDelete);
+            setBasketItems(updatedBasketItems);
+            calculateTotals(updatedBasketItems); // Пересчитываем итоги после удаления
+            localStorage.setItem('totalItems', totalItems);
+            window.dispatchEvent(new Event('cartUpdated'));
+            // if (success) {
+            //     window.location.reload(); // Обновляем страницу
+            // }
         } else {
             console.log("Достигнуто максимальное количество копий для этого товара.");
         }
@@ -377,9 +382,14 @@ const NumberProducts = ({ initialCount, onQuantityChange, number_of_copies, book
         if (count > 1) {
             const newCount = count - 1;
             const success = await updateQuantity(newCount);
-            if (success) {
-                window.location.reload(); // Обновляем страницу
-            }
+            const updatedBasketItems = basketItems.filter(item => item.book?.id !== bookIdToDelete);
+            setBasketItems(updatedBasketItems);
+            calculateTotals(updatedBasketItems); // Пересчитываем итоги после удаления
+            localStorage.setItem('totalItems', totalItems);
+            window.dispatchEvent(new Event('cartUpdated'));
+            // if (success) {
+            //     window.location.reload(); // Обновляем страницу
+            // }
         }
     };
 

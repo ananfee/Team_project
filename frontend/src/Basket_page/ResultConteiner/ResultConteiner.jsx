@@ -63,8 +63,10 @@ const ResultConteiner = ({
             }
 
             const data = await response.json();
+            
             setOrderMessage(data.message || "Заказ успешно оформлен!");
-
+            localStorage.setItem('totalItems', totalItems);
+            window.dispatchEvent(new Event('cartUpdated'));
             // НЕ вызываем onClearBasket здесь. Это будет сделано в PlaceOrderWindow.
 
         } catch (error) {

@@ -412,8 +412,6 @@ const BasketPage = () => {
                 if (Array.isArray(data)) {
                     setBasketItems(data); // Устанавливаем загруженные данные
                     calculateTotals(data.items || []); // Пересчитываем итоги после загрузки
-                    localStorage.setItem('totalItems', totalItems);
-                    window.dispatchEvent(new Event('cartUpdated'));
 
                 } else {
                     // Если данные не массив, это может быть ошибкой или пустым ответом
@@ -433,6 +431,8 @@ const BasketPage = () => {
         };
 
         loadBasket();
+        localStorage.setItem('totalItems', totalItems);
+        window.dispatchEvent(new Event('cartUpdated'));
         // Пустой массив зависимостей: эффект выполняется только при первом рендере
         // Если корзина может меняться без перезагрузки страницы (например, через WebSocket или ручное обновление),
         // возможно, этот эффект должен зависеть от состояния пользователя или другого триггера.
