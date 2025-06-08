@@ -340,7 +340,7 @@ const BasketPage = () => {
             const updatedBasketItems = basketItems.filter(item => item.book?.id !== bookIdToDelete);
             setBasketItems(updatedBasketItems);
             calculateTotals(updatedBasketItems); // Пересчитываем итоги после удаления
-            localStorage.setItem('totalItems', totalItems);
+            localStorage.setItem('totalItems', setTotalItems);
             window.dispatchEvent(new Event('cartUpdated'));
             // Возможно, здесь можно показать уведомление об успешном удалении
         } catch (error) {
@@ -368,7 +368,7 @@ const BasketPage = () => {
         // Успешная очистка корзины на сервере
         setBasketItems([]);
         calculateTotals([]);
-        localStorage.setItem('totalItems', totalItems);
+        localStorage.setItem('totalItems', 0);
         window.dispatchEvent(new Event('cartUpdated'));
         // Добавляем обновление страницы (перезагрузку) после успешной очистки
         window.location.reload(); // Или используйте более подходящий метод обновления, если есть
@@ -431,7 +431,7 @@ const BasketPage = () => {
         };
 
         loadBasket();
-        localStorage.setItem('totalItems', totalItems);
+        localStorage.setItem('totalItems', setTotalItems);
         window.dispatchEvent(new Event('cartUpdated'));
         // Пустой массив зависимостей: эффект выполняется только при первом рендере
         // Если корзина может меняться без перезагрузки страницы (например, через WebSocket или ручное обновление),

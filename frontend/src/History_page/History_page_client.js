@@ -314,11 +314,17 @@ const HistoryPageClient = () => {
                     <p>ЗАКАЗЫ</p>
                 </div>
                 <div className="ListOrders">
-                    {ordersData.length === 0 ? (
-                        <p>Нет данных об истории заказов.</p>
-                    ) : (
-                        <ul>
-                            {ordersData.map(order => (
+//                     {fetchLoading && <p>Загрузка истории заказов...</p>}
+
+//                     {fetchError && (
+                        <p style={{ color: 'red' }}>
+                            Ошибка при загрузке заказов: {fetchError.message}
+                        </p>
+                    )}
+
+                    {/* Условный рендеринг списка заказов */}
+                    {!fetchLoading && !fetchError && Array.isArray(ordersData) && ordersData.length > 0 ? (
+                        ordersData.map((order) => (
                             <OrderClient
                                 key={order.id} // Используем оригинальный id для key
                                 orderNumber={order.orderNumber} // Используем обработанный orderNumber
@@ -327,8 +333,10 @@ const HistoryPageClient = () => {
                                 status_name={order.status_name} // Используем данные из API
                                 books={order.books}       // Используем данные из API
                             />
-                            ))}
-                        </ul>
+                        ))
+                    ) : (
+                        // Сообщение, если нет заказов после загрузки (и нет ошибки)
+                         !fetchLoading && !fetchError && <p>У вас пока нет заказов.</p>
                     )}
                 </div>
             </div>
