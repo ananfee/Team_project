@@ -194,6 +194,27 @@ function LoginWindow ({isOpen, onClose})
     }
   };
 
+  const getCart = async () => {
+      try {
+        const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/get_cart/')
+        ;
+        if (!response) {
+          alert('Ошибка авторизации!');
+          return;
+        }
+        const data = await response.json();
+        if (!response.ok) {
+          alert('Ошибка: ' + (data.detail || response.statusText));
+        } else {
+          const totalItems = data.reduce((sum, item) => sum + parseInt(item.count_of_book, 10), 0);
+          localStorage.setItem('totalItems', totalItems);
+          window.dispatchEvent(new Event('cartUpdated'));
+        }
+      } catch (e) {
+        alert('Ошибка отправки запроса');
+      }
+  };
+
   useEffect(() => {
       setEmail('');
       setPassword('');
@@ -228,7 +249,7 @@ function LoginWindow ({isOpen, onClose})
         <p className={styles.pEntrance}>
           {isRegistering ? "Регистрация" : "Вход"}
         </p>
-        <form onSubmit={isRegistering ? handleRegistering : handleLogin}>
+        <form onSubmit={isRegistering ? handleRegistering : () => { handleLogin(); getCart(); }}>
           <div className={styles.InputContainer}>
           <div className={styles.InputContainerInner}>
             
