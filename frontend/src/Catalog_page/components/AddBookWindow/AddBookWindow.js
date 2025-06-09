@@ -120,6 +120,8 @@ function AddBookWindow({isOpen, onClose, obj})
          hasError = true;
       }
       
+      const currentYear = new Date().getFullYear();
+
       if (!year) {
          newErrors.year = "Введите год издания";
          hasError = true;
@@ -242,7 +244,7 @@ function AddBookWindow({isOpen, onClose, obj})
            setDescription('');
            setImg('');
            setImgFile(null);
-           setError({title: "", count: "", genre: "", publisher: "",year: "",isbn: "",price: "", description: "", img: "", common: ""});
+           setError({title: "", count: "", genre: "", publisher: "",year: "",isbn: "",price: "", description: "", img: "", common: "", authors: ""});
            return;
          }
          if (obj) {
