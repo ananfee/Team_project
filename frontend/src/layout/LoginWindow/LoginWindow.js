@@ -78,9 +78,14 @@ function LoginWindow ({isOpen, onClose})
         const data = await response.json();
         localStorage.setItem('accessToken', data.access);
         localStorage.setItem('role', data.role);
+        setRole(data.role);
         localStorage.setItem('refreshToken', data.refresh);
-        if (role == 'Клиент') {
-        getCart();}
+        if (data.role == 'Клиент') {
+          getCart();
+        }
+        if (data.role == 'Сотрудник') {
+           window.location.reload(); 
+        }
         onClose();
       } catch {
         setError({ email: "", password: "", common: "Неверный email или пароль" });
