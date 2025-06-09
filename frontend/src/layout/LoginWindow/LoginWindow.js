@@ -252,7 +252,7 @@ function LoginWindow ({isOpen, onClose})
         <p className={styles.pEntrance}>
           {isRegistering ? "Регистрация" : "Вход"}
         </p>
-        <form onSubmit={isRegistering ? handleRegistering : handleLogin()}>
+        <form onSubmit={isRegistering ? handleRegistering : handleLogin}>
           <div className={styles.InputContainer}>
           <div className={styles.InputContainerInner}>
             
