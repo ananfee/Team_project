@@ -41,7 +41,7 @@ function AddBookWindow({isOpen, onClose, obj})
    const fetchDropdownData = async () => {
       // Авторы
       try {
-        const response = await FetchWithAuth('http://127.0.0.1:8000/catalog/authors/');
+        const response = await FetchWithAuth(`${baseUrl}catalog/authors/`);
         const authors = await response.json();
         setLast_name(authors.last_names || []);
         setFirst_names(authors.first_names || []);
